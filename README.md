@@ -41,6 +41,10 @@ The last row in each data file includes a "total" row.  This will be eliminated.
 The raw CSV files downloaded from the Fortis portal include the following:
 
 "Date" in DD/MM/YYYY format. 
+
 "Time" : hourly, in integer format with "a.m." or "p.m." appended (!!). 
+
 "kWh delivered": numeric variable describing energy delivered to house from grid. 
+
 "kWh received": numeric variable describing energy delivered to grid from solar. 
+

@@ -2,8 +2,6 @@
 
 This site describes an extra-curricular project: analysing our home energy consumption and solar production data.
 
-The 
-
 The repository includes the following folders:
 
 /scripts

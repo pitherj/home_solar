@@ -1,0 +1,95 @@
+---
+title: "Importing solar data"
+author: "Jason Pither"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, message = FALSE, echo = FALSE}
+library(readxl)
+library(tidyverse)
+library(here)
+library(stringr)
+library(tools)
+library(hablar)
+```
+
+## Solar data
+
+First we'll import the solar data downloaded from the [AP Systems website](https://www.apsystemsema.com)  
+
+The raw data files downloaded from the AP Systems portal are in MS Excel format (yuck). They include hourly energy production data for seven consecutive days.  
+
+They include the following:
+
+* "Hour" - the hour of the data (24h), integer value  
+
+* Then seven columns, each holding one day of data, with the column heading being the date (YYYY-MM-DD), with "(kWh)" appended at the end  
+
+* The last row in each data file includes a "total" row.  This will be eliminated.  
+
+Let's first get the list of data files:
+
+```{r get_solar_filenames}
+solar.files <- list.files("./rawdata/solar_data/")
+```
+
+We first want to convert all the Excel files into CSV format.
+
+We'll import the data and reformat it to long format, then export to CSV
+
+```{r loop_import}
+for (i in 1:length(solar.files)) {
+temp <- readxl::read_xls(paste0("./rawdata/solar_data/", 
+            solar.files[i]), trim_ws = TRUE) 
+# eliminate "total" row
+temp <- temp %>% filter(Hour != "Total") %>%
+  # convert Hour to integer
+  hablar::convert(int(Hour)) %>%
+  rename(hour = Hour) %>%
+# from wide to long format
+  tidyr::pivot_longer(!hour, names_to = "day", values_to = "kWh") %>%
+  arrange(day) %>%
+    mutate(date = lubridate::ymd_h(paste0(str_sub(day, start = 1, end = 10), hour))) %>%
+  select(date, kWh)
+# write csv
+write_csv(temp, paste0("./rawdata/solar_data/", 
+           paste0(tools::file_path_sans_ext(solar.files[i]), ".csv")))
+  }
+```
+
+Get CSV file names
+
+```{r get_csv_filenames}
+solar.files <- paste0("./rawdata/solar_data/", list.files("./rawdata/solar_data/", pattern = "csv"))
+```
+
+Import all CSVs into one tibble.
+
+```{r}
+solar.data <- readr::read_csv(solar.files, id = "file_name")
+```
+
+Get rid of file name in table
+```{r}
+solar.data <- solar.data %>% select(date, kWh)
+```
+
+Now create a Day and Hour variable from the "date"
+```{r}
+solar.data <-solar.data %>%
+  mutate(day = lubridate::date(date),
+         hour = lubridate::hour(date)) %>%
+  select(date, day, hour, kWh)
+```
+
+Write csv
+
+```{r}
+readr::write_csv(solar.data, "./outdata/solar_data.csv")
+```
+

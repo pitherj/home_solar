@@ -262,7 +262,7 @@ Columbia.</p>
 <p>In the summer of 2022 we had an array of thirty-six 360W panels
 (model: Longi LR4-60HPB-360M) installed on our south-facing roof. The
 entire array size is 12.96kW.</p>
-<p>The layout of how the arrayed is deployed on our roof is shown in the
+<p>The layout of how the array is deployed on our roof is shown in the
 following images:</p>
 <p><img src="images/overhead_panels.png" style="width:25.0%" /></p>
 <p><img src="images/angle_panels.png" style="width:25.0%" /></p>
@@ -302,10 +302,36 @@ energy, at least during the daytime hours.</p>
 </div>
 <div id="lets-see-the-data" class="section level1">
 <h1>Let’s see the data!</h1>
-<p>I have another script that imports the raw data files, and wrangles
-them into a proper format.</p>
-<p>Have a look at the data to check for errors</p>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div id="solar-energy-data" class="section level2">
+<h2>Solar energy data</h2>
+<p>I have another script that imports the raw solar energy data files,
+downloaded from the <a href="https://www.apsystemsema.com">AP Systems
+website</a>, and wrangles them into a proper format.</p>
+<p>Here’s what the first few rows of the resulting data table looks
+like:</p>
+<pre class="r"><code>solar.data</code></pre>
+<pre><code>## # A tibble: 1,547 × 4
+##    date                day         hour    kWh
+##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
+##  2 2022-07-08 05:00:00 2022-07-08     5  0.02 
+##  3 2022-07-08 06:00:00 2022-07-08     6  0.009
+##  4 2022-07-08 07:00:00 2022-07-08     7  1.49 
+##  5 2022-07-08 08:00:00 2022-07-08     8  1.74 
+##  6 2022-07-08 09:00:00 2022-07-08     9  5.65 
+##  7 2022-07-08 10:00:00 2022-07-08    10  6.27 
+##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
+##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
+## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
+## # … with 1,537 more rows</code></pre>
+<p>Let’s visualize the data to check for errors:</p>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-3-1.png" alt="Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="672" />
+<p class="caption">
+Hourly energy output (kWh) for the 36-panel solar array, starting July
+8, 2022.
+</p>
+</div>
 <p>Ah, we see a strange data point… investigating, this is a morning
 when I took the datalogger offline. The system automatically sums up the
 total kWh produced over the time period that it was offline.</p>
@@ -316,7 +342,14 @@ total kWh produced over the time period that it was offline.</p>
 <p>So for that day (August 30, 2022), we won’t be able to use the hourly
 data for analysis.</p>
 <p>But we can sum up the total kWh by day, and plot:</p>
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-5-1.png" alt="Daily energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="672" />
+<p class="caption">
+Daily energy output (kWh) for the 36-panel solar array, starting July 8,
+2022.
+</p>
+</div>
+</div>
 </div>
 
 

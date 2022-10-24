@@ -68,7 +68,7 @@ solar.data
 
 Let's visualize the data to check for errors:
 
-```{r echo = FALSE, fig.cap = "Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
+```{r firstplot, echo = FALSE, fig.cap = "Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
 solar.data %>%
   ggplot(aes(x = date, y = kWh)) +
   geom_line(colour = "darkgrey") +
@@ -86,7 +86,7 @@ So for that day (August 30, 2022), we won't be able to use the hourly data for a
 
 But we can sum up the total kWh by day, and plot:
 
-```{r echo = FALSE, fig.cap = "Daily energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
+```{r secondplot, echo = FALSE, fig.cap = "Figure 2: Daily energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
 solar.data %>%
   group_by(day) %>%
   summarise(total = sum(kWh)) %>%

@@ -2,9 +2,8 @@
 title: "House solar energy data analysis"
 author: "Jason"
 date: "`r Sys.Date()`"
-output: 
-  bookdown::html_document2:
-  fig_caption: yes
+output: html_document
+fig_caption: TRUE
 ---
 
 ```{r setup, include=FALSE}
@@ -22,13 +21,15 @@ library(hablar)
 
 # Background
 
-This site provides analyses of solar energy production and household consumption data for our 1.5 storey home in downtown Kelowna, British Columbia.
+This site provides analyses of solar energy production and household consumption data for our 1.5 storey home in downtown Kelowna, British Columbia.  
+
+Our system was supplied and installed by [Okanagan Solar](https://www.oksolarhomes.com).  Their team was amazing to work with.
 
 ## The solar array
 
 In the summer of 2022 we had an array of thirty-six 360W panels (model: Longi LR4-60HPB-360M) installed on our south-facing roof. The entire array size is 12.96kW.
 
-The layout of how the array is deployed on our roof is shown in the following images:  
+The layout of how the array is deployed on our roof is shown in the following images (provided by Okanagan Solar as part of their assessment):  
 
 ![](./images/overhead_panels.png){width=25%}  
 

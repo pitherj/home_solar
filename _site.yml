@@ -2,6 +2,7 @@ name: "home_solar"
 output_dir: "docs"
 output:
   html_document:
+    fig_caption: true
     toc: true
     toc_float: true
     toc_depth: 2

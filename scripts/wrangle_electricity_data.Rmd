@@ -1,0 +1,69 @@
+---
+title: "Importing home energy use data"
+author: "Jason Pither"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, message = FALSE, echo = FALSE}
+library(readxl)
+library(tidyverse)
+library(here)
+library(stringr)
+library(tools)
+library(hablar)
+library(purrr)
+```
+
+## Home energy use data
+
+First we'll import the Fortis electricity usage data, downloaded from the [Fortis BC website](https://www.fortisbc.com)  
+
+The raw data files downloaded from the Fortis website portal are in CSV format. They include hourly electricity use data for sixty consecutive days.  
+
+They include the following:
+
+* "Date" - in dd/mm/yyyy format  
+
+* "Time" - in a very strange format of hour (integer) then space then "a.m." or "p.m."  
+
+* "kWh delivered" is a number with precision of 3 decimal places (kWh), representing energy used by the household
+
+* "kWh received" is a number with precision of 3 decimal places (kWh), representing energy supplied back to the grid
+
+Let's first get the list of data files:
+
+```{r get_solar_filenames}
+fortis.filenames <- paste(here::here("rawdata", "fortis_data"), 
+                  list.files(here::here("rawdata", "fortis_data")), sep = "/")
+```
+
+Import all CSVs into one tibble.
+
+For some reason the `readr::read_csv` function isn't working properly.. when i try to import multiple CSVs into a single tibble, R aborts.
+
+So, i'll do a trick that seems to work: reverse the order of files!
+
+```{r}
+fortis.data <- readr::read_csv(fortis.filenames[length(fortis.filenames):1])
+```
+
+Now create a Day and Hour variable from the "date"
+```{r}
+fortis.data <-fortis.data %>%
+  mutate(day = lubridate::date(Date),
+         hour = ifelse() %>%
+  select(date, day, hour, kWh)
+```
+
+Write csv
+
+```{r}
+readr::write_csv(solar.data, here::here("outdata", "solar_data.csv"))
+```
+
+

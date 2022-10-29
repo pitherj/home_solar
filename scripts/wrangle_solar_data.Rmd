@@ -16,6 +16,7 @@ library(here)
 library(stringr)
 library(tools)
 library(hablar)
+library(purrr)
 ```
 
 ## Solar data
@@ -35,16 +36,33 @@ They include the following:
 Let's first get the list of data files:
 
 ```{r get_solar_filenames}
-solar.files <- list.files("./rawdata/solar_data/")
+solar.files <- list.files(here::here("rawdata", "solar_data"))
 ```
 
 We first want to convert all the Excel files into CSV format.
 
-We'll import the data and reformat it to long format, then export to CSV
+We'll import the data and reformat it to long format, then export to CSV.
+
+First, let's create a vector of filenames we'll use for the output files. The names will include the beginning to end date of the data values.
+
+```{r create_csv_filenames}
+solar.output.files <- 1:length(solar.files)
+
+for (i in 1:length(solar.files)) {
+  solar.output.files[i] <- solar.files[i] %>% 
+    stringr::str_split("Report") %>% 
+    purrr::pluck(1, 2) %>% 
+    str_trim() %>% 
+    str_replace(" to ", "_") %>%
+    str_replace(".xls", ".csv")
+}
+```
+
+Now use those filenames as outputs in this chunk:
 
 ```{r loop_import}
 for (i in 1:length(solar.files)) {
-temp <- readxl::read_xls(paste0("./rawdata/solar_data/", 
+temp <- readxl::read_xls(here::here("rawdata", "solar_data", 
             solar.files[i]), trim_ws = TRUE) 
 # eliminate "total" row
 temp <- temp %>% filter(Hour != "Total") %>%
@@ -57,21 +75,20 @@ temp <- temp %>% filter(Hour != "Total") %>%
     mutate(date = lubridate::ymd_h(paste0(str_sub(day, start = 1, end = 10), hour))) %>%
   select(date, kWh)
 # write csv
-write_csv(temp, paste0("./rawdata/solar_data/", 
-           paste0(tools::file_path_sans_ext(solar.files[i]), ".csv")))
+write_csv(temp, paste(here::here("outdata"), solar.output.files[i], sep = "/"))
   }
 ```
 
 Get CSV file names
 
 ```{r get_csv_filenames}
-solar.files <- paste0("./rawdata/solar_data/", list.files("./rawdata/solar_data/", pattern = "csv"))
+solar.output.files <- paste(here::here("outdata"), solar.output.files, sep = "/")
 ```
 
 Import all CSVs into one tibble.
 
 ```{r}
-solar.data <- readr::read_csv(solar.files, id = "file_name")
+solar.data <- readr::read_csv(solar.output.files, id = "file_name")
 ```
 
 Get rid of file name in table
@@ -90,6 +107,8 @@ solar.data <-solar.data %>%
 Write csv
 
 ```{r}
-readr::write_csv(solar.data, "./outdata/solar_data.csv")
+readr::write_csv(solar.data, here::here("outdata", "solar_data.csv"))
 ```
+
+## Home energy use data
 

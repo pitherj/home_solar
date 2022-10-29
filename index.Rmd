@@ -55,7 +55,7 @@ Air conditioning is probably our biggest single electricity hog, but we tend to 
 
 ## Solar energy data
 
-I have another script that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into a proper format.
+I have another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd) that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into an appropriate (tidy) format.
 
 ```{r echo = FALSE}
 solar.data <- readr::read_csv("./outdata/solar_data.csv", show_col_types = FALSE)

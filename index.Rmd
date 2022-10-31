@@ -21,6 +21,8 @@ library(hablar)
 
 # Background
 
+**NOTE** This is a work in progress...
+
 This site provides analyses of solar energy production and household consumption data for our 1.5 storey home in downtown Kelowna, British Columbia.  
 
 Our system was supplied and installed by [Okanagan Solar](https://www.oksolarhomes.com).  Their team was amazing to work with.

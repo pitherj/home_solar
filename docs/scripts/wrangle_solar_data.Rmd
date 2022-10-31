@@ -110,5 +110,4 @@ Write csv
 readr::write_csv(solar.data, here::here("outdata", "solar_data.csv"))
 ```
 
-## Home energy use data
 

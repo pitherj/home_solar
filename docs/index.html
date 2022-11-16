@@ -255,21 +255,58 @@ div.tocify {
 <div id="background" class="section level1">
 <h1>Background</h1>
 <p><strong>NOTE</strong> This is a work in progress…</p>
-<p>This site provides analyses of solar energy production and household
-consumption data for our 1.5 storey, 1260 ft^{2} home in downtown
-Kelowna, British Columbia.</p>
-<p>Our system was supplied and installed by <a
-href="https://www.oksolarhomes.com">Okanagan Solar</a>. Their team was
-amazing to work with.</p>
+<p>When we were researching solar panels for our house, we found lots of
+websites describing the general economics of it, such as this helpful <a
+href="https://ca.renogy.com/blog/what-is-the-average-solar-panels-roi-in-canada/">site</a>,
+but surprisingly, I could not find any websites/blogs describing real
+data from a household that had installed solar. What do the grid-energy
+consumption data look like before and after solar installation? What are
+the actual hourly / daily patterns of solar energy production and grid
+energy consumption for a household?</p>
+<p>To fill this gap, I’ve decided to share our own data!</p>
+<p><strong>Our household</strong></p>
+<p>We are two adults, two teenagers, and a dog occupying a 1.5 storey,
+1260 ft<span class="math inline">\(^{2}\)</span> house in downtown
+Kelowna, British Columbia. Yeah, it’s a bit tight…</p>
+<p>The house was build in the 1940s, so it’s as inefficient as you might
+expect. For instance, it still has wood chip insulation in most exterior
+walls. However, with the help of extremely handy members of the extended
+family, we’ve made some improvements that have definitely improved its
+efficiency.</p>
+<p>We had new roof shingles and a ridge vent installed in December 2020
+(leaking forced this), and I subsequently installed proper insulation
+and venting in the knee-walls next to the dormer bedrooms. That made a
+huge difference in the dormer rooms… much less hot in the summer, and
+much warmer in the winter.</p>
+<p>In Spring 2022, we added a one-bedroom dwelling (500 ft<span
+class="math inline">\(^{2}\)</span>) to the west side of the house, and
+decided this was an opportune time to install solar panels. The addition
+is very efficient; it has two small heat-pump units, one in the living
+room and one in the bedroom. It also has an electric fireplace for extra
+heat when needed (rarely).</p>
+<p>Like many folks, we hope to replace our current vehicle with an EV
+some time in the next four or five years, so having our own energy
+source would help when the time comes.</p>
+<p>We did not buy batteries for storing the solar power. One day
+maybe…</p>
+<p>In November 2022 we replaced the remaining old, large windows on the
+main floor of our house. The house now feels much more air-tight! That’s
+the last of the home improvements for a while…</p>
 <hr />
 <div id="the-solar-array" class="section level2">
 <h2>The solar array</h2>
 <p>In the summer of 2022 we had an array of thirty-six 360W panels
 (model: Longi LR4-60HPB-360M) installed on our south-facing roof. The
 entire array size is 12.96kW.</p>
-<p>The layout of how the array is deployed on our roof is shown in the
-following images (provided by Okanagan Solar as part of their
-assessment):</p>
+<p>Our solar system was supplied and installed by <a
+href="https://www.oksolarhomes.com">Okanagan Solar</a>. Their team was
+amazing to work with.</p>
+<p>This system is large for our current needs; we averaged about 10
+thousand kWh a year in consumption, but with the new one-bedroom
+addition, and hopefully an EV in the next few years, the 12.96kW solar
+system should be ideal.</p>
+<p>The layout of the array on our roof is shown in the following images
+(provided by Okanagan Solar as part of their assessment):</p>
 <p><img src="images/overhead_panels.png" style="width:25.0%" /></p>
 <p><img src="images/angle_panels.png" style="width:25.0%" /></p>
 <p>Note that the flatter part of the roof extends over our patio.</p>
@@ -288,14 +325,15 @@ from.</p>
 href="https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates">website</a>,
 Fortis bills customers bi-monthly, and uses a tiered charging system,
 such that the first 1600kWh are charged at $0.12365/kWh, and $0.13713
-for any kWh beyond that. They also charge a flat service fee of</p>
+for any kWh beyond that. They also charge a flat service / delivery fee
+of about $40 for the two months.</p>
 <p><strong>Net metering</strong></p>
 <p>Fortis BC has a <a
 href="https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering">net
 metering program</a>, in which any energy produced by the solar array
 that is not used immediately on site is put back into the grid. The
 kicker is that Fortis only pays out $0.05/kWh for energy supplied to the
-grid. This is half of what BC Hydro pays out. So if you’re wishing to
+grid. This is half of what BC Hydro pays out. So if you want to
 calculate what your return on investment would be for solar, be sure to
 think about this, and have a look at the <a
 href="https://www.bchydro.com/content/dam/BCHydro/customer-portal/documents/corporate/safety/bchydro-service-area-map.pdf">map
@@ -306,7 +344,7 @@ of BC</a> showing the distribution of electricity providers.</p>
 <h2>Start dates</h2>
 <p>We officially started producing solar power on July 8, 2022, and net
 metering started on July 15, 2022. So, between July 8 and July 15,
-Fortis did not record any solar energy being supplied to the grid.</p>
+Fortis got free energy from us.</p>
 <hr />
 </div>
 <div id="household-electricity-demands" class="section level2">
@@ -408,10 +446,10 @@ Figure 3: Hourly energy consumption (kWh) for our house, starting June
 1, 2022.
 </p>
 </div>
-<p>hmm, that doesn’t look great… but it does show that during daytimes
-we typically drew directly from solar, thus zero kWh consumed from the
-grid.</p>
-<p>Let’s sum up the total kWh consumed by day, and plot:</p>
+<p>hmm, that doesn’t look great… but it does show that, once the solar
+system was online (July 8), and during daytimes, we typically drew
+directly from solar, thus zero kWh consumed from the grid.</p>
+<p>Let’s sum up the total kWh consumed by day, and visualize:</p>
 <div class="figure">
 <img src="index_files/figure-html/fourthplot-1.png" alt="Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022." width="672" />
 <p class="caption">
@@ -422,16 +460,18 @@ Figure 4: Daily energy consumption (kWh) for our house, starting June 1,
 <p>Note that the low consumption data in June is due to data gaps…</p>
 <p>Let’s combine the data into one plot.</p>
 <div class="figure">
-<img src="index_files/figure-html/fifthplot-1.png" alt="Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022." width="672" />
+<img src="index_files/figure-html/fifthplot-1.png" alt="Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8." width="672" />
 <p class="caption">
 Figure 5: Daily energy consumption (red) and solar production (blue) for
-our house (kWh), starting June 1, 2022.
+our house (kWh), starting June 1, 2022. The solar system came online
+July 8.
 </p>
 </div>
 <hr />
 </div>
-<div id="tally-all-the-data" class="section level2">
-<h2>Tally all the data</h2>
+<div id="calculate-total-production-and-consumption"
+class="section level2">
+<h2>Calculate total production and consumption</h2>
 <p>From July 8th to October 21 (last day of data for now), let’s
 calculate how much:</p>
 <ul>
@@ -468,8 +508,12 @@ the grid. But this isn’t the case…</p>
 <h2>Check bill numbers</h2>
 <p>Let’s check the data reported on the bill for July 28th through
 September 28, 2022.</p>
-<p>It shows 875 kWh consumed from the grid over that 62 days, and 2674
-kWh delivered back to the grid over that same period.</p>
+<p>According to the Fortis bill, we consumed 875 kWh from the grid over
+that 62 days, and we delivered 2674 kWh back to the grid over that same
+period.</p>
+<p>Using the data downloaded from our solar system and the hourly
+consumption data downloaded directly from the Fortis website, we get the
+following numbers:</p>
 <pre><code>## # A tibble: 1 × 2
 ##   total_consumed total_returned
 ##            &lt;dbl&gt;          &lt;dbl&gt;

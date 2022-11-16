@@ -17,6 +17,7 @@ library(stringr)
 library(tools)
 library(hablar)
 library(purrr)
+library(lubridate)
 ```
 
 ## Home energy use data
@@ -49,21 +50,31 @@ For some reason the `readr::read_csv` function isn't working properly.. when i t
 So, i'll do a trick that seems to work: reverse the order of files!
 
 ```{r}
-fortis.data <- readr::read_csv(fortis.filenames[length(fortis.filenames):1])
+fortis.data <- readr::read_csv(fortis.filenames[length(fortis.filenames):1], show_col_types = FALSE)[, -5]
 ```
 
-Now create a Day and Hour variable from the "date"
+Having a look at the first few lines, we see a silly format for the "Time" field:
 ```{r}
-fortis.data <-fortis.data %>%
-  mutate(day = lubridate::date(Date),
-         hour = ifelse() %>%
-  select(date, day, hour, kWh)
+fortis.data
+```
+
+So, a bit of Googling found this solution on [Stackoverflow](https://stackoverflow.com/questions/72207739/converting-time-to-24-hour-of-day-format-in-r):
+
+```{r}
+fortis.data <- fortis.data %>%
+  mutate(day = lubridate::dmy(Date),
+         hour = hour(parse_date_time(gsub("\\.", "", Time), "%I %p")),
+         kw_consumed = `kWh delivered`,
+         kw_returned = `kWh received`
+         ) %>%
+  select(day, hour, kw_returned, kw_consumed) %>%
+  arrange(day, hour)
 ```
 
 Write csv
 
 ```{r}
-readr::write_csv(solar.data, here::here("outdata", "solar_data.csv"))
+readr::write_csv(fortis.data, here::here("outdata", "fortis_data.csv"))
 ```
 
 

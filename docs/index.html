@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason" />
 
-<meta name="date" content="2022-10-31" />
+<meta name="date" content="2022-11-15" />
 
 <title>House solar energy data analysis</title>
 
@@ -247,7 +247,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">House solar energy data analysis</h1>
 <h4 class="author">Jason</h4>
-<h4 class="date">2022-10-31</h4>
+<h4 class="date">2022-11-15</h4>
 
 </div>
 
@@ -256,11 +256,12 @@ div.tocify {
 <h1>Background</h1>
 <p><strong>NOTE</strong> This is a work in progress…</p>
 <p>This site provides analyses of solar energy production and household
-consumption data for our 1.5 storey home in downtown Kelowna, British
-Columbia.</p>
+consumption data for our 1.5 storey, 1260 ft^{2} home in downtown
+Kelowna, British Columbia.</p>
 <p>Our system was supplied and installed by <a
 href="https://www.oksolarhomes.com">Okanagan Solar</a>. Their team was
 amazing to work with.</p>
+<hr />
 <div id="the-solar-array" class="section level2">
 <h2>The solar array</h2>
 <p>In the summer of 2022 we had an array of thirty-six 360W panels
@@ -271,6 +272,12 @@ following images (provided by Okanagan Solar as part of their
 assessment):</p>
 <p><img src="images/overhead_panels.png" style="width:25.0%" /></p>
 <p><img src="images/angle_panels.png" style="width:25.0%" /></p>
+<p>Note that the flatter part of the roof extends over our patio.</p>
+<p>An added benefit of covering the south-facing roof with solar panels:
+the kids’ dormer bedrooms don’t heat up anywhere near as much in the
+summer, because the panels are intercepting the energy before they hit
+the roof tiles.</p>
+<hr />
 </div>
 <div id="electricity-supplier" class="section level2">
 <h2>Electricity supplier</h2>
@@ -293,6 +300,14 @@ calculate what your return on investment would be for solar, be sure to
 think about this, and have a look at the <a
 href="https://www.bchydro.com/content/dam/BCHydro/customer-portal/documents/corporate/safety/bchydro-service-area-map.pdf">map
 of BC</a> showing the distribution of electricity providers.</p>
+<hr />
+</div>
+<div id="start-dates" class="section level2">
+<h2>Start dates</h2>
+<p>We officially started producing solar power on July 8, 2022, and net
+metering started on July 15, 2022. So, between July 8 and July 15,
+Fortis did not record any solar energy being supplied to the grid.</p>
+<hr />
 </div>
 <div id="household-electricity-demands" class="section level2">
 <h2>Household electricity demands</h2>
@@ -303,12 +318,13 @@ we tend to only use it on the hottest and sunniest of days. This is of
 course when solar production is highest also. We therefore expect to
 save a considerable amount of money by powering our A/C using the solar
 energy, at least during the daytime hours.</p>
+<hr />
 </div>
 </div>
 <div id="lets-see-the-data" class="section level1">
 <h1>Let’s see the data!</h1>
-<div id="solar-energy-data" class="section level2">
-<h2>Solar energy data</h2>
+<div id="solar-energy-production-data" class="section level2">
+<h2>Solar energy production data</h2>
 <p>I have another <a
 href="https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd">script</a>
 that imports the raw solar energy data files, downloaded from the <a
@@ -356,6 +372,112 @@ Figure 2: Daily energy output (kWh) for the 36-panel solar array,
 starting July 8, 2022.
 </p>
 </div>
+<hr />
+</div>
+<div id="grid-energy-consumption-data" class="section level2">
+<h2>Grid energy consumption data</h2>
+<p>I have another <a
+href="https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_fortis_data.Rmd">script</a>
+that imports the raw solar energy data files, downloaded from the <a
+href="https://www.apsystemsema.com">AP Systems website</a>, and wrangles
+them into an appropriate (tidy) format.</p>
+<p>Strangely, I could only get historical consumption data back to June
+1st, 2022….</p>
+<p>Here’s what the first few rows of the resulting data table looks
+like:</p>
+<pre class="r"><code>consumption.data</code></pre>
+<pre><code>## # A tibble: 3,059 × 4
+##    day         hour kw_returned kw_consumed
+##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+##  1 2022-06-01     0          NA       0.503
+##  2 2022-06-01     1          NA       0.528
+##  3 2022-06-01     2          NA       0.503
+##  4 2022-06-01     3          NA       0.479
+##  5 2022-06-01     4          NA       0.525
+##  6 2022-06-01     5          NA       0.767
+##  7 2022-06-01     6          NA       1.11 
+##  8 2022-06-01     7          NA       1.42 
+##  9 2022-06-01     8          NA       0.822
+## 10 2022-06-01     9          NA       0.89 
+## # … with 3,049 more rows</code></pre>
+<p>Let’s visualize the data to check for errors:</p>
+<div class="figure">
+<img src="index_files/figure-html/thirdplot-1.png" alt="Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022." width="672" />
+<p class="caption">
+Figure 3: Hourly energy consumption (kWh) for our house, starting June
+1, 2022.
+</p>
+</div>
+<p>hmm, that doesn’t look great… but it does show that during daytimes
+we typically drew directly from solar, thus zero kWh consumed from the
+grid.</p>
+<p>Let’s sum up the total kWh consumed by day, and plot:</p>
+<div class="figure">
+<img src="index_files/figure-html/fourthplot-1.png" alt="Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022." width="672" />
+<p class="caption">
+Figure 4: Daily energy consumption (kWh) for our house, starting June 1,
+2022.
+</p>
+</div>
+<p>Note that the low consumption data in June is due to data gaps…</p>
+<p>Let’s combine the data into one plot.</p>
+<div class="figure">
+<img src="index_files/figure-html/fifthplot-1.png" alt="Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022." width="672" />
+<p class="caption">
+Figure 5: Daily energy consumption (red) and solar production (blue) for
+our house (kWh), starting June 1, 2022.
+</p>
+</div>
+<hr />
+</div>
+<div id="tally-all-the-data" class="section level2">
+<h2>Tally all the data</h2>
+<p>From July 8th to October 21 (last day of data for now), let’s
+calculate how much:</p>
+<ul>
+<li>gross solar energy we’ve produced<br />
+</li>
+<li>total solar energy returned to grid</li>
+<li>total energy consumed from grid</li>
+</ul>
+<pre class="r"><code>all_data %&gt;%
+  filter(day &gt;= ymd(&quot;2022-07-08&quot;)) %&gt;%
+  summarise(total_solar_produced = sum(kWh, na.rm = TRUE),
+            total_fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
+            total_solar_returned = sum(kw_returned, na.rm = TRUE))</code></pre>
+<pre><code>## # A tibble: 1 × 3
+##   total_solar_produced total_fortis_consumed total_solar_returned
+##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
+## 1                6072.                 1607.                4154.</code></pre>
+<p>Do the same for when we started net metering (July 15)</p>
+<pre class="r"><code>all_data %&gt;%
+  filter(day &gt;= ymd(&quot;2022-07-15&quot;)) %&gt;%
+  summarise(total_solar_produced = sum(kWh, na.rm = TRUE),
+            total_fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
+            total_solar_returned = sum(kw_returned, na.rm = TRUE))</code></pre>
+<pre><code>## # A tibble: 1 × 3
+##   total_solar_produced total_fortis_consumed total_solar_returned
+##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
+## 1                5528.                 1527.                4154.</code></pre>
+<p>In theory, the difference between the total solar produced and total
+energy returned to the grid should equal the total energy consumed from
+the grid. But this isn’t the case…</p>
+<hr />
+</div>
+<div id="check-bill-numbers" class="section level2">
+<h2>Check bill numbers</h2>
+<p>Let’s check the data reported on the bill for July 28th through
+September 28, 2022.</p>
+<p>It shows 875 kWh consumed from the grid over that 62 days, and 2674
+kWh delivered back to the grid over that same period.</p>
+<pre><code>## # A tibble: 1 × 2
+##   total_consumed total_returned
+##            &lt;dbl&gt;          &lt;dbl&gt;
+## 1           887.          2703.</code></pre>
+<p>So, a little off.</p>
+<p>Unfortunately, Fortis has no data for our account from before June
+1st, and for much of June, the data are full of gaps. I’ll be contacting
+them…</p>
 </div>
 </div>
 

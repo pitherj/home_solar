@@ -215,7 +215,7 @@ all_data %>%
 
 ## Calculate total production and consumption
 
-From July 8th to October 21 (last day of data for now), let's calculate how much: 
+From July 8th to `r max(all_data$day)` (last day of data), let's calculate how much: 
 
 * gross solar energy we've produced  
 * total solar energy returned to grid

@@ -24,7 +24,7 @@ library(lubridate)
 
 First we'll import the Fortis electricity usage data, downloaded from the [Fortis BC website](https://www.fortisbc.com)  
 
-The raw data files downloaded from the Fortis website portal are in CSV format. They include hourly electricity use data for sixty consecutive days.  
+The raw data files downloaded from the Fortis website portal are in CSV format. They include hourly electricity use data for sixty consecutive days.  (Though I may collate these in the end...)
 
 They include the following:
 
@@ -43,14 +43,17 @@ fortis.filenames <- paste(here::here("rawdata", "fortis_data"),
                   list.files(here::here("rawdata", "fortis_data")), sep = "/")
 ```
 
-Import all CSVs into one tibble.
-
-For some reason the `readr::read_csv` function isn't working properly.. when i try to import multiple CSVs into a single tibble, R aborts.
-
-So, i'll do a trick that seems to work: reverse the order of files!
+Import CSVs into one tibble.
 
 ```{r}
+# For some reason the `readr::read_csv` function isn't working properly.. when i try to import multiple CSVs into a single tibble, R aborts.
+
+# So, i'll do a trick that seems to work: reverse the order of files!
+
+# First check if there's more than one file...
+if(length(fortis.filenames) > 1) {
 fortis.data <- readr::read_csv(fortis.filenames[length(fortis.filenames):1], show_col_types = FALSE)[, -5]
+} else { fortis.data <- readr::read_csv(fortis.filenames[1], show_col_types = FALSE) }
 ```
 
 Having a look at the first few lines, we see a silly format for the "Time" field:

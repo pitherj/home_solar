@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason" />
 
-<meta name="date" content="2022-11-15" />
+<meta name="date" content="2022-11-27" />
 
 <title>House solar energy data analysis</title>
 
@@ -247,7 +247,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">House solar energy data analysis</h1>
 <h4 class="author">Jason</h4>
-<h4 class="date">2022-11-15</h4>
+<h4 class="date">2022-11-27</h4>
 
 </div>
 
@@ -371,7 +371,7 @@ them into an appropriate (tidy) format.</p>
 <p>Here’s what the first few rows of the resulting data table looks
 like:</p>
 <pre class="r"><code>solar.data</code></pre>
-<pre><code>## # A tibble: 1,547 × 4
+<pre><code>## # A tibble: 1,925 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -384,7 +384,7 @@ like:</p>
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # … with 1,537 more rows</code></pre>
+## # … with 1,915 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure">
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="672" />
@@ -423,7 +423,7 @@ wrangles them into an appropriate (tidy) format.</p>
 1st, 2022….</p>
 <p>Here’s what the first few rows of the data table looks like:</p>
 <pre class="r"><code>consumption.data</code></pre>
-<pre><code>## # A tibble: 3,059 × 4
+<pre><code>## # A tibble: 3,932 × 4
 ##    day         hour kw_returned kw_consumed
 ##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
 ##  1 2022-06-01     0          NA       0.503
@@ -436,7 +436,7 @@ wrangles them into an appropriate (tidy) format.</p>
 ##  8 2022-06-01     7          NA       1.42 
 ##  9 2022-06-01     8          NA       0.822
 ## 10 2022-06-01     9          NA       0.89 
-## # … with 3,049 more rows</code></pre>
+## # … with 3,922 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure">
 <img src="index_files/figure-html/thirdplot-1.png" alt="Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022." width="672" />
@@ -471,8 +471,8 @@ July 8.
 <div id="calculate-total-production-and-consumption"
 class="section level2">
 <h2>Calculate total production and consumption</h2>
-<p>From July 8th to October 21 (last day of data for now), let’s
-calculate how much:</p>
+<p>From July 8th to 2022-11-26 (last day of data), let’s calculate how
+much:</p>
 <ul>
 <li>gross solar energy we’ve produced<br />
 </li>
@@ -487,7 +487,7 @@ calculate how much:</p>
 <pre><code>## # A tibble: 1 × 3
 ##   total_solar_produced total_fortis_consumed total_solar_returned
 ##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
-## 1                6072.                 1607.                4154.</code></pre>
+## 1                6497.                 3021.                4350.</code></pre>
 <p>Do the same for when we started net metering (July 15)</p>
 <pre class="r"><code>all_data %&gt;%
   filter(day &gt;= ymd(&quot;2022-07-15&quot;)) %&gt;%
@@ -497,7 +497,7 @@ calculate how much:</p>
 <pre><code>## # A tibble: 1 × 3
 ##   total_solar_produced total_fortis_consumed total_solar_returned
 ##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
-## 1                5528.                 1527.                4154.</code></pre>
+## 1                5954.                 2941.                4350.</code></pre>
 <p>In theory, the difference between the total solar produced and total
 energy returned to the grid should equal the total energy consumed from
 the grid. But this isn’t the case…</p>

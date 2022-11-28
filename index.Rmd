@@ -116,6 +116,7 @@ solar.data %>%
   ggplot(aes(x = date, y = kWh)) +
   geom_line(colour = "darkgrey") +
   labs(x = "Date", y = "kWh") +
+  #  scale_x_date(date_breaks="1 month", date_labels="%b") +
   theme_bw()
 ```
 
@@ -131,16 +132,22 @@ So for that day (August 30, 2022), we won't be able to use the hourly data for a
 But we can sum up the total kWh by day, and plot:
 
 ```{r secondplot, echo = FALSE, fig.cap = "Figure 2: Daily energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
+
 solar.data %>%
   group_by(day) %>%
   summarise(total = sum(kWh, na.rm = TRUE)) %>%
   ggplot(aes(x = day, y = total)) +
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
+    scale_x_date(date_breaks="1 month", date_labels="%b") +
   labs(x = "Date", y = "Daily solar energy production (kWh)") +
   ylim(0, 90) +
   theme_bw()
 ```
+
+And FYI, Kelowna got an early winter... beginning of November saw more than 30cm of snow fall, and it STAYED!  Which meant that the solar panels were covered for the better part of 5 days.  I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun.  However, from November through February each year, Kelowna tends to be very grey... the clouds settle in the valley and just stay here. But it's often sunny at higher elevation.
+
+In any case, we don't anticipate generating much solar power between November and February...
 
 * * *
 
@@ -168,11 +175,12 @@ consumption.data %>%
   filter(!is.na(kw_consumed)) %>%
   ggplot(aes(x = day, y = kw_consumed)) +
   geom_line(colour = "darkgrey") +
+    scale_x_date(date_breaks="1 month", date_labels="%b") +
   labs(x = "Date", y = "Hourly energy consumption from grid (kWh)") +
   theme_bw()
 ```
 
-hmm, that's messy...  but it does show that once the solar system was online (July 8), and during daytimes, we typically drew directly from solar, thus zero kWh consumed from the grid.
+hmm, that's messy...  but it does show that once the solar system was online (July 8), and during daytimes up to the end of October, we typically drew directly from solar, thus zero kWh consumed from the grid.
 
 Let's sum up the total kWh consumed by day, and visualize:
 
@@ -184,11 +192,14 @@ consumption.data %>%
   ggplot(aes(x = day, y = total_consumed)) +
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
+  scale_x_date(date_breaks="1 month", date_labels="%b") +
   labs(x = "Date", y = "Daily energy consumption from grid (kWh)") +
   theme_bw()
 ```
 
 Note that the low consumption in June is due to data gaps...
+
+And the substantial increase in November was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy inlaws living with us to do final upgrades at our house: replacing 4 windows and a door in the main house.  So, over the first 3 weeks of November, more electricity being used than usual, and little sun for solar energy production. 
 
 Let's combine the data into one plot.
 
@@ -207,6 +218,7 @@ all_data %>%
   geom_point(aes(x = day, y = total_consumed), shape = 1, colour = "firebrick") +
   geom_line(aes(x = day, y = total_produced), colour = "blue") +
   geom_point(aes(x = day, y = total_produced), colour = "blue", shape = 1) +
+  scale_x_date(date_breaks="1 month", date_labels="%b") +
   labs(x = "Date", y = "Energy (kWh)") +
   theme_bw()
 ```

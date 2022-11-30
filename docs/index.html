@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason" />
 
-<meta name="date" content="2022-11-27" />
+<meta name="date" content="2022-11-30" />
 
 <title>House solar energy data analysis</title>
 
@@ -247,7 +247,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">House solar energy data analysis</h1>
 <h4 class="author">Jason</h4>
-<h4 class="date">2022-11-27</h4>
+<h4 class="date">2022-11-30</h4>
 
 </div>
 
@@ -335,18 +335,18 @@ from.</p>
 <p>As described at their <a
 href="https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates">website</a>,
 Fortis bills customers bi-monthly, and uses a tiered charging system,
-such that the first 1600kWh are charged at $0.12365/kWh, and $0.13713
-for any kWh beyond that. They also charge a flat service / delivery fee
-of about $40 for the two months.</p>
+such that the first 1600kWh are currently charged at $0.12365/kWh, and
+$0.13713 for any kWh beyond that. They also charge a flat service /
+delivery fee of about $40 for the two months.</p>
 <p><strong>Net metering</strong></p>
 <p>Fortis BC has a <a
 href="https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering">net
 metering program</a>, in which any energy produced by the solar array
-that is not used immediately on site is put back into the grid. The
-kicker is that Fortis only pays out $0.05/kWh for energy supplied to the
-grid. This is half of what BC Hydro pays out. So if you want to
-calculate what your return on investment would be for solar, be sure to
-think about this, and have a look at the <a
+that is not used immediately on site is put back into the grid. Fortis
+only pays out $0.05/kWh for energy supplied to the grid. This is half
+the rate paid out by BC Hydro. So if you want to calculate what your
+return on investment would be for solar, be sure to think about this,
+and have a look at the <a
 href="https://www.bchydro.com/content/dam/BCHydro/customer-portal/documents/corporate/safety/bchydro-service-area-map.pdf">map
 of BC</a> showing the distribution of electricity providers.</p>
 <hr />
@@ -354,8 +354,8 @@ of BC</a> showing the distribution of electricity providers.</p>
 <div id="power-up" class="section level2">
 <h2>Power up!</h2>
 <p>We officially started producing solar power on July 8, 2022, and net
-metering started on July 15, 2022. So, between July 8 and July 15,
-Fortis got free energy from us.</p>
+metering started on July 15, 2022. So, between July 8 and July 15, the
+grid benefited from our solar output!</p>
 <hr />
 </div>
 </div>
@@ -428,9 +428,17 @@ href="https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_electricit
 imports the raw Fortis energy consumption data for our account,
 downloaded from the FortisBC <a href="www.fortisbc.com">website</a>, and
 wrangles them into an appropriate (tidy) format.</p>
-<p>Strangely, I could only get historical consumption data back to June
-1st, 2022….</p>
-<p>Here’s what the first few rows of the data table looks like:</p>
+<p>Unfortunately, I could only get historical consumption data back to
+June 1st, 2022.</p>
+<p>Despite valiant efforts by a helpful Fortis customer service
+employee, Fortis was unable to provide me historical consumption data in
+any format that was readily useable. They’re working on improving
+this…</p>
+<p>But I was provided a graph of 2 years of historical daily consumption
+data, and I’ll be attempting to extract the data from this graph in the
+coming weeks…</p>
+<p>Here’s what the first few rows of the June 1st onwards data look
+like:</p>
 <pre class="r"><code>consumption.data</code></pre>
 <pre><code>## # A tibble: 3,932 × 4
 ##    day         hour kw_returned kw_consumed
@@ -466,13 +474,14 @@ Figure 4: Daily energy consumption (kWh) for our house, starting June 1,
 2022.
 </p>
 </div>
-<p>Note that the low consumption in June is due to data gaps…</p>
-<p>And the substantial increase in November was from the combination of
-early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully
-handy inlaws living with us to do final upgrades at our house: replacing
-4 windows and a door in the main house. So, over the first 3 weeks of
-November, more electricity being used than usual, and little sun for
-solar energy production.</p>
+<p>Note that the low consumption in June is due to data gaps, which are
+also a mystery to Fortis.</p>
+<p>The substantial increase in energy consumption in November was from
+the combination of early winter/snow/cloud in Kelowna, and 3 weeks with
+our wonderfully handy in-laws living with us to do final upgrades at our
+house: replacing 4 windows and a door in the main house. So, over the
+first 3 weeks of November, we were using more electricity than usual,
+and we had little sun for solar energy production.</p>
 <p>Let’s combine the data into one plot.</p>
 <div class="figure">
 <img src="index_files/figure-html/fifthplot-1.png" alt="Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8." width="672" />
@@ -516,7 +525,7 @@ much:</p>
 ## 1                5954.                 2941.                4350.</code></pre>
 <p>In theory, the difference between the total solar produced and total
 energy returned to the grid should equal the total energy consumed from
-the grid. But this isn’t the case…</p>
+the grid. The numbers are a bit off.</p>
 <hr />
 </div>
 <div id="check-bill-numbers" class="section level2">
@@ -533,10 +542,9 @@ following numbers:</p>
 ##   total_consumed total_returned
 ##            &lt;dbl&gt;          &lt;dbl&gt;
 ## 1           887.          2703.</code></pre>
-<p>So, a little off.</p>
-<p>Unfortunately, Fortis has no data for our account from before June
-1st, and for much of June, the data are full of gaps. I’ll be contacting
-them…</p>
+<p>So, a little off, but not too bad.</p>
+<p>Updates will come as I attempt to get better historical data, and as
+we progress through the cloudy winter!</p>
 </div>
 </div>
 

@@ -78,17 +78,17 @@ An added benefit of covering the south-facing roof with solar panels: the kids' 
 
 Fortis BC is our electricity provider, and like most places in North America, we don't have a choice about who we purchase electricity from.
 
-As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, and uses a tiered charging system, such that the first 1600kWh are charged at $0.12365/kWh, and $0.13713 for any kWh beyond that. They also charge a flat service / delivery fee of about $40 for the two months.
+As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, and uses a tiered charging system, such that the first 1600kWh are currently charged at $0.12365/kWh, and $0.13713 for any kWh beyond that. They also charge a flat service / delivery fee of about $40 for the two months.
 
 **Net metering** 
 
-Fortis BC has a [net metering program](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering), in which any energy produced by the solar array that is not used immediately on site is put back into the grid.  The kicker is that Fortis only pays out $0.05/kWh for energy supplied to the grid. This is half of what BC Hydro pays out. So if you want to calculate what your return on investment would be for solar, be sure to think about this, and have a look at the [map of BC](https://www.bchydro.com/content/dam/BCHydro/customer-portal/documents/corporate/safety/bchydro-service-area-map.pdf) showing the distribution of electricity providers.  
+Fortis BC has a [net metering program](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering), in which any energy produced by the solar array that is not used immediately on site is put back into the grid.  Fortis only pays out $0.05/kWh for energy supplied to the grid. This is half the rate paid out by BC Hydro. So if you want to calculate what your return on investment would be for solar, be sure to think about this, and have a look at the [map of BC](https://www.bchydro.com/content/dam/BCHydro/customer-portal/documents/corporate/safety/bchydro-service-area-map.pdf) showing the distribution of electricity providers.  
 
 * * *
 
 ## Power up!
 
-We officially started producing solar power on July 8, 2022, and net metering started on July 15, 2022.  So, between July 8 and July 15, Fortis got free energy from us.  
+We officially started producing solar power on July 8, 2022, and net metering started on July 15, 2022.  So, between July 8 and July 15, the grid benefited from our solar output! 
 
 * * *
 
@@ -159,9 +159,13 @@ Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle
 consumption.data <- readr::read_csv("./outdata/fortis_data.csv", show_col_types = FALSE)
 ```
 
-Strangely, I could only get historical consumption data back to June 1st, 2022....
+Unfortunately, I could only get historical consumption data back to June 1st, 2022.
 
-Here's what the first few rows of the data table looks like:
+Despite valiant efforts by a helpful Fortis customer service employee, Fortis was unable to provide me historical consumption data in any format that was readily useable.  They're working on improving this...
+
+But I was provided a graph of 2 years of historical daily consumption data, and I'll be attempting to extract the data from this graph in the coming weeks...
+
+Here's what the first few rows of the June 1st onwards data look like:
 
 ```{r}
 consumption.data
@@ -197,9 +201,9 @@ consumption.data %>%
   theme_bw()
 ```
 
-Note that the low consumption in June is due to data gaps...
+Note that the low consumption in June is due to data gaps, which are also a mystery to Fortis.
 
-And the substantial increase in November was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy inlaws living with us to do final upgrades at our house: replacing 4 windows and a door in the main house.  So, over the first 3 weeks of November, more electricity being used than usual, and little sun for solar energy production. 
+The substantial increase in energy consumption in November was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do final upgrades at our house: replacing 4 windows and a door in the main house.  So, over the first 3 weeks of November, we were using more electricity than usual, and we had little sun for solar energy production. 
 
 Let's combine the data into one plot.
 
@@ -251,7 +255,7 @@ all_data %>%
             total_solar_returned = sum(kw_returned, na.rm = TRUE))
 ```
 
-In theory, the difference between the total solar produced and total energy returned to the grid should equal the total energy consumed from the grid.  But this isn't the case... 
+In theory, the difference between the total solar produced and total energy returned to the grid should equal the total energy consumed from the grid.  The numbers are a bit off.  
 
 * * *
 
@@ -270,8 +274,8 @@ consumption.data %>%
             total_returned = sum(kw_returned, na.rm = TRUE))
 ```
 
-So, a little off.
+So, a little off, but not too bad.
 
-Unfortunately, Fortis has no data for our account from before June 1st, and for much of June, the data are full of gaps.  I'll be contacting them...
+Updates will come as I attempt to get better historical data, and as we progress through the cloudy winter!
 
 

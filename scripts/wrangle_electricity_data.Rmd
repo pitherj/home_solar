@@ -80,4 +80,26 @@ Write csv
 readr::write_csv(fortis.data, here::here("outdata", "fortis_data.csv"))
 ```
 
+## Billing data
 
+```{r}
+billing <- readr::read_csv(here("rawdata", "fortis_billing", "billing_history.csv"))
+```
+
+```{r}
+billing$read_date <- lubridate::mdy(billing$read_date)
+```
+
+```{r secondplot, echo = FALSE, fig.cap = "Figure 1: Historical billing information"}
+
+billing %>%
+ # group_by(day) %>%
+ # summarise(total = sum(kWh, na.rm = TRUE)) %>%
+  ggplot(aes(x = read_date, y = usage)) +
+  geom_line(colour = "darkgrey") +
+  geom_point(shape = 1) +
+  #scale_x_date(date_breaks="4 months") +
+  labs(x = "Date", y = "Usage (kWh)") +
+ # ylim(0, 90) +
+  theme_bw()
+```

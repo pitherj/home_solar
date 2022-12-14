@@ -83,7 +83,7 @@ readr::write_csv(fortis.data, here::here("outdata", "fortis_data.csv"))
 ## Billing data
 
 ```{r}
-billing <- readr::read_csv(here("rawdata", "fortis_billing", "billing_history.csv"))
+billing <- readr::read_csv(here("rawdata", "fortis_billing", "billing_history.csv"), show_col_types = FALSE)
 ```
 
 ```{r}
@@ -100,6 +100,24 @@ billing %>%
   geom_point(shape = 1) +
   #scale_x_date(date_breaks="4 months") +
   labs(x = "Date", y = "Usage (kWh)") +
+ # ylim(0, 90) +
+  theme_bw()
+```
+
+
+Average kWh per day
+
+```{r secondplot, echo = FALSE, fig.cap = "Figure 1: Historical billing information"}
+
+billing %>%
+  distinct() %>%
+  mutate(avg_per_day = usage/days) %>%
+  ggplot(aes(x = read_date, y = avg_per_day)) +
+  geom_line(colour = "darkgrey") +
+  geom_point(shape = 1) +
+  scale_x_date(date_breaks="6 months", date_labels="%y %b") +
+ # theme(axis.text.x = element_text(angle = 90)) +
+  labs(x = "Date", y = "Average daily usage (kWh)") +
  # ylim(0, 90) +
   theme_bw()
 ```

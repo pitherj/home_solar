@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason" />
 
-<meta name="date" content="2022-12-13" />
+<meta name="date" content="2023-01-29" />
 
 <title>House solar energy data analysis</title>
 
@@ -247,7 +247,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">House solar energy data analysis</h1>
 <h4 class="author">Jason</h4>
-<h4 class="date">2022-12-13</h4>
+<h4 class="date">2023-01-29</h4>
 
 </div>
 
@@ -352,11 +352,12 @@ metering program</a>, in which any energy produced by the solar array
 that is not used immediately on site is put back into the grid, and
 Fortis keeps track of this and “banks” the kWh on the account. In
 theory, Fortis then uses these banked amounts against future bills.
-However, I still haven’t received any bills that correctly reflect this,
-and their <a
+However, I have yet to receive a bills that correctly reflect this, and
+their <a
 href="https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5">website
-that explains a net-metering bill</a> shows a bill that looks nothing
-like mine… I’ll update this website as soon as this is figured out.</p>
+that explains a net-metering bill</a> shows a new bill format that looks
+nothing like mine… I’ll update this website as soon as this is figured
+out.</p>
 <p>If we happen to have anything left in our “bank” at the end of March,
 then our account will get credited at a rate equivalent to what Fortis
 pays their providers. This should be close to $0.10 / kWh. Given our
@@ -384,7 +385,7 @@ them into an appropriate (tidy) format.</p>
 <p>Here’s what the first few rows of the resulting data table looks
 like:</p>
 <pre class="r"><code>solar.data</code></pre>
-<pre><code>## # A tibble: 1,925 × 4
+<pre><code>## # A tibble: 2,548 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -397,7 +398,7 @@ like:</p>
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # … with 1,915 more rows</code></pre>
+## # … with 2,538 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure">
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="672" />
@@ -453,7 +454,7 @@ coming weeks…</p>
 <p>Here’s what the first few rows of the June 1st onward data look
 like:</p>
 <pre class="r"><code>consumption.data</code></pre>
-<pre><code>## # A tibble: 4,196 × 4
+<pre><code>## # A tibble: 5,420 × 4
 ##    day         hour kw_returned kw_consumed
 ##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
 ##  1 2022-06-01     0          NA       0.503
@@ -466,7 +467,7 @@ like:</p>
 ##  8 2022-06-01     7          NA       1.42 
 ##  9 2022-06-01     8          NA       0.822
 ## 10 2022-06-01     9          NA       0.89 
-## # … with 4,186 more rows</code></pre>
+## # … with 5,410 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure">
 <img src="index_files/figure-html/thirdplot-1.png" alt="Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022." width="672" />
@@ -511,7 +512,7 @@ July 8.
 <div id="calculate-total-production-and-consumption"
 class="section level2">
 <h2>Calculate total production and consumption</h2>
-<p>From July 8th to 2022-12-07 (last day of data), let’s calculate how
+<p>From July 8th to 2023-01-27 (last day of data), let’s calculate how
 much:</p>
 <ul>
 <li>gross solar energy we’ve produced<br />
@@ -527,7 +528,7 @@ much:</p>
 <pre><code>## # A tibble: 1 × 3
 ##   total_solar_produced total_fortis_consumed total_solar_returned
 ##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
-## 1                6497.                 3532.                4355.</code></pre>
+## 1                6953.                 5762.                4474.</code></pre>
 <p>Do the same for when we started net metering (July 15)</p>
 <pre class="r"><code>all_data %&gt;%
   filter(day &gt;= ymd(&quot;2022-07-15&quot;)) %&gt;%
@@ -537,7 +538,7 @@ much:</p>
 <pre><code>## # A tibble: 1 × 3
 ##   total_solar_produced total_fortis_consumed total_solar_returned
 ##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
-## 1                5954.                 3451.                4355.</code></pre>
+## 1                6409.                 5682.                4474.</code></pre>
 <hr />
 </div>
 <div id="check-bill-numbers" class="section level2">

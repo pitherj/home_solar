@@ -249,6 +249,8 @@ all_data %>%
   theme_bw()
 ```
 
+* * *
+
 ### Historical data
 
 Let's have a look at historical data for comparison
@@ -263,14 +265,14 @@ consumption.data %>%
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
   lims(y = c(0,90)) +
-  scale_x_date(date_breaks="6 month", date_labels="%b") +
+  scale_x_date(date_breaks="4 month", date_labels="%b %y") +
   labs(x = "Date", y = "Daily energy consumption from grid (kWh)") +
   theme_bw()
 ```
 
-Yikes!  The addition we built clearly increased our electricity consumption during the cold snap at the end of December 2022.  However, we were still trying to figure out the optimal way to maintain a low temperature (10 degrees) while the suite was unoccupied.  The heat pumps work very hard to keep the place warm when it's -10 or lower outside.
+Yikes!  The addition we built clearly increased our electricity consumption during the cold snap at the end of December 2022, relative to the preceding 3 winters.  However, we were still trying to figure out the optimal way to maintain a low temperature (10 degrees) while the suite was unoccupied.  The heat pumps work very hard to keep the place warm when it's -10 or lower outside.
 
-We'll have to see how we do next year, and depending on occupancy!
+We'll have to see how we do next winter, and depending on occupancy!
 
 * * *
 

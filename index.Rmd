@@ -167,11 +167,20 @@ Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle
 consumption.data <- readr::read_csv("./outdata/fortis_data.csv", show_col_types = FALSE)
 ```
 
-Unfortunately, I could only get historical consumption data back to June 1st, 2022.
+Unfortunately, I could only get historical consumption data back to June 1st, 2022. 
 
 Despite valiant efforts by a helpful Fortis customer service employee, Fortis was unable to provide me historical consumption data in any format that was readily usable.  They're working on improving this...
 
-But I was provided a graph of 2 years of historical daily consumption data, and I'll be attempting to extract the data from this graph in the coming weeks...
+**UPDATE Jan 2023** I now have hourly data going back to January 1, 2019!
+
+So we'll append the historical data to the more recent data, then have a look.
+
+```{r echo = FALSE}
+historical.data <- readr::read_csv(here::here("outdata", "fortis_historical_data.csv"), show_col_types = FALSE)
+# bind
+consumption.data <- dplyr::bind_rows(historical.data, consumption.data)
+```
+
 
 Here's what the first few rows of the June 1st onward data look like:
 
@@ -179,12 +188,12 @@ Here's what the first few rows of the June 1st onward data look like:
 consumption.data
 ```
 
-Let's visualize the data to check for errors:
+Let's visualize the data to check for errors, first limiting the date to June 1 2022 and after:
 
 ```{r thirdplot, echo = FALSE, fig.cap = "Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022."}
 
 consumption.data %>%
-  filter(!is.na(kw_consumed)) %>%
+  filter(!is.na(kw_consumed), day > "2022-06-1") %>%
   ggplot(aes(x = day, y = kw_consumed)) +
   geom_line(colour = "darkgrey") +
     scale_x_date(date_breaks="1 month", date_labels="%b") +
@@ -199,11 +208,13 @@ Let's sum up the total kWh consumed by day, and visualize:
 ```{r fourthplot, warning = FALSE, echo = FALSE, fig.cap = "Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022."}
 
 consumption.data %>%
+  filter(day > "2022-06-1") %>%
   group_by(day) %>%
   summarise(total_consumed = sum(kw_consumed)) %>%
   ggplot(aes(x = day, y = total_consumed)) +
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
+  lims(y = c(0,90)) +
   scale_x_date(date_breaks="1 month", date_labels="%b") +
   labs(x = "Date", y = "Daily energy consumption from grid (kWh)") +
   theme_bw()
@@ -222,6 +233,7 @@ all_data <- full_join(consumption.data, solar.data, by = c("day", "hour"))
 ```{r fifthplot, echo = FALSE, fig.cap = "Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8."}
 
 all_data %>%
+    filter(day > "2022-06-1") %>%
   group_by(day) %>%
   summarise(total_consumed = sum(kw_consumed, na.rm = TRUE),
             total_produced = sum(kWh, na.rm = TRUE),
@@ -232,9 +244,33 @@ all_data %>%
   geom_line(aes(x = day, y = total_produced), colour = "blue") +
   geom_point(aes(x = day, y = total_produced), colour = "blue", shape = 1) +
   scale_x_date(date_breaks="1 month", date_labels="%b") +
+    lims(y = c(0,90)) +
   labs(x = "Date", y = "Energy (kWh)") +
   theme_bw()
 ```
+
+### Historical data
+
+Let's have a look at historical data for comparison
+
+```{r histplot, warning = FALSE, echo = FALSE, fig.cap = "Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019."}
+
+consumption.data %>%
+  #filter(day > "2022-06-1") %>%
+  group_by(day) %>%
+  summarise(total_consumed = sum(kw_consumed)) %>%
+  ggplot(aes(x = day, y = total_consumed)) +
+  geom_line(colour = "darkgrey") +
+  geom_point(shape = 1) +
+  lims(y = c(0,90)) +
+  scale_x_date(date_breaks="6 month", date_labels="%b") +
+  labs(x = "Date", y = "Daily energy consumption from grid (kWh)") +
+  theme_bw()
+```
+
+Yikes!  The addition we built clearly increased our electricity consumption during the cold snap at the end of December 2022.  However, we were still trying to figure out the optimal way to maintain a low temperature (10 degrees) while the suite was unoccupied.  The heat pumps work very hard to keep the place warm when it's -10 or lower outside.
+
+We'll have to see how we do next year, and depending on occupancy!
 
 * * *
 

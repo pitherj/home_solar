@@ -450,24 +450,27 @@ any format that was readily usable. They’re working on improving
 this…</p>
 <p><strong>UPDATE Jan 2023</strong> I now have hourly data going back to
 January 1, 2019!</p>
+<p>So we’ll append the historical data to the more recent data, then
+have a look.</p>
 <p>Here’s what the first few rows of the June 1st onward data look
 like:</p>
 <pre class="r"><code>consumption.data</code></pre>
-<pre><code>## # A tibble: 5,420 × 4
+<pre><code>## # A tibble: 35,323 × 4
 ##    day         hour kw_returned kw_consumed
 ##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-##  1 2022-06-01     0          NA       0.503
-##  2 2022-06-01     1          NA       0.528
-##  3 2022-06-01     2          NA       0.503
-##  4 2022-06-01     3          NA       0.479
-##  5 2022-06-01     4          NA       0.525
-##  6 2022-06-01     5          NA       0.767
-##  7 2022-06-01     6          NA       1.11 
-##  8 2022-06-01     7          NA       1.42 
-##  9 2022-06-01     8          NA       0.822
-## 10 2022-06-01     9          NA       0.89 
-## # … with 5,410 more rows</code></pre>
-<p>Let’s visualize the data to check for errors:</p>
+##  1 2019-01-01     0          NA       0.915
+##  2 2019-01-01     1          NA       0.934
+##  3 2019-01-01     2          NA       0.881
+##  4 2019-01-01     3          NA       0.927
+##  5 2019-01-01     4          NA       0.405
+##  6 2019-01-01     5          NA       0.434
+##  7 2019-01-01     6          NA       0.576
+##  8 2019-01-01     7          NA       0.65 
+##  9 2019-01-01     8          NA       0.4  
+## 10 2019-01-01     9          NA       0.441
+## # … with 35,313 more rows</code></pre>
+<p>Let’s visualize the data to check for errors, first limiting the date
+to June 1 2022 and after:</p>
 <div class="figure">
 <img src="index_files/figure-html/thirdplot-1.png" alt="Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022." width="672" />
 <p class="caption">
@@ -505,7 +508,26 @@ our house (kWh), starting June 1, 2022. The solar system came online
 July 8.
 </p>
 </div>
+<div id="historical-data" class="section level3">
+<h3>Historical data</h3>
+<p>Let’s have a look at historical data for comparison</p>
+<div class="figure">
+<img src="index_files/figure-html/histplot-1.png" alt="Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019." width="672" />
+<p class="caption">
+Figure 6: Daily energy consumption (kWh) for our house, starting January
+1, 2019.
+</p>
+</div>
+<p>Yikes! The addition we built clearly increased our electricity
+consumption during the cold snap at the end of December 2022. However,
+we were still trying to figure out the optimal way to maintain a low
+temperature (10 degrees) while the suite was unoccupied. The heat pumps
+work very hard to keep the place warm when it’s -10 or lower
+outside.</p>
+<p>We’ll have to see how we do next year, and depending on
+occupancy!</p>
 <hr />
+</div>
 </div>
 <div id="calculate-total-production-and-consumption"
 class="section level2">

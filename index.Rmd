@@ -17,6 +17,8 @@ library(stringr)
 library(tools)
 library(hablar)
 library(lubridate)
+library(knitr)
+library(kableExtra)
 ```
 
 **Disclaimer** 
@@ -279,26 +281,44 @@ We'll have to see how we do next winter, and depending on occupancy!
 
 From July 8th to `r max(all_data$day)` (last day of data), let's calculate how much: 
 
-* gross solar energy we've produced (`total_solar_produced`)
-* total energy consumed from grid (`total_fortis_consumed`)
-* total solar energy returned to grid (`total_solar_returned`)
+* total energy consumed from grid (`fortis_consumed`)
+* total solar energy returned to grid (`fortis_returned`)
+* gross solar energy we've produced (`solar_gross_kWh_produced`)
+* solar energy used directly in house (`solar_kWh_used`)
+* total energy consumed (sum of energy from Fortis and from solar) (`total_energy_consumed`)
 
-```{r totnums, echo = FALSE}
-all_data %>%
+```{r echo = FALSE}
+begin.tot <- all_data %>%
   filter(day >= ymd("2022-07-08")) %>%
-  summarise(total_solar_produced = sum(kWh, na.rm = TRUE),
-            total_fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
-            total_solar_returned = sum(kw_returned, na.rm = TRUE))
+  summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
+            fortis_returned = sum(kw_returned, na.rm = TRUE),
+            solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
+            solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
+            total_energy_consumed = sum(kWh - kw_returned + kw_consumed, na.rm = TRUE))
+```
+
+```{r}
+kbl(begin.tot, caption = "Summary of energy production and consumption from July 8 2022 onward.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
 Do the same for when we started net metering (July 15)
 
 ```{r tots, echo = FALSE}
-all_data %>%
+begin.tot2 <- all_data %>%
   filter(day >= ymd("2022-07-15")) %>%
-  summarise(total_solar_produced = sum(kWh, na.rm = TRUE),
-            total_fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
-            total_solar_returned = sum(kw_returned, na.rm = TRUE))
+  summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
+            fortis_returned = sum(kw_returned, na.rm = TRUE),
+            solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
+            solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
+            total_energy_consumed = sum(kWh - kw_returned + kw_consumed, na.rm = TRUE))
+```
+
+```{r}
+kbl(begin.tot2, caption = "Summary of energy production and consumption from July 15 2022 onward.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
 * * *
@@ -312,13 +332,20 @@ According to the Fortis bill, we consumed 875 kWh from the grid over that 62 day
 Using the data downloaded from our solar system and the hourly consumption data downloaded directly from the Fortis website, we get the following numbers:
 
 ```{r, echo = FALSE}
-all_data %>%
+tot3 <- all_data %>%
   filter(day > ymd("2022-07-28") & day <= ymd("2022-09-28")) %>%
   summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
             fortis_returned = sum(kw_returned, na.rm = TRUE),
             solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
             solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
-            total_energy_consumed = sum(solar_kWh_used + fortis_consumed, na.rm = TRUE))
+            total_energy_consumed = sum(kWh - kw_returned + kw_consumed, na.rm = TRUE))
+```
+
+
+```{r}
+kbl(tot3, caption = "Summary of energy production and consumption from July 28 to Sept 28 2022.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
 So, a little off, but not too bad.  
@@ -327,31 +354,46 @@ Now let's check Sept 29 to Nov 28, which shows 1929 kWh consumed, and 921 kWh re
 
 
 ```{r, echo = FALSE}
-all_data %>%
+tot4 <- all_data %>%
   filter(day > ymd("2022-09-28") & day <= ymd("2022-11-28")) %>%
   summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
             fortis_returned = sum(kw_returned, na.rm = TRUE),
             solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
             solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
-            total_energy_consumed = sum(solar_kWh_used + fortis_consumed, na.rm = TRUE))
+            total_energy_consumed = sum(kWh - kw_returned + kw_consumed, na.rm = TRUE))
 ```
+
+```{r}
+kbl(tot4, caption = "Summary of energy production and consumption from Sept 29 to Nov 28 2022.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
+```
+
 A little off again...
 
 Now let's check Nov 29 to Jan 28, which were extremely cloudy months... it shows 2712 kWh consumed, and 123 kWh returned. 
 
 
 ```{r, echo = FALSE}
-all_data %>%
+tot5 <- all_data %>%
   filter(day > ymd("2022-11-28") & day <= ymd("2023-01-28")) %>%
   summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
             fortis_returned = sum(kw_returned, na.rm = TRUE),
             solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
             solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
-            total_energy_consumed = sum(solar_kWh_used + fortis_consumed, na.rm = TRUE))
+            total_energy_consumed = sum(kWh - kw_returned + kw_consumed, na.rm = TRUE))
 ```
+
+
+```{r}
+kbl(tot5, caption = "Summary of energy production and consumption from Nov 29 2022 to Jan 28 2023.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
+```
+
 Still a little off.
 
-So let's do it for the entire period now (through Jan 28):
+So let's do it for the entire period now (through Feb 10):
 
 ```{r, echo = FALSE}
 final_summary <- all_data %>%
@@ -360,9 +402,16 @@ final_summary <- all_data %>%
             fortis_returned = sum(kw_returned, na.rm = TRUE),
             solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
             solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
-            total_energy_consumed = sum(solar_kWh_used + fortis_consumed, na.rm = TRUE))
-final_summary
+            total_energy_consumed = sum(kWh - kw_returned + kw_consumed, na.rm = TRUE))
 ```
+
+
+```{r}
+kbl(final_summary, caption = "Summary of energy production and consumption from July 15 2022 to Feb 10 2023.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
+```
+
 
 That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost `r round(100*final_summary$solar_gross_kWh_produced/final_summary$total_energy_consumed, 0)`% of our energy needs.
 

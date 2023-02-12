@@ -453,7 +453,7 @@ January 1, 2019!</p>
 have a look.</p>
 <p>Here’s what the first few rows of the June 1st onward data look
 like:</p>
-<pre><code>## # A tibble: 35,323 × 4
+<pre><code>## # A tibble: 35,659 × 4
 ##    day         hour kw_returned kw_consumed
 ##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
 ##  1 2019-01-01     0          NA       0.915
@@ -466,7 +466,7 @@ like:</p>
 ##  8 2019-01-01     7          NA       0.65 
 ##  9 2019-01-01     8          NA       0.4  
 ## 10 2019-01-01     9          NA       0.441
-## # … with 35,313 more rows</code></pre>
+## # … with 35,649 more rows</code></pre>
 <p>Let’s visualize the data to check for errors, first limiting the date
 to June 1 2022 and after:</p>
 <div class="figure">
@@ -532,23 +532,25 @@ occupancy!</p>
 <div id="calculate-total-production-and-consumption"
 class="section level2">
 <h2>Calculate total production and consumption</h2>
-<p>From July 8th to 2023-02-09 (last day of data), let’s calculate how
+<p>From July 8th to 2023-02-10 (last day of data), let’s calculate how
 much:</p>
 <ul>
-<li>gross solar energy we’ve produced<br />
-</li>
-<li>total solar energy returned to grid</li>
-<li>total energy consumed from grid</li>
+<li>gross solar energy we’ve produced
+(<code>total_solar_produced</code>)</li>
+<li>total energy consumed from grid
+(<code>total_fortis_consumed</code>)</li>
+<li>total solar energy returned to grid
+(<code>total_solar_returned</code>)</li>
 </ul>
 <pre><code>## # A tibble: 1 × 3
 ##   total_solar_produced total_fortis_consumed total_solar_returned
 ##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
-## 1                7187.                 5762.                4474.</code></pre>
+## 1                7187.                 6323.                4598.</code></pre>
 <p>Do the same for when we started net metering (July 15)</p>
 <pre><code>## # A tibble: 1 × 3
 ##   total_solar_produced total_fortis_consumed total_solar_returned
 ##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
-## 1                6643.                 5682.                4474.</code></pre>
+## 1                6643.                 6242.                4598.</code></pre>
 <hr />
 </div>
 <div id="check-bill-numbers" class="section level2">
@@ -561,32 +563,32 @@ period.</p>
 <p>Using the data downloaded from our solar system and the hourly
 consumption data downloaded directly from the Fortis website, we get the
 following numbers:</p>
-<pre><code>## # A tibble: 1 × 2
-##   total_consumed total_returned
-##            &lt;dbl&gt;          &lt;dbl&gt;
-## 1           887.          2703.</code></pre>
+<pre><code>## # A tibble: 1 × 5
+##   fortis_consumed fortis_returned solar_gross_kWh_produced solar_kWh_used total_energy_consumed
+##             &lt;dbl&gt;           &lt;dbl&gt;                    &lt;dbl&gt;          &lt;dbl&gt;                 &lt;dbl&gt;
+## 1            871.           2654.                    3498.           844.                 1716.</code></pre>
 <p>So, a little off, but not too bad.</p>
-<p>Now let’s check Sept 28 to Nov 28, which shows 1929 kWh consumed, and
+<p>Now let’s check Sept 29 to Nov 28, which shows 1929 kWh consumed, and
 921 kWh returned.</p>
-<pre><code>## # A tibble: 1 × 2
-##   total_consumed total_returned
-##            &lt;dbl&gt;          &lt;dbl&gt;
-## 1          1975.           922.</code></pre>
-<p>Not far off again!</p>
-<p>Now let’s check Nov 28 to Jan 28, which were extremely cloudy months…
+<pre><code>## # A tibble: 1 × 5
+##   fortis_consumed fortis_returned solar_gross_kWh_produced solar_kWh_used total_energy_consumed
+##             &lt;dbl&gt;           &lt;dbl&gt;                    &lt;dbl&gt;          &lt;dbl&gt;                 &lt;dbl&gt;
+## 1           1955.            892.                    1445.           553.                 2507.</code></pre>
+<p>A little off again…</p>
+<p>Now let’s check Nov 29 to Jan 28, which were extremely cloudy months…
 it shows 2712 kWh consumed, and 123 kWh returned.</p>
-<pre><code>## # A tibble: 1 × 2
-##   total_consumed total_returned
-##            &lt;dbl&gt;          &lt;dbl&gt;
-## 1          2712.           123.</code></pre>
-<p>OK, so now we have the data matching exactly, as we’d expect!</p>
+<pre><code>## # A tibble: 1 × 5
+##   fortis_consumed fortis_returned solar_gross_kWh_produced solar_kWh_used total_energy_consumed
+##             &lt;dbl&gt;           &lt;dbl&gt;                    &lt;dbl&gt;          &lt;dbl&gt;                 &lt;dbl&gt;
+## 1           2694.            149.                     477.           328.                 3022.</code></pre>
+<p>Still a little off.</p>
 <p>So let’s do it for the entire period now (through Jan 28):</p>
-<pre><code>## # A tibble: 1 × 2
-##   total_consumed total_returned
-##            &lt;dbl&gt;          &lt;dbl&gt;
-## 1          5682.          4474.</code></pre>
+<pre><code>## # A tibble: 1 × 5
+##   fortis_consumed fortis_returned solar_gross_kWh_produced solar_kWh_used total_energy_consumed
+##             &lt;dbl&gt;           &lt;dbl&gt;                    &lt;dbl&gt;          &lt;dbl&gt;                 &lt;dbl&gt;
+## 1           6242.           4598.                    6643.          2077.                 8320.</code></pre>
 <p>That’s pretty amazing… we’re through the most cloudy period of the
-year (Nov/Dec/Jan), and we produced almost 79% of our energy needs.</p>
+year (Nov/Dec/Jan), and we produced almost 80 of our energy needs.</p>
 </div>
 </div>
 

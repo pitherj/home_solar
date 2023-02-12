@@ -279,9 +279,9 @@ We'll have to see how we do next winter, and depending on occupancy!
 
 From July 8th to `r max(all_data$day)` (last day of data), let's calculate how much: 
 
-* gross solar energy we've produced  
-* total solar energy returned to grid
-* total energy consumed from grid
+* gross solar energy we've produced (`total_solar_produced`)
+* total energy consumed from grid (`total_fortis_consumed`)
+* total solar energy returned to grid (`total_solar_returned`)
 
 ```{r totnums, echo = FALSE}
 all_data %>%
@@ -312,45 +312,58 @@ According to the Fortis bill, we consumed 875 kWh from the grid over that 62 day
 Using the data downloaded from our solar system and the hourly consumption data downloaded directly from the Fortis website, we get the following numbers:
 
 ```{r, echo = FALSE}
-consumption.data %>%
-  filter(day >= ymd("2022-07-28") & day <= ymd("2022-09-28")) %>%
-  summarise(total_consumed  = sum(kw_consumed, na.rm = TRUE),
-            total_returned = sum(kw_returned, na.rm = TRUE))
+all_data %>%
+  filter(day > ymd("2022-07-28") & day <= ymd("2022-09-28")) %>%
+  summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
+            fortis_returned = sum(kw_returned, na.rm = TRUE),
+            solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
+            solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
+            total_energy_consumed = sum(solar_kWh_used + fortis_consumed, na.rm = TRUE))
 ```
 
-So, a little off, but not too bad.
+So, a little off, but not too bad.  
 
-Now let's check Sept 28 to Nov 28, which shows 1929 kWh consumed, and 921 kWh returned. 
+Now let's check Sept 29 to Nov 28, which shows 1929 kWh consumed, and 921 kWh returned. 
 
 
 ```{r, echo = FALSE}
-consumption.data %>%
-  filter(day >= ymd("2022-09-28") & day <= ymd("2022-11-28")) %>%
-  summarise(total_consumed  = sum(kw_consumed, na.rm = TRUE),
-            total_returned = sum(kw_returned, na.rm = TRUE))
+all_data %>%
+  filter(day > ymd("2022-09-28") & day <= ymd("2022-11-28")) %>%
+  summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
+            fortis_returned = sum(kw_returned, na.rm = TRUE),
+            solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
+            solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
+            total_energy_consumed = sum(solar_kWh_used + fortis_consumed, na.rm = TRUE))
 ```
-Not far off again!
+A little off again...
 
-Now let's check Nov 28 to Jan 28, which were extremely cloudy months... it shows 2712 kWh consumed, and 123 kWh returned. 
+Now let's check Nov 29 to Jan 28, which were extremely cloudy months... it shows 2712 kWh consumed, and 123 kWh returned. 
 
 
 ```{r, echo = FALSE}
-consumption.data %>%
-  filter(day >= ymd("2022-11-28") & day <= ymd("2023-01-28")) %>%
-  summarise(total_consumed  = sum(kw_consumed, na.rm = TRUE),
-            total_returned = sum(kw_returned, na.rm = TRUE))
+all_data %>%
+  filter(day > ymd("2022-11-28") & day <= ymd("2023-01-28")) %>%
+  summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
+            fortis_returned = sum(kw_returned, na.rm = TRUE),
+            solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
+            solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
+            total_energy_consumed = sum(solar_kWh_used + fortis_consumed, na.rm = TRUE))
 ```
-OK, so now we have the data matching exactly, as we'd expect!
+Still a little off.
 
 So let's do it for the entire period now (through Jan 28):
 
 ```{r, echo = FALSE}
-consumption.data %>%
+final_summary <- all_data %>%
   filter(day >= ymd("2022-07-15") & day <= ymd("2023-02-10")) %>%
-  summarise(total_consumed  = sum(kw_consumed, na.rm = TRUE),
-            total_returned = sum(kw_returned, na.rm = TRUE))
+  summarise(fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
+            fortis_returned = sum(kw_returned, na.rm = TRUE),
+            solar_gross_kWh_produced = sum(kWh, na.rm = TRUE),
+            solar_kWh_used = sum(kWh - kw_returned, na.rm = TRUE),
+            total_energy_consumed = sum(solar_kWh_used + fortis_consumed, na.rm = TRUE))
+final_summary
 ```
 
-That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost 79% of our energy needs.
+That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost `r round(100*final_summary$solar_gross_kWh_produced/final_summary$total_energy_consumed, 0)` of our energy needs.
 
 

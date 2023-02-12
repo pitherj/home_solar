@@ -364,6 +364,6 @@ final_summary <- all_data %>%
 final_summary
 ```
 
-That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost `r round(100*final_summary$solar_gross_kWh_produced/final_summary$total_energy_consumed, 0)` of our energy needs.
+That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost `r round(100*final_summary$solar_gross_kWh_produced/final_summary$total_energy_consumed, 0)`% of our energy needs.
 
 

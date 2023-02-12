@@ -7,11 +7,10 @@ fig_caption: TRUE
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 ```
 
 ```{r libraries, message = FALSE, echo = FALSE}
-library(readxl)
 library(tidyverse)
 library(here)
 library(stringr)
@@ -155,7 +154,7 @@ solar.data %>%
 
 And FYI, Kelowna got an early winter... beginning of November saw more than 30cm of snow fall, and it STAYED!  Which meant that the solar panels were covered for the better part of 5 days.  I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun.  However, from November through February each year, Kelowna tends to be very grey... the clouds settle in the valley and just stay here. But it's often sunny at higher elevation.
 
-In any case, we don't anticipate generating much solar power between November and February...
+The sun started peaking out more in mid-January in the end, so we've had more energy production than anticipated!
 
 * * *
 
@@ -270,7 +269,7 @@ consumption.data %>%
   theme_bw()
 ```
 
-Yikes!  The addition we built clearly increased our electricity consumption during the cold snap at the end of December 2022, relative to the preceding 3 winters.  However, we were still trying to figure out the optimal way to maintain a low temperature (10 degrees) while the suite was unoccupied.  The heat pumps work very hard to keep the place warm when it's -10 or lower outside.
+Yikes!  Despite not being rented out much, the new short-term rental clearly increased our electricity consumption during the cold snap at the end of December 2022, relative to the preceding 3 winters.  However, we were still trying to figure out the optimal way to maintain a low temperature (10 degrees) while the suite was unoccupied.  The heat pumps work very hard to keep the place warm when it's -10 or lower outside.
 
 We'll have to see how we do next winter, and depending on occupancy!
 
@@ -284,7 +283,7 @@ From July 8th to `r max(all_data$day)` (last day of data), let's calculate how m
 * total solar energy returned to grid
 * total energy consumed from grid
 
-```{r totnums}
+```{r totnums, echo = FALSE}
 all_data %>%
   filter(day >= ymd("2022-07-08")) %>%
   summarise(total_solar_produced = sum(kWh, na.rm = TRUE),
@@ -294,7 +293,7 @@ all_data %>%
 
 Do the same for when we started net metering (July 15)
 
-```{r tots}
+```{r tots, echo = FALSE}
 all_data %>%
   filter(day >= ymd("2022-07-15")) %>%
   summarise(total_solar_produced = sum(kWh, na.rm = TRUE),
@@ -332,6 +331,26 @@ consumption.data %>%
 ```
 Not far off again!
 
-Updates will come as I attempt to get better historical data, and as we progress through the cloudy winter!
+Now let's check Nov 28 to Jan 28, which were extremely cloudy months... it shows 2712 kWh consumed, and 123 kWh returned. 
+
+
+```{r, echo = FALSE}
+consumption.data %>%
+  filter(day >= ymd("2022-11-28") & day <= ymd("2023-01-28")) %>%
+  summarise(total_consumed  = sum(kw_consumed, na.rm = TRUE),
+            total_returned = sum(kw_returned, na.rm = TRUE))
+```
+OK, so now we have the data matching exactly, as we'd expect!
+
+So let's do it for the entire period now (through Jan 28):
+
+```{r, echo = FALSE}
+consumption.data %>%
+  filter(day >= ymd("2022-07-15") & day <= ymd("2023-02-10")) %>%
+  summarise(total_consumed  = sum(kw_consumed, na.rm = TRUE),
+            total_returned = sum(kw_returned, na.rm = TRUE))
+```
+
+That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost 79% of our energy needs.
 
 

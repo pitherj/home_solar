@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason" />
 
-<meta name="date" content="2023-01-31" />
+<meta name="date" content="2023-02-12" />
 
 <title>House solar energy data analysis</title>
 
@@ -247,7 +247,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">House solar energy data analysis</h1>
 <h4 class="author">Jason</h4>
-<h4 class="date">2023-01-31</h4>
+<h4 class="date">2023-02-12</h4>
 
 </div>
 
@@ -384,8 +384,7 @@ href="https://www.apsystemsema.com">AP Systems website</a>, and wrangles
 them into an appropriate (tidy) format.</p>
 <p>Here’s what the first few rows of the resulting data table looks
 like:</p>
-<pre class="r"><code>solar.data</code></pre>
-<pre><code>## # A tibble: 2,548 × 4
+<pre><code>## # A tibble: 2,695 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -398,7 +397,7 @@ like:</p>
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # … with 2,538 more rows</code></pre>
+## # … with 2,685 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure">
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="672" />
@@ -431,8 +430,8 @@ them (the steeper angled ones), and we saw a wee bit of sun. However,
 from November through February each year, Kelowna tends to be very grey…
 the clouds settle in the valley and just stay here. But it’s often sunny
 at higher elevation.</p>
-<p>In any case, we don’t anticipate generating much solar power between
-November and February…</p>
+<p>The sun started peaking out more in mid-January in the end, so we’ve
+had more energy production than anticipated!</p>
 <hr />
 </div>
 <div id="grid-energy-consumption-data" class="section level2">
@@ -454,7 +453,6 @@ January 1, 2019!</p>
 have a look.</p>
 <p>Here’s what the first few rows of the June 1st onward data look
 like:</p>
-<pre class="r"><code>consumption.data</code></pre>
 <pre><code>## # A tibble: 35,323 × 4
 ##    day         hour kw_returned kw_consumed
 ##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
@@ -519,12 +517,13 @@ Figure 6: Daily energy consumption (kWh) for our house, starting January
 1, 2019.
 </p>
 </div>
-<p>Yikes! The addition we built clearly increased our electricity
-consumption during the cold snap at the end of December 2022, relative
-to the preceding 3 winters. However, we were still trying to figure out
-the optimal way to maintain a low temperature (10 degrees) while the
-suite was unoccupied. The heat pumps work very hard to keep the place
-warm when it’s -10 or lower outside.</p>
+<p>Yikes! Despite not being rented out much, the new short-term rental
+clearly increased our electricity consumption during the cold snap at
+the end of December 2022, relative to the preceding 3 winters. However,
+we were still trying to figure out the optimal way to maintain a low
+temperature (10 degrees) while the suite was unoccupied. The heat pumps
+work very hard to keep the place warm when it’s -10 or lower
+outside.</p>
 <p>We’ll have to see how we do next winter, and depending on
 occupancy!</p>
 <hr />
@@ -533,7 +532,7 @@ occupancy!</p>
 <div id="calculate-total-production-and-consumption"
 class="section level2">
 <h2>Calculate total production and consumption</h2>
-<p>From July 8th to 2023-01-27 (last day of data), let’s calculate how
+<p>From July 8th to 2023-02-09 (last day of data), let’s calculate how
 much:</p>
 <ul>
 <li>gross solar energy we’ve produced<br />
@@ -541,25 +540,15 @@ much:</p>
 <li>total solar energy returned to grid</li>
 <li>total energy consumed from grid</li>
 </ul>
-<pre class="r"><code>all_data %&gt;%
-  filter(day &gt;= ymd(&quot;2022-07-08&quot;)) %&gt;%
-  summarise(total_solar_produced = sum(kWh, na.rm = TRUE),
-            total_fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
-            total_solar_returned = sum(kw_returned, na.rm = TRUE))</code></pre>
 <pre><code>## # A tibble: 1 × 3
 ##   total_solar_produced total_fortis_consumed total_solar_returned
 ##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
-## 1                6953.                 5762.                4474.</code></pre>
+## 1                7187.                 5762.                4474.</code></pre>
 <p>Do the same for when we started net metering (July 15)</p>
-<pre class="r"><code>all_data %&gt;%
-  filter(day &gt;= ymd(&quot;2022-07-15&quot;)) %&gt;%
-  summarise(total_solar_produced = sum(kWh, na.rm = TRUE),
-            total_fortis_consumed  = sum(kw_consumed, na.rm = TRUE),
-            total_solar_returned = sum(kw_returned, na.rm = TRUE))</code></pre>
 <pre><code>## # A tibble: 1 × 3
 ##   total_solar_produced total_fortis_consumed total_solar_returned
 ##                  &lt;dbl&gt;                 &lt;dbl&gt;                &lt;dbl&gt;
-## 1                6409.                 5682.                4474.</code></pre>
+## 1                6643.                 5682.                4474.</code></pre>
 <hr />
 </div>
 <div id="check-bill-numbers" class="section level2">
@@ -584,8 +573,20 @@ following numbers:</p>
 ##            &lt;dbl&gt;          &lt;dbl&gt;
 ## 1          1975.           922.</code></pre>
 <p>Not far off again!</p>
-<p>Updates will come as I attempt to get better historical data, and as
-we progress through the cloudy winter!</p>
+<p>Now let’s check Nov 28 to Jan 28, which were extremely cloudy months…
+it shows 2712 kWh consumed, and 123 kWh returned.</p>
+<pre><code>## # A tibble: 1 × 2
+##   total_consumed total_returned
+##            &lt;dbl&gt;          &lt;dbl&gt;
+## 1          2712.           123.</code></pre>
+<p>OK, so now we have the data matching exactly, as we’d expect!</p>
+<p>So let’s do it for the entire period now (through Jan 28):</p>
+<pre><code>## # A tibble: 1 × 2
+##   total_consumed total_returned
+##            &lt;dbl&gt;          &lt;dbl&gt;
+## 1          5682.          4474.</code></pre>
+<p>That’s pretty amazing… we’re through the most cloudy period of the
+year (Nov/Dec/Jan), and we produced almost 79% of our energy needs.</p>
 </div>
 </div>
 

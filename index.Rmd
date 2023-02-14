@@ -33,6 +33,8 @@ When we were researching solar panels for our house, we found lots of websites d
 
 To fill this gap, I've decided to share our own data!  
 
+>Caveat: we built an addition (short-term rental) at the same time as installing the solar array, therefore these two factors are entirely conflated for my data analyses.  In other words, (until we get a current metre) I won't be able to directly compare our electricity consumption (or billing) data from before solar installation with after, because electricity used by the addition will be included.  
+
 ## Our household
 
 We are two adults, two teenagers, and a dog occupying a 1.5 storey, 1260 ft$^{2}$ house in downtown Kelowna, British Columbia.  Yeah, it's a bit tight... 

@@ -63,9 +63,9 @@ We heat our house with an efficient gas furnace, so the laundry drier and electr
 
 ## The solar array
 
-In the summer of 2022 we had an array of thirty-six 360W panels (model: Longi LR4-60HPB-360M) installed on our south-facing roof. The entire array size is 12.96kW.  
+In the summer of 2022 we had an array of thirty-six 360W panels (model: Longi LR4-60HPB-360M) installed on our south-facing roof. The entire array size is 12.96kW. 
 
-Our solar system was supplied and installed by [Okanagan Solar](https://www.oksolarhomes.com).  Their team was amazing to work with.
+Our solar system was supplied and installed by [Okanagan Solar](https://www.oksolarhomes.com).  Their team was amazing to work with.  
 
 This system is large for our current needs (about 10,000 kWh / yr), but with the new one-bedroom addition, and hopefully an EV in the next few years, the 12.96kW solar system should be ideal.  
 
@@ -79,13 +79,22 @@ Note that the flatter part of the roof extends over our patio.
 
 An added benefit of covering the south-facing roof with solar panels: the kids' dormer bedrooms are even cooler in the summer, because the panels are intercepting the energy before they hit the roof tiles. 
 
+### Cost
+
+The array with installation, including some angled mounting brackets for our flatter roof, cost just under `$25K`. This does not include the extra electrical upgrades we needed, which we were going to have to do anyways for the addition.  These upgrades included a new 200A panel, and a new meter with a new location on our lot.  These latter upgrades cost us about `$8K`, including electricity hookup etc...
+
+OK Solar led us through the Energy Audit process, which ultimately got us the full `$5K` rebate from the federal green homes initiative, plus the `$600` for the audit activities themselves.  
+
+So, for the solar array installation, the net cost was under `$20K` after rebates, but not including electrical upgrades.
+
+
 * * *
 
 ## Electricity supplier
 
 Fortis BC is our electricity provider, and like most places in North America, we don't have a choice about who we purchase electricity from.
 
-As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, and uses a tiered charging system, such that the first 1600kWh are currently charged at $0.12365/kWh, and $0.13713 for any kWh beyond that. They also charge a flat service / delivery fee of about $40 for the two months.  
+As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, and uses a tiered charging system, such that the first 1600kWh are currently charged at `$0.12365/kWh`, and `$0.13713` for any kWh beyond that. They also charge a flat service / delivery fee of about $40 for the two months.  
 
 Be sure to consult their website to keep track of any updates to rates.  
 

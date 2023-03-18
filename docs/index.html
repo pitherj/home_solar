@@ -416,7 +416,7 @@ href="https://www.apsystemsema.com">AP Systems website</a>, and wrangles
 them into an appropriate (tidy) format.</p>
 <p>Here’s what the first few rows of the resulting data table looks
 like:</p>
-<pre><code>## # A tibble: 2,695 × 4
+<pre><code>## # A tibble: 3,122 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -429,7 +429,7 @@ like:</p>
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # … with 2,685 more rows</code></pre>
+## # … with 3,112 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure">
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="672" />
@@ -648,7 +648,7 @@ minus the energy returned to the grid (<code>kw_returned</code>).</p>
 <hr />
 <div id="summary-data" class="section level3">
 <h3>Summary data</h3>
-<p>From July 8th to 2023-03-10 (last day of data), let’s calculate how
+<p>From July 8th to 2023-03-16 (last day of data), let’s calculate how
 much:</p>
 <ul>
 <li>total energy consumed from grid (<code>fortis_consumed</code>)</li>
@@ -693,13 +693,13 @@ total_energy_consumed
 4694.36
 </td>
 <td style="text-align:right;">
-7186.5
+8231.32
 </td>
 <td style="text-align:right;">
-1948.35
+2231.67
 </td>
 <td style="text-align:right;">
-8391.61
+8674.93
 </td>
 </tr>
 </tbody>
@@ -737,13 +737,13 @@ total_energy_consumed
 4694.36
 </td>
 <td style="text-align:right;">
-6642.73
+7687.55
 </td>
 <td style="text-align:right;">
-1948.35
+2231.67
 </td>
 <td style="text-align:right;">
-8311.22
+8594.55
 </td>
 </tr>
 </tbody>
@@ -901,7 +901,7 @@ total_energy_consumed
 </table>
 <p>Still a little off.</p>
 <p>A reminder of the amounts for the total period, July 15, 2022 through
-2023-03-10 (last day of data):</p>
+2023-03-16 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Summary of energy production and consumption from July 15 2022 to Feb 10
@@ -935,19 +935,19 @@ total_energy_consumed
 4694.36
 </td>
 <td style="text-align:right;">
-6642.73
+7687.55
 </td>
 <td style="text-align:right;">
-1948.35
+2231.67
 </td>
 <td style="text-align:right;">
-8311.22
+8594.55
 </td>
 </tr>
 </tbody>
 </table>
 <p>That’s pretty amazing… we’re through the most cloudy period of the
-year (Nov/Dec/Jan), and we produced almost 80% of our energy needs.</p>
+year (Nov/Dec/Jan), and we produced almost 89% of our energy needs.</p>
 <p>Even with the new addition, it seems likely that we’ll produce and
 bank enough energy (especially in spring/summer) to more than cover our
 annual needs.</p>

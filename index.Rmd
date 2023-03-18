@@ -235,7 +235,7 @@ consumption.data %>%
   theme_bw()
 ```
 
-Note that the low consumption in June is due to data gaps, which are also a mystery to Fortis.
+Note that the low consumption in June is due to data gaps, which are also a mystery to Fortis. **Likewise**, we have a data gap between Feb 10 and March 2 2023!
 
 The substantial increase in energy consumption in November was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do final upgrades at our house: replacing 4 windows and a door in the main house.  So, over the first 3 weeks of November, we were using more electricity than usual, and we had little sun for solar energy production. 
 
@@ -263,6 +263,7 @@ all_data %>%
   labs(x = "Date", y = "Energy (kWh)") +
   theme_bw()
 ```
+Note the data gap from Feb 10 through March 2, 2023.  This is problematic... i'm dealing with Fortis on this...
 
 * * *
 

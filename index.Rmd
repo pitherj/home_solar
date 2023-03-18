@@ -91,9 +91,12 @@ Be sure to consult their website to keep track of any updates to rates.
 
 **Net metering** 
 
-Fortis BC has a [net metering program](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering), in which any energy produced by the solar array that is not used immediately on site is put back into the grid, and Fortis keeps track of this and "banks" the kWh on the account. In theory, Fortis then uses these banked amounts against future bills.  However, I have yet to receive a bills that correctly reflect this, and their [website that explains a net-metering bill](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5) shows a new bill format that looks nothing like mine... I'll update this website as soon as this is figured out.
+Fortis BC has a [net metering program](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering), in which any energy produced by the solar array that is not used immediately on site is put back into the grid, and Fortis keeps track of this and "banks" the kWh on the account. In theory, Fortis then uses these banked amounts against future bills.  However, I have yet to receive a bills that correctly reflect this, and their [website that explains a net-metering bill](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5) shows a new bill format that looks nothing like mine... I'll update this website as soon as this is figured out.  
 
 If we happen to have anything left in our "bank" at the end of March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to $0.10 / kWh.  Given our cloudy winters, it's unlikely we'll have anything left in the bank in March.
+
+**UPDATE March 10, 2023**
+The kWh we had banked from July 15 2022 onward were sufficient to offset demands through February 2023... see the [production/consumption section below](#production).
 
 * * *
 
@@ -279,7 +282,11 @@ We'll have to see how we do next winter, and depending on occupancy!
 
 * * *
 
-## Calculate total production and consumption
+## Calculate total production and consumption {#production}
+
+**NOTE March 18, 2023**  
+
+Fortis has been unable to provide me hourly meter readings on a consistent basis.  Their data download option from the website indicates major data gaps for my account.  Likewise, their billing has been entirely messed up for the last 8 months. Nevertheless, the net metering program has worked largely as it should: we banked quite a few kWh from the summer/fall 2022, and these were used to credit our account through winter.
 
 Let's do some calculations on the hourly data.  Have a look a the data to start, taking a sample of records from July 28th, 2022:
 

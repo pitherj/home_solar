@@ -485,7 +485,7 @@ January 1, 2019!</p>
 have a look.</p>
 <p>Here’s what the first few rows of the June 1st onward data look
 like:</p>
-<pre><code>## # A tibble: 35,659 × 4
+<pre><code>## # A tibble: 35,803 × 4
 ##    day         hour kw_returned kw_consumed
 ##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
 ##  1 2019-01-01     0          NA       0.915
@@ -498,7 +498,7 @@ like:</p>
 ##  8 2019-01-01     7          NA       0.65 
 ##  9 2019-01-01     8          NA       0.4  
 ## 10 2019-01-01     9          NA       0.441
-## # … with 35,649 more rows</code></pre>
+## # … with 35,793 more rows</code></pre>
 <p>Let’s visualize the data to check for errors, first limiting the date
 to June 1 2022 and after:</p>
 <div class="figure">
@@ -571,6 +571,7 @@ entirely messed up for the last 8 months. Nevertheless, the net metering
 program has worked largely as it should: we banked quite a few kWh from
 the summer/fall 2022, and these were used to credit our account through
 winter.</p>
+<hr />
 <p>Let’s do some calculations on the hourly data. Have a look a the data
 to start, taking a sample of records from July 28th, 2022:</p>
 <pre><code>## # A tibble: 16 × 6
@@ -647,7 +648,7 @@ minus the energy returned to the grid (<code>kw_returned</code>).</p>
 <hr />
 <div id="summary-data" class="section level3">
 <h3>Summary data</h3>
-<p>From July 8th to 2023-02-10 (last day of data), let’s calculate how
+<p>From July 8th to 2023-03-10 (last day of data), let’s calculate how
 much:</p>
 <ul>
 <li>total energy consumed from grid (<code>fortis_consumed</code>)</li>
@@ -686,19 +687,19 @@ total_energy_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-6322.6
+6443.26
 </td>
 <td style="text-align:right;">
-4597.84
+4694.36
 </td>
 <td style="text-align:right;">
 7186.5
 </td>
 <td style="text-align:right;">
-2044.87
+1948.35
 </td>
 <td style="text-align:right;">
-8367.46
+8391.61
 </td>
 </tr>
 </tbody>
@@ -730,19 +731,19 @@ total_energy_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-6242.21
+6362.88
 </td>
 <td style="text-align:right;">
-4597.84
+4694.36
 </td>
 <td style="text-align:right;">
 6642.73
 </td>
 <td style="text-align:right;">
-2044.87
+1948.35
 </td>
 <td style="text-align:right;">
-8287.08
+8311.22
 </td>
 </tr>
 </tbody>
@@ -900,7 +901,7 @@ total_energy_consumed
 </table>
 <p>Still a little off.</p>
 <p>A reminder of the amounts for the total period, July 15, 2022 through
-2023-02-10 (last day of data):</p>
+2023-03-10 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Summary of energy production and consumption from July 15 2022 to Feb 10
@@ -928,19 +929,19 @@ total_energy_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-6242.21
+6362.88
 </td>
 <td style="text-align:right;">
-4597.84
+4694.36
 </td>
 <td style="text-align:right;">
 6642.73
 </td>
 <td style="text-align:right;">
-2044.87
+1948.35
 </td>
 <td style="text-align:right;">
-8287.08
+8311.22
 </td>
 </tr>
 </tbody>
@@ -954,7 +955,9 @@ annual needs.</p>
 </div>
 <div id="financial-costsbenefits" class="section level2">
 <h2>Financial costs/benefits</h2>
-<p>To be continued…</p>
+<p>Once we have a full year’s worth of data, we’ll be able to estimate
+the time needed to pay off the <code>$20K</code> cost of the solar
+array.</p>
 </div>
 </div>
 

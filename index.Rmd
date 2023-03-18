@@ -297,6 +297,8 @@ We'll have to see how we do next winter, and depending on occupancy!
 
 Fortis has been unable to provide me hourly meter readings on a consistent basis.  Their data download option from the website indicates major data gaps for my account.  Likewise, their billing has been entirely messed up for the last 8 months. Nevertheless, the net metering program has worked largely as it should: we banked quite a few kWh from the summer/fall 2022, and these were used to credit our account through winter.
 
+* * *
+
 Let's do some calculations on the hourly data.  Have a look a the data to start, taking a sample of records from July 28th, 2022:
 
 ```{r}
@@ -481,4 +483,4 @@ Next we'll figure out money savings...
 
 ## Financial costs/benefits
 
-To be continued...
+Once we have a full year's worth of data, we'll be able to estimate the time needed to pay off the `$20K` cost of the solar array.

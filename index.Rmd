@@ -8,6 +8,7 @@ fig_caption: TRUE
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+options(scipen = 999)
 ```
 
 ```{r libraries, message = FALSE, echo = FALSE}
@@ -459,8 +460,8 @@ final_summary <- all_data %>%
   summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),
             total_kw_solar_to_grid = sum(kw_solar_to_grid, na.rm = TRUE),
             total_kw_solar_gross_produced = sum(kw_solar_gross_produced, na.rm = TRUE),
-            total_kw_solar_used = sum(kw_solar_gross_produced - kw_solar_to_grid, na.rm = TRUE),
-            total_kw_consumed = sum(kw_solar_gross_produced - kw_solar_to_grid + kw_fortis_from_grid, na.rm = TRUE))
+            total_kw_solar_used = sum(kw_consumed_from_solar, na.rm = TRUE),
+            total_kw_consumed = sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE))
 ```
 
 
@@ -481,21 +482,24 @@ Next we'll figure out money savings...
 
 From January 1st 2022 to December 31 2022 the rate Fortis charged for electricity was as follows:
 
->Block 1 (up to 1600 kWh): $0.12365 / kWh
->Block 2 (beyond 1600 kWh): $0.13713 / kWh
+Block 1 (up to 1600 kWh): $0.12365 / kWh  
 
-From January 1st 2023 the rate was fixed at $0.13266 / kWh
+Block 2 (beyond 1600 kWh): $0.13713 / kWh  
 
-For simplicity, we'll use a rate of $0.13 / kWh to calculate our cost savings.
+From January 1st 2023 the rate was fixed at $0.13266 / kWh. 
 
-Eventually I'll use the actual rates to calculate more accurate numbers.
+For simplicity, we'll use a rate of $0.13266 / kWh to calculate our cost savings. 
+
+We'll first use the hourly data downloaded from fortis, then we'll use the data from the actual bills.
+
+### Hourly data calculations
 
 From July 15, 2023 to `r max(all_data$day)` we've used `r final_summary$total_kw_consumed` kWh (from Fortis and solar combined).
 
 ```{r echo = FALSE}
 gross_cost <- round(0.13266*final_summary$total_kw_consumed, 2)
 net_kw <- final_summary$total_kw_fortis_from_grid - final_summary$total_kw_solar_to_grid
-net_cost <- round(0.13266*(final_summary$total_kw_fortis_from_grid - final_summary$total_kw_solar_to_grid), 2)
+net_cost <- round(0.13266*net_kw, 2)
 savings <- gross_cost - net_cost
 ```
 
@@ -510,4 +514,27 @@ Recall that this year we're likely to bank more than enough kWh from solar to co
 Recall also that we added an AirBnB at the same time as our solar, and it has increased our energy consumption, especially in the winter.  
 
 I'm excited to see what the summer brings!
+
+### Bill data calculations
+
+```{r echo = FALSE}
+meter.data <- readr::read_csv("./rawdata/fortis_billing/meter_paid.csv", show_col_types = FALSE)
+```
+
+Using data taken directly from bills:
+
+```{r}
+meter.data
+```
+We can calculate what the cost would have been "real_cost" and what our savings were based on what we actually paid:
+
+```{r echo = FALSE}
+meter.data <- meter.data %>%
+  mutate(real_cost = kw_fortis_from_grid * rate,
+         saving = real_cost - paid)
+meter.data
+```
+
+So, based on billing numbers, the amount we would have had to pay since July 2022 is `r sum(meter.data$real_cost)`, what we actually paid was `r sum(meter.data$paid)`, and our savings were `r sum(meter.data$saving)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)` percent saving!
+
 

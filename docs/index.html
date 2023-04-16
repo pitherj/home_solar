@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason" />
 
-<meta name="date" content="2023-03-18" />
+<meta name="date" content="2023-04-15" />
 
 <title>House solar energy data analysis</title>
 
@@ -249,7 +249,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">House solar energy data analysis</h1>
 <h4 class="author">Jason</h4>
-<h4 class="date">2023-03-18</h4>
+<h4 class="date">2023-04-15</h4>
 
 </div>
 
@@ -416,7 +416,7 @@ href="https://www.apsystemsema.com">AP Systems website</a>, and wrangles
 them into an appropriate (tidy) format.</p>
 <p>Here’s what the first few rows of the resulting data table looks
 like:</p>
-<pre><code>## # A tibble: 3,122 × 4
+<pre><code>## # A tibble: 3,514 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -429,7 +429,7 @@ like:</p>
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # … with 3,112 more rows</code></pre>
+## # … with 3,504 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure">
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="672" />
@@ -485,20 +485,20 @@ January 1, 2019!</p>
 have a look.</p>
 <p>Here’s what the first few rows of the June 1st onward data look
 like:</p>
-<pre><code>## # A tibble: 35,803 × 4
-##    day         hour kw_returned kw_consumed
-##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-##  1 2019-01-01     0          NA       0.915
-##  2 2019-01-01     1          NA       0.934
-##  3 2019-01-01     2          NA       0.881
-##  4 2019-01-01     3          NA       0.927
-##  5 2019-01-01     4          NA       0.405
-##  6 2019-01-01     5          NA       0.434
-##  7 2019-01-01     6          NA       0.576
-##  8 2019-01-01     7          NA       0.65 
-##  9 2019-01-01     8          NA       0.4  
-## 10 2019-01-01     9          NA       0.441
-## # … with 35,793 more rows</code></pre>
+<pre><code>## # A tibble: 36,883 × 4
+##    day         hour kw_solar_to_grid kw_fortis_from_grid
+##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt;
+##  1 2019-01-01     0               NA               0.915
+##  2 2019-01-01     1               NA               0.934
+##  3 2019-01-01     2               NA               0.881
+##  4 2019-01-01     3               NA               0.927
+##  5 2019-01-01     4               NA               0.405
+##  6 2019-01-01     5               NA               0.434
+##  7 2019-01-01     6               NA               0.576
+##  8 2019-01-01     7               NA               0.65 
+##  9 2019-01-01     8               NA               0.4  
+## 10 2019-01-01     9               NA               0.441
+## # … with 36,873 more rows</code></pre>
 <p>Let’s visualize the data to check for errors, first limiting the date
 to June 1 2022 and after:</p>
 <div class="figure">
@@ -563,45 +563,36 @@ occupancy!</p>
 </div>
 <div id="production" class="section level2">
 <h2>Calculate total production and consumption</h2>
-<p><strong>NOTE March 18, 2023</strong></p>
-<p>Fortis has been unable to provide me hourly meter readings on a
-consistent basis. Their data download option from the website indicates
-major data gaps for my account. Likewise, their billing has been
-entirely messed up for the last 8 months. Nevertheless, the net metering
-program has worked largely as it should: we banked quite a few kWh from
-the summer/fall 2022, and these were used to credit our account through
-winter.</p>
-<hr />
 <p>Let’s do some calculations on the hourly data. Have a look a the data
 to start, taking a sample of records from July 28th, 2022:</p>
 <pre><code>## # A tibble: 16 × 6
-##    day         hour kw_returned kw_consumed date                  kWh
-##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;dttm&gt;              &lt;dbl&gt;
-##  1 2022-07-29     6       0.056       0.659 2022-07-29 06:00:00  0.41
-##  2 2022-07-29     7       1.01        0.015 2022-07-29 07:00:00  1.63
-##  3 2022-07-29     8       1.24        1.24  2022-07-29 08:00:00  3.85
-##  4 2022-07-29     9       3.13        0.144 2022-07-29 09:00:00  6.03
-##  5 2022-07-29    10       6.70        0     2022-07-29 10:00:00  7.75
-##  6 2022-07-29    11       7.95        0     2022-07-29 11:00:00  9.2 
-##  7 2022-07-29    12       6.84        0     2022-07-29 12:00:00  8.77
-##  8 2022-07-29    13       6.35        0     2022-07-29 13:00:00  9.5 
-##  9 2022-07-29    14       5.52        0.007 2022-07-29 14:00:00  8.75
-## 10 2022-07-29    15       3.6         0     2022-07-29 15:00:00  7.67
-## 11 2022-07-29    16       2.17        0     2022-07-29 16:00:00  5.36
-## 12 2022-07-29    17       0.388       0.813 2022-07-29 17:00:00  2.69
-## 13 2022-07-29    18       0.006       1.20  2022-07-29 18:00:00  0.98
-## 14 2022-07-29    19       0           2.28  2022-07-29 19:00:00  0.37
-## 15 2022-07-29    20       0           1.18  2022-07-29 20:00:00  0.09
-## 16 2022-07-29    21       0           2.07  NA                  NA</code></pre>
+##    day         hour kw_solar_to_grid kw_fortis_from_grid date                kw_solar_gross_produced
+##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt; &lt;dttm&gt;                                &lt;dbl&gt;
+##  1 2022-07-29     6            0.056               0.659 2022-07-29 06:00:00                    0.41
+##  2 2022-07-29     7            1.01                0.015 2022-07-29 07:00:00                    1.63
+##  3 2022-07-29     8            1.24                1.24  2022-07-29 08:00:00                    3.85
+##  4 2022-07-29     9            3.13                0.144 2022-07-29 09:00:00                    6.03
+##  5 2022-07-29    10            6.70                0     2022-07-29 10:00:00                    7.75
+##  6 2022-07-29    11            7.95                0     2022-07-29 11:00:00                    9.2 
+##  7 2022-07-29    12            6.84                0     2022-07-29 12:00:00                    8.77
+##  8 2022-07-29    13            6.35                0     2022-07-29 13:00:00                    9.5 
+##  9 2022-07-29    14            5.52                0.007 2022-07-29 14:00:00                    8.75
+## 10 2022-07-29    15            3.6                 0     2022-07-29 15:00:00                    7.67
+## 11 2022-07-29    16            2.17                0     2022-07-29 16:00:00                    5.36
+## 12 2022-07-29    17            0.388               0.813 2022-07-29 17:00:00                    2.69
+## 13 2022-07-29    18            0.006               1.20  2022-07-29 18:00:00                    0.98
+## 14 2022-07-29    19            0                   2.28  2022-07-29 19:00:00                    0.37
+## 15 2022-07-29    20            0                   1.18  2022-07-29 20:00:00                    0.09
+## 16 2022-07-29    21            0                   2.07  NA                                    NA</code></pre>
 <p>Aside from the obvious ones (day, hour, date) we have the following
 fields:</p>
 <ul>
-<li><code>kw_returned</code> is the kWh from our solar system that we
-fed to the grid (data from Fortis).</li>
-<li><code>kw_consumed</code> is the kWh that fortis logged as energy
-provided to us from the grid (data from Fortis).</li>
-<li><code>kWh</code> is the gross kWh produced by our solar system (data
-from the system).</li>
+<li><code>kw_solar_to_grid</code> is the kWh from our solar system that
+we fed to the grid (data from Fortis).</li>
+<li><code>kw_fortis_from_grid</code> is the kWh that fortis logged as
+energy provided to us from the grid (data from Fortis).</li>
+<li><code>kw_solar_gross_produced</code> is the gross kWh produced by
+our solar system (data from the system).</li>
 </ul>
 <p>Focusing on the 14th hour record (2pm), we see that we produced 8.75
 kWh of solar energy, and of that, 5.52 went to the grid. However, we
@@ -620,46 +611,49 @@ uncertainty.</p>
 </blockquote>
 <p>Let’s calculate the energy that we consumed directly from our solar,
 and we’ll call this <code>kw_consumed_from_solar</code>.</p>
-<p>This is calculated as the gross solar produced (<code>kWh</code>)
-minus the energy returned to the grid (<code>kw_returned</code>).</p>
+<p>This is calculated as the gross solar produced
+(<code>kw_solar_gross_produced</code>) minus the energy returned to the
+grid (<code>kw_solar_to_grid</code>).</p>
 <p>We’ll then calculate the total energy consumed
 (<code>tot_kw_consumed</code>), which equals
-<code>kw_consumed_from_solar</code> plus <code>kw_consumed</code>.</p>
+<code>kw_consumed_from_solar</code> plus
+<code>kw_fortis_from_grid</code>.</p>
 <pre><code>## # A tibble: 16 × 7
-##    day         hour kw_returned kw_consumed   kWh kw_consumed_from_solar tot_kw_consumed
-##    &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;                  &lt;dbl&gt;           &lt;dbl&gt;
-##  1 2022-07-29     6       0.056       0.659  0.41                  0.354           1.01 
-##  2 2022-07-29     7       1.01        0.015  1.63                  0.617           0.632
-##  3 2022-07-29     8       1.24        1.24   3.85                  2.61            3.85 
-##  4 2022-07-29     9       3.13        0.144  6.03                  2.9             3.04 
-##  5 2022-07-29    10       6.70        0      7.75                  1.05            1.05 
-##  6 2022-07-29    11       7.95        0      9.2                   1.25            1.25 
-##  7 2022-07-29    12       6.84        0      8.77                  1.93            1.93 
-##  8 2022-07-29    13       6.35        0      9.5                   3.15            3.15 
-##  9 2022-07-29    14       5.52        0.007  8.75                  3.23            3.24 
-## 10 2022-07-29    15       3.6         0      7.67                  4.07            4.07 
-## 11 2022-07-29    16       2.17        0      5.36                  3.19            3.19 
-## 12 2022-07-29    17       0.388       0.813  2.69                  2.30            3.12 
-## 13 2022-07-29    18       0.006       1.20   0.98                  0.974           2.18 
-## 14 2022-07-29    19       0           2.28   0.37                  0.37            2.65 
-## 15 2022-07-29    20       0           1.18   0.09                  0.09            1.27 
-## 16 2022-07-29    21       0           2.07   0                     0               2.07</code></pre>
+##    day         hour kw_solar_to_grid kw_fortis_from_grid kw_solar_gross_produced kw_consumed_from_solar tot_kw_consumed
+##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt;                   &lt;dbl&gt;                  &lt;dbl&gt;           &lt;dbl&gt;
+##  1 2022-07-29     6            0.056               0.659                    0.41                  0.354           1.01 
+##  2 2022-07-29     7            1.01                0.015                    1.63                  0.617           0.632
+##  3 2022-07-29     8            1.24                1.24                     3.85                  2.61            3.85 
+##  4 2022-07-29     9            3.13                0.144                    6.03                  2.9             3.04 
+##  5 2022-07-29    10            6.70                0                        7.75                  1.05            1.05 
+##  6 2022-07-29    11            7.95                0                        9.2                   1.25            1.25 
+##  7 2022-07-29    12            6.84                0                        8.77                  1.93            1.93 
+##  8 2022-07-29    13            6.35                0                        9.5                   3.15            3.15 
+##  9 2022-07-29    14            5.52                0.007                    8.75                  3.23            3.24 
+## 10 2022-07-29    15            3.6                 0                        7.67                  4.07            4.07 
+## 11 2022-07-29    16            2.17                0                        5.36                  3.19            3.19 
+## 12 2022-07-29    17            0.388               0.813                    2.69                  2.30            3.12 
+## 13 2022-07-29    18            0.006               1.20                     0.98                  0.974           2.18 
+## 14 2022-07-29    19            0                   2.28                     0.37                  0.37            2.65 
+## 15 2022-07-29    20            0                   1.18                     0.09                  0.09            1.27 
+## 16 2022-07-29    21            0                   2.07                     0                     0               2.07</code></pre>
 <p>Next we’ll calculate some summary statistics…</p>
 <hr />
 <div id="summary-data" class="section level3">
 <h3>Summary data</h3>
-<p>From July 8th to 2023-03-16 (last day of data), let’s calculate how
+<p>From July 8th to 2023-04-13 (last day of data), let’s calculate how
 much:</p>
 <ul>
-<li>total energy consumed from grid (<code>fortis_consumed</code>)</li>
+<li>total energy consumed from grid
+(<code>total_kw_fortis_from_grid</code>)</li>
 <li>total solar energy returned to grid
-(<code>fortis_returned</code>)</li>
+(<code>total_kw_solar_to_grid</code>)</li>
 <li>gross solar energy we’ve produced
-(<code>solar_gross_kWh_produced</code>)</li>
+(<code>total_kw_solar_gross_produced</code>)</li>
 <li>solar energy used directly in house
-(<code>solar_kWh_used</code>)</li>
+(<code>total_kw_solar_used</code>)</li>
 <li>total energy consumed (sum of energy from Fortis and from solar)
-(<code>total_energy_consumed</code>)</li>
+(<code>total_kw_consumed</code>)</li>
 </ul>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
@@ -668,38 +662,38 @@ Summary of energy production and consumption from July 8 2022 onward.
 <thead>
 <tr>
 <th style="text-align:right;">
-fortis_consumed
+total_kw_fortis_from_grid
 </th>
 <th style="text-align:right;">
-fortis_returned
+total_kw_solar_to_grid
 </th>
 <th style="text-align:right;">
-solar_gross_kWh_produced
+total_kw_solar_gross_produced
 </th>
 <th style="text-align:right;">
-solar_kWh_used
+total_kw_solar_used
 </th>
 <th style="text-align:right;">
-total_energy_consumed
+total_kw_consumed
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:right;">
-6443.26
+7574.92
 </td>
 <td style="text-align:right;">
-4694.36
+5801.54
 </td>
 <td style="text-align:right;">
-8231.32
+9674.56
 </td>
 <td style="text-align:right;">
-2231.67
+2940.15
 </td>
 <td style="text-align:right;">
-8674.93
+10515.06
 </td>
 </tr>
 </tbody>
@@ -712,38 +706,38 @@ Summary of energy production and consumption from July 15 2022 onward.
 <thead>
 <tr>
 <th style="text-align:right;">
-fortis_consumed
+total_kw_fortis_from_grid
 </th>
 <th style="text-align:right;">
-fortis_returned
+total_kw_solar_to_grid
 </th>
 <th style="text-align:right;">
-solar_gross_kWh_produced
+total_kw_solar_gross_produced
 </th>
 <th style="text-align:right;">
-solar_kWh_used
+total_kw_solar_used
 </th>
 <th style="text-align:right;">
-total_energy_consumed
+total_kw_consumed
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:right;">
-6362.88
+7494.53
 </td>
 <td style="text-align:right;">
-4694.36
+5801.54
 </td>
 <td style="text-align:right;">
-7687.55
+9130.78
 </td>
 <td style="text-align:right;">
-2231.67
+2940.15
 </td>
 <td style="text-align:right;">
-8594.55
+10434.68
 </td>
 </tr>
 </tbody>
@@ -769,19 +763,19 @@ Summary of energy production and consumption from July 29 to Sept 28
 <thead>
 <tr>
 <th style="text-align:right;">
-fortis_consumed
+total_kw_fortis_from_grid
 </th>
 <th style="text-align:right;">
-fortis_returned
+total_kw_solar_to_grid
 </th>
 <th style="text-align:right;">
-solar_gross_kWh_produced
+total_kw_solar_gross_produced
 </th>
 <th style="text-align:right;">
-solar_kWh_used
+total_kw_solar_used
 </th>
 <th style="text-align:right;">
-total_energy_consumed
+total_kw_consumed
 </th>
 </tr>
 </thead>
@@ -816,19 +810,19 @@ Summary of energy production and consumption from Sept 29 to Nov 28
 <thead>
 <tr>
 <th style="text-align:right;">
-fortis_consumed
+total_kw_fortis_from_grid
 </th>
 <th style="text-align:right;">
-fortis_returned
+total_kw_solar_to_grid
 </th>
 <th style="text-align:right;">
-solar_gross_kWh_produced
+total_kw_solar_gross_produced
 </th>
 <th style="text-align:right;">
-solar_kWh_used
+total_kw_solar_used
 </th>
 <th style="text-align:right;">
-total_energy_consumed
+total_kw_consumed
 </th>
 </tr>
 </thead>
@@ -863,19 +857,19 @@ Summary of energy production and consumption from Nov 29 2022 to Jan 28
 <thead>
 <tr>
 <th style="text-align:right;">
-fortis_consumed
+total_kw_fortis_from_grid
 </th>
 <th style="text-align:right;">
-fortis_returned
+total_kw_solar_to_grid
 </th>
 <th style="text-align:right;">
-solar_gross_kWh_produced
+total_kw_solar_gross_produced
 </th>
 <th style="text-align:right;">
-solar_kWh_used
+total_kw_solar_used
 </th>
 <th style="text-align:right;">
-total_energy_consumed
+total_kw_consumed
 </th>
 </tr>
 </thead>
@@ -901,53 +895,53 @@ total_energy_consumed
 </table>
 <p>Still a little off.</p>
 <p>A reminder of the amounts for the total period, July 15, 2022 through
-2023-03-16 (last day of data):</p>
+2023-04-13 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-Summary of energy production and consumption from July 15 2022 to Feb 10
-2023.
+Summary of energy production and consumption from 2022-07-15 to
+2023-04-13
 </caption>
 <thead>
 <tr>
 <th style="text-align:right;">
-fortis_consumed
+total_kw_fortis_from_grid
 </th>
 <th style="text-align:right;">
-fortis_returned
+total_kw_solar_to_grid
 </th>
 <th style="text-align:right;">
-solar_gross_kWh_produced
+total_kw_solar_gross_produced
 </th>
 <th style="text-align:right;">
-solar_kWh_used
+total_kw_solar_used
 </th>
 <th style="text-align:right;">
-total_energy_consumed
+total_kw_consumed
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:right;">
-6362.88
+7494.53
 </td>
 <td style="text-align:right;">
-4694.36
+5801.54
 </td>
 <td style="text-align:right;">
-7687.55
+9130.78
 </td>
 <td style="text-align:right;">
-2231.67
+2940.15
 </td>
 <td style="text-align:right;">
-8594.55
+10434.68
 </td>
 </tr>
 </tbody>
 </table>
 <p>That’s pretty amazing… we’re through the most cloudy period of the
-year (Nov/Dec/Jan), and we produced almost 89% of our energy needs.</p>
+year (Nov/Dec/Jan), and we produced almost 88% of our energy needs.</p>
 <p>Even with the new addition, it seems likely that we’ll produce and
 bank enough energy (especially in spring/summer) to more than cover our
 annual needs.</p>
@@ -955,9 +949,33 @@ annual needs.</p>
 </div>
 <div id="financial-costsbenefits" class="section level2">
 <h2>Financial costs/benefits</h2>
-<p>Once we have a full year’s worth of data, we’ll be able to estimate
-the time needed to pay off the <code>$20K</code> cost of the solar
-array.</p>
+<p>From January 1st 2022 to December 31 2022 the rate Fortis charged for
+electricity was as follows:</p>
+<blockquote>
+<p>Block 1 (up to 1600 kWh): $0.12365 / kWh Block 2 (beyond 1600 kWh):
+$0.13713 / kWh</p>
+</blockquote>
+<p>From January 1st 2023 the rate was fixed at $0.13266 / kWh</p>
+<p>For simplicity, we’ll use a rate of $0.13 / kWh to calculate our cost
+savings.</p>
+<p>Eventually I’ll use the actual rates to calculate more accurate
+numbers.</p>
+<p>From July 15, 2023 to 2023-04-13 we’ve used 1.0434681^{4} kWh (from
+Fortis and solar combined).</p>
+<p>At the rate of 0.13266 / kWh, that would cost 1384.26 dollars.</p>
+<p>With net metering, we’ve only been charged for 1692.99 kWh, which
+amounts to 224.59 dollars.</p>
+<blockquote>
+<p>That’s a savings of 1159.67 dollars over 272 days, or about 3/4 of
+the year!</p>
+</blockquote>
+<p>Recall that this year we’re likely to bank more than enough kWh from
+solar to cover the entire next winter, so we’ll get even more savings
+this coming year!</p>
+<p>Recall also that we added an AirBnB at the same time as our solar,
+and it has increased our energy consumption, especially in the
+winter.</p>
+<p>I’m excited to see what the summer brings!</p>
 </div>
 </div>
 

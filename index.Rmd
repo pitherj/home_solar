@@ -2,7 +2,12 @@
 title: "House solar energy data analysis"
 author: "Jason"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  rmdformats::robobook:
+    toc_depth: 2
+    toc_float: 
+      collapsed: FALSE
+    use_bookdown: TRUE
 fig_caption: TRUE
 ---
 
@@ -38,7 +43,7 @@ When we were researching solar panels for our house, we found lots of websites d
 
 To fill this gap, I've decided to share our own data!  
 
->Caveat: we built an addition (short-term rental) at the same time as installing the solar array, therefore these two factors are entirely conflated for my data analyses.  In other words, (until we get a current metre) I won't be able to directly compare our electricity consumption (or billing) data from before solar installation with after, because electricity used by the addition will be included.  
+>Caveat: we built an addition (short-term rental) at the same time as installing the solar array, therefore these two factors are entirely conflated for my data analyses.  In other words, until we get a current metre, I won't be able to directly compare our electricity consumption (or billing) data from before solar installation with after, because electricity used by the addition will be included.  
 
 ## Our household
 
@@ -92,7 +97,6 @@ OK Solar led us through the Energy Audit process, which ultimately got us the fu
 
 So, for the solar array installation, the net cost was under `$20K` after rebates, but not including electrical upgrades.
 
-
 * * *
 
 ## Electricity supplier
@@ -101,30 +105,27 @@ Fortis BC is our electricity provider, and like most places in North America, we
 
 As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, and uses a tiered charging system, such that the first 1600kWh are currently charged at `$0.12365/kWh`, and `$0.13713` for any kWh beyond that. They also charge a flat service / delivery fee of about $40 for the two months.  
 
+**NOTE** As of 2023, there doesn't appear to be a tiered billing system anymore.
+
 Be sure to consult their website to keep track of any updates to rates.  
 
 **Net metering** 
 
-Fortis BC has a [net metering program](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering), in which any energy produced by the solar array that is not used immediately on site is put back into the grid, and Fortis keeps track of this and "banks" the kWh on the account. In theory, Fortis then uses these banked amounts against future bills.  However, I have yet to receive a bills that correctly reflect this, and their [website that explains a net-metering bill](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5) shows a new bill format that looks nothing like mine... I'll update this website as soon as this is figured out.  
+Fortis BC has a [net metering program](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering), in which any energy produced by the solar array that is not used immediately on site is put back into the grid, and Fortis keeps track of this and "banks" the kWh on the account. In theory, Fortis then uses these banked amounts against future bills.   
 
-If we happen to have anything left in our "bank" at the end of March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to $0.10 / kWh.  Given our cloudy winters, it's unlikely we'll have anything left in the bank in March.
+Their [website explains what a net-metering bill looks like](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5).  
 
-**UPDATE March 10, 2023**
-The kWh we had banked from July 15 2022 onward were sufficient to offset demands through February 2023... see the [production/consumption section below](#production).
+If we happen to have anything left in our "bank" at the end of March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to $0.10 / kWh.  
 
 * * *
 
-## Power up!
+# The Data
 
 We officially started producing solar power on July 8, 2022, and net metering started on July 15, 2022.  So, between July 8 and July 15, the grid benefited from our solar output! 
 
-* * *
-
-# The Data!
-
 ## Solar energy production data
 
-I have another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd) that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into an appropriate (tidy) format.
+I have another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd) that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into an appropriate format.
 
 ```{r echo = FALSE}
 solar.data <- readr::read_csv("./outdata/solar_data.csv", show_col_types = FALSE)
@@ -173,7 +174,7 @@ solar.data %>%
   theme_bw()
 ```
 
-And FYI, Kelowna got an early winter... beginning of November saw more than 30cm of snow fall, and it STAYED!  Which meant that the solar panels were covered for the better part of 5 days.  I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun.  However, from November through February each year, Kelowna tends to be very grey... the clouds settle in the valley and just stay here. But it's often sunny at higher elevation.
+And FYI, in 2022 Kelowna got an early start to winter... beginning of November saw more than 30cm of snow fall, and it STAYED!  Which meant that the solar panels were covered for the better part of 5 days.  I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun.  However, from November through February each year, Kelowna tends to be very grey... the clouds settle in the valley and just stay here. But it's often sunny at higher elevation.  
 
 The sun started peaking out more in mid-January in the end, so we've had more energy production than anticipated!
 
@@ -181,19 +182,13 @@ The sun started peaking out more in mid-January in the end, so we've had more en
 
 ## Grid energy consumption data
 
-Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_electricity_data.Rmd) imports the raw Fortis energy consumption data for our account, downloaded from the FortisBC [website](www.fortisbc.com), and wrangles them into an appropriate (tidy) format.
+Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_electricity_data.Rmd) imports the raw Fortis energy consumption data for our account, downloaded from the FortisBC [website](www.fortisbc.com), and wrangles them into an appropriate format.
 
 ```{r echo = FALSE}
 consumption.data <- readr::read_csv("./outdata/fortis_data.csv", show_col_types = FALSE)
 ```
 
-Unfortunately, I could only get historical consumption data back to June 1st, 2022. 
-
-Despite valiant efforts by a helpful Fortis customer service employee, Fortis was unable to provide me historical consumption data in any format that was readily usable.  They're working on improving this...
-
-**UPDATE Jan 2023** I now have hourly data going back to January 1, 2019!
-
-So we'll append the historical data to the more recent data, then have a look.
+I was able to get hourly data going back to January 1, 2019.
 
 ```{r echo = FALSE}
 historical.data <- readr::read_csv(here::here("outdata", "fortis_historical_data.csv"), show_col_types = FALSE)
@@ -202,8 +197,7 @@ consumption.data <- dplyr::bind_rows(historical.data, consumption.data)
 consumption.data <- consumption.data %>% rename(kw_solar_to_grid = kw_returned, kw_fortis_from_grid = kw_consumed)
 ```
 
-
-Here's what the first few rows of the June 1st onward data look like:
+Let's first look at last summer's data (2022), staring June 1st:
 
 ```{r}
 consumption.data
@@ -241,7 +235,7 @@ consumption.data %>%
   theme_bw()
 ```
 
-Note that the low consumption in June is due to data gaps, which are also a mystery to Fortis. 
+Note that the low consumption in June is due to data gaps, which are a mystery to Fortis. 
 
 The substantial increase in energy consumption in November was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do final upgrades at our house: replacing 4 windows and a door in the main house.  So, over the first 3 weeks of November, we were using more electricity than usual, and we had little sun for solar energy production. 
 
@@ -478,13 +472,13 @@ kbl(final_summary, caption = paste("Summary of energy production and consumption
 
 That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost `r round(100*final_summary$total_kw_solar_gross_produced/final_summary$total_kw_consumed, 0)`% of our energy needs.
 
-Even with the new addition, it seems likely that we'll produce and bank enough energy (especially in spring/summer) to more than cover our annual needs.
+Even with the new addition, it seems possible that we'll produce and bank enough energy (especially in spring/summer) to more than cover our annual needs.  However, a key unknown is the added consumption caused by the A/C (heat pumps) in the short-term rental.
 
-Next we'll figure out money savings...
+Next we'll figure out money savings.
 
 ## Financial costs/benefits
 
-At this stage we won't have realized the full potential annual savings of the system, because we only started banking kWh on July 15th 2022.  Even though our total annual energy consumption has increased due to our AirBnB (from around 10mWh to what I estimate will be 14mWh), I anticipate we'll bank enough energy in the summer to cover all the winter demand.  If so, we'll be saving about $1900 per year.
+At this stage we won't have realized the full potential annual savings of the system, because we only started banking kWh on July 15th 2022.  Even though our total annual energy consumption has increased due to our short term rental (from around 10mWh to what I estimate will be 14mWh), I anticipate we'll bank enough energy in the summer to cover all the winter demand (again, the rental A/C is an unknown variable).  If so, we'll be saving about $1900 per year.
 
 Let's see what our bills say so far...
 
@@ -512,8 +506,8 @@ kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to April
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So, based on billing numbers, the amount we would have had to pay since July 2022 is `r sum(meter.data$real_cost)`, what we actually paid was `r sum(meter.data$paid)`, and our savings were `r sum(meter.data$saving)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)` percent saving.
+So, based on billing numbers, the amount we would have had to pay since July 2022 is \$`r round(sum(meter.data$real_cost),2)`, what we actually paid was \$`r round(sum(meter.data$paid), 2)`, and our savings were \$`r round(sum(meter.data$saving), 2)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)`% saving.
 
 That's not bad, but not as good as it will be!
 
-
+In future, we'll use the hourly solar and Fortis consumption data to repeat these calculations, so see how they compare.

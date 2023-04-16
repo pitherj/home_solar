@@ -949,59 +949,349 @@ annual needs.</p>
 </div>
 <div id="financial-costsbenefits" class="section level2">
 <h2>Financial costs/benefits</h2>
-<p>From January 1st 2022 to December 31 2022 the rate Fortis charged for
-electricity was as follows:</p>
-<p>Block 1 (up to 1600 kWh): $0.12365 / kWh</p>
-<p>Block 2 (beyond 1600 kWh): $0.13713 / kWh</p>
-<p>From January 1st 2023 the rate was fixed at $0.13266 / kWh.</p>
-<p>For simplicity, we’ll use a rate of $0.13266 / kWh to calculate our
-cost savings.</p>
-<p>We’ll first use the hourly data downloaded from fortis, then we’ll
-use the data from the actual bills.</p>
-<div id="hourly-data-calculations" class="section level3">
-<h3>Hourly data calculations</h3>
-<p>From July 15, 2023 to 2023-04-13 we’ve used 10434.6808 kWh (from
-Fortis and solar combined).</p>
-<p>At the rate of 0.13266 / kWh, that would cost 1384.26 dollars.</p>
-<p>With net metering, we’ve only been charged for 1692.99 kWh, which
-amounts to 224.59 dollars.</p>
-<blockquote>
-<p>That’s a savings of 1159.67 dollars over 272 days, or about 3/4 of
-the year!</p>
-</blockquote>
-<p>Recall that this year we’re likely to bank more than enough kWh from
-solar to cover the entire next winter, so we’ll get even more savings
-this coming year!</p>
-<p>Recall also that we added an AirBnB at the same time as our solar,
-and it has increased our energy consumption, especially in the
-winter.</p>
-<p>I’m excited to see what the summer brings!</p>
-</div>
-<div id="bill-data-calculations" class="section level3">
-<h3>Bill data calculations</h3>
-<p>Using data taken directly from bills:</p>
-<pre><code>## # A tibble: 5 × 7
-##   bill_date  kw_fortis_from_grid kw_solar_to_grid  rate  paid bank_reading meter_reading
-##   &lt;date&gt;                   &lt;dbl&gt;            &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;
-## 1 2022-07-28                1380             1183 0.124  24.4         1183         69883
-## 2 2022-09-28                 875             2674 0.124   0           3857         70758
-## 3 2022-11-28                1929              921 0.124   0           4778         72687
-## 4 2023-01-28                2712              123 0.132 231.          4901         75399
-## 5 2023-04-05                1928             1397 0.133  70.4         6298         77327</code></pre>
+<p>At this stage we won’t have realized the full potential annual
+savings of the system, because we only started banking kWh on July 15th
+2022. Even though our total annual energy consumption has increased due
+to our AirBnB (from around 10mWh to what I estimate will be 14mWh), I
+anticipate we’ll bank enough energy in the summer to cover all the
+winter demand. If so, we’ll be saving about $1900 per year.</p>
+<p>Let’s see what our bills say so far…</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Summary of data from bills from July 28 2022 to April 5 2023.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+bill_date
+</th>
+<th style="text-align:right;">
+kw_fortis_from_grid
+</th>
+<th style="text-align:right;">
+kw_solar_to_grid
+</th>
+<th style="text-align:right;">
+rate
+</th>
+<th style="text-align:right;">
+paid
+</th>
+<th style="text-align:right;">
+bank_reading
+</th>
+<th style="text-align:right;">
+meter_reading
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2022-07-28
+</td>
+<td style="text-align:right;">
+1380
+</td>
+<td style="text-align:right;">
+1183
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+24.36
+</td>
+<td style="text-align:right;">
+1183
+</td>
+<td style="text-align:right;">
+69883
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2022-09-28
+</td>
+<td style="text-align:right;">
+875
+</td>
+<td style="text-align:right;">
+2674
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+3857
+</td>
+<td style="text-align:right;">
+70758
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2022-11-28
+</td>
+<td style="text-align:right;">
+1929
+</td>
+<td style="text-align:right;">
+921
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+4778
+</td>
+<td style="text-align:right;">
+72687
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2023-01-28
+</td>
+<td style="text-align:right;">
+2712
+</td>
+<td style="text-align:right;">
+123
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+231.20
+</td>
+<td style="text-align:right;">
+4901
+</td>
+<td style="text-align:right;">
+75399
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2023-04-05
+</td>
+<td style="text-align:right;">
+1928
+</td>
+<td style="text-align:right;">
+1397
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+70.44
+</td>
+<td style="text-align:right;">
+6298
+</td>
+<td style="text-align:right;">
+77327
+</td>
+</tr>
+</tbody>
+</table>
 <p>We can calculate what the cost would have been “real_cost” and what
 our savings were based on what we actually paid:</p>
-<pre><code>## # A tibble: 5 × 9
-##   bill_date  kw_fortis_from_grid kw_solar_to_grid  rate  paid bank_reading meter_reading real_cost saving
-##   &lt;date&gt;                   &lt;dbl&gt;            &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
-## 1 2022-07-28                1380             1183 0.124  24.4         1183         69883      171.   146.
-## 2 2022-09-28                 875             2674 0.124   0           3857         70758      108.   108.
-## 3 2022-11-28                1929              921 0.124   0           4778         72687      239.   239.
-## 4 2023-01-28                2712              123 0.132 231.          4901         75399      358.   127.
-## 5 2023-04-05                1928             1397 0.133  70.4         6298         77327      256.   185.</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Summary of data from bills from July 28 2022 to April 5 2023.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+bill_date
+</th>
+<th style="text-align:right;">
+kw_fortis_from_grid
+</th>
+<th style="text-align:right;">
+kw_solar_to_grid
+</th>
+<th style="text-align:right;">
+rate
+</th>
+<th style="text-align:right;">
+paid
+</th>
+<th style="text-align:right;">
+bank_reading
+</th>
+<th style="text-align:right;">
+meter_reading
+</th>
+<th style="text-align:right;">
+real_cost
+</th>
+<th style="text-align:right;">
+saving
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2022-07-28
+</td>
+<td style="text-align:right;">
+1380
+</td>
+<td style="text-align:right;">
+1183
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+24.36
+</td>
+<td style="text-align:right;">
+1183
+</td>
+<td style="text-align:right;">
+69883
+</td>
+<td style="text-align:right;">
+170.64
+</td>
+<td style="text-align:right;">
+146.28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2022-09-28
+</td>
+<td style="text-align:right;">
+875
+</td>
+<td style="text-align:right;">
+2674
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+3857
+</td>
+<td style="text-align:right;">
+70758
+</td>
+<td style="text-align:right;">
+108.19
+</td>
+<td style="text-align:right;">
+108.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2022-11-28
+</td>
+<td style="text-align:right;">
+1929
+</td>
+<td style="text-align:right;">
+921
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+4778
+</td>
+<td style="text-align:right;">
+72687
+</td>
+<td style="text-align:right;">
+238.52
+</td>
+<td style="text-align:right;">
+238.52
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2023-01-28
+</td>
+<td style="text-align:right;">
+2712
+</td>
+<td style="text-align:right;">
+123
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+231.20
+</td>
+<td style="text-align:right;">
+4901
+</td>
+<td style="text-align:right;">
+75399
+</td>
+<td style="text-align:right;">
+357.98
+</td>
+<td style="text-align:right;">
+126.78
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2023-04-05
+</td>
+<td style="text-align:right;">
+1928
+</td>
+<td style="text-align:right;">
+1397
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+70.44
+</td>
+<td style="text-align:right;">
+6298
+</td>
+<td style="text-align:right;">
+77327
+</td>
+<td style="text-align:right;">
+255.65
+</td>
+<td style="text-align:right;">
+185.21
+</td>
+</tr>
+</tbody>
+</table>
 <p>So, based on billing numbers, the amount we would have had to pay
 since July 2022 is 1130.9884, what we actually paid was 326, and our
-savings were 804.9884. That’s a 71 percent saving!</p>
-</div>
+savings were 804.9884. That’s a 71 percent saving.</p>
+<p>That’s not bad, but not as good as it will be!</p>
 </div>
 </div>
 

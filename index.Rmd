@@ -480,61 +480,36 @@ Next we'll figure out money savings...
 
 ## Financial costs/benefits
 
-From January 1st 2022 to December 31 2022 the rate Fortis charged for electricity was as follows:
+At this stage we won't have realized the full potential annual savings of the system, because we only started banking kWh on July 15th 2022.  Even though our total annual energy consumption has increased due to our AirBnB (from around 10mWh to what I estimate will be 14mWh), I anticipate we'll bank enough energy in the summer to cover all the winter demand.  If so, we'll be saving about $1900 per year.
 
-Block 1 (up to 1600 kWh): $0.12365 / kWh  
-
-Block 2 (beyond 1600 kWh): $0.13713 / kWh  
-
-From January 1st 2023 the rate was fixed at $0.13266 / kWh. 
-
-For simplicity, we'll use a rate of $0.13266 / kWh to calculate our cost savings. 
-
-We'll first use the hourly data downloaded from fortis, then we'll use the data from the actual bills.
-
-### Hourly data calculations
-
-From July 15, 2023 to `r max(all_data$day)` we've used `r final_summary$total_kw_consumed` kWh (from Fortis and solar combined).
-
-```{r echo = FALSE}
-gross_cost <- round(0.13266*final_summary$total_kw_consumed, 2)
-net_kw <- final_summary$total_kw_fortis_from_grid - final_summary$total_kw_solar_to_grid
-net_cost <- round(0.13266*net_kw, 2)
-savings <- gross_cost - net_cost
-```
-
-At the rate of 0.13266 / kWh, that would cost `r gross_cost` dollars.
-
-With net metering, we've only been charged for `r net_kw` kWh, which amounts to `r net_cost` dollars.
-
-> That's a savings of `r savings` dollars over `r max(all_data$day) - ymd("2022-07-15")` days, or about 3/4 of the year!
-
-Recall that this year we're likely to bank more than enough kWh from solar to cover the entire next winter, so we'll get even more savings this coming year!
-
-Recall also that we added an AirBnB at the same time as our solar, and it has increased our energy consumption, especially in the winter.  
-
-I'm excited to see what the summer brings!
-
-### Bill data calculations
+Let's see what our bills say so far...
 
 ```{r echo = FALSE}
 meter.data <- readr::read_csv("./rawdata/fortis_billing/meter_paid.csv", show_col_types = FALSE)
 ```
 
-Using data taken directly from bills:
-
 ```{r}
-meter.data
+kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to April 5 2023.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
+
 We can calculate what the cost would have been "real_cost" and what our savings were based on what we actually paid:
 
 ```{r echo = FALSE}
 meter.data <- meter.data %>%
   mutate(real_cost = kw_fortis_from_grid * rate,
          saving = real_cost - paid)
-meter.data
 ```
 
-So, based on billing numbers, the amount we would have had to pay since July 2022 is `r sum(meter.data$real_cost)`, what we actually paid was `r sum(meter.data$paid)`, and our savings were `r sum(meter.data$saving)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)` percent saving!
+```{r}
+kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to April 5 2023.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
+```
+
+So, based on billing numbers, the amount we would have had to pay since July 2022 is `r sum(meter.data$real_cost)`, what we actually paid was `r sum(meter.data$paid)`, and our savings were `r sum(meter.data$saving)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)` percent saving.
+
+That's not bad, but not as good as it will be!
 
 

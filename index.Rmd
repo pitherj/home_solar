@@ -11,6 +11,10 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 options(scipen = 999)
 ```
 
+```{css, echo=FALSE}
+pre, code {white-space:pre !important; overflow-x:auto}
+```
+
 ```{r libraries, message = FALSE, echo = FALSE}
 library(tidyverse)
 library(here)
@@ -300,7 +304,8 @@ Let's do some calculations on the hourly data.  Have a look a the data to start,
 ```{r echo = FALSE}
 all_data <- all_data %>% rename(kw_solar_gross_produced = kWh)
 all_data %>%
-  filter(day > ymd("2022-07-28") & day <= ymd("2022-07-29") & hour > 5 & hour < 22)
+  filter(day > ymd("2022-07-28") & day <= ymd("2022-07-29") & hour > 5 & hour < 22) %>% 
+  select(!date)
 ```
 
 Aside from the obvious ones (day, hour, date) we have the following fields: 
@@ -328,8 +333,7 @@ all_data <- all_data %>%
 
 ```{r echo = FALSE}
 all_data %>%
-  filter(day > ymd("2022-07-28") & day <= ymd("2022-07-29") & hour > 5 & hour < 22) %>%
-  select(-date)
+  filter(day > ymd("2022-07-28") & day <= ymd("2022-07-29") & hour > 5 & hour < 22)
 ```
 
 Next we'll calculate some summary statistics...

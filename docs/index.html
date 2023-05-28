@@ -11,11 +11,11 @@
 
 <meta name="author" content="Jason" />
 
-<meta name="date" content="2023-04-15" />
+<meta name="date" content="2023-05-28" />
 
 <title>House solar energy data analysis</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -111,8 +111,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -120,16 +120,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -249,7 +242,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">House solar energy data analysis</h1>
 <h4 class="author">Jason</h4>
-<h4 class="date">2023-04-15</h4>
+<h4 class="date">2023-05-28</h4>
 
 </div>
 
@@ -419,7 +412,7 @@ href="https://www.apsystemsema.com">AP Systems website</a>, and wrangles
 them into an appropriate (tidy) format.</p>
 <p>Here’s what the first few rows of the resulting data table looks
 like:</p>
-<pre><code>## # A tibble: 3,514 × 4
+<pre><code>## # A tibble: 4,179 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -432,7 +425,7 @@ like:</p>
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # … with 3,504 more rows</code></pre>
+## # ℹ 4,169 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure">
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="672" />
@@ -488,7 +481,7 @@ January 1, 2019!</p>
 have a look.</p>
 <p>Here’s what the first few rows of the June 1st onward data look
 like:</p>
-<pre><code>## # A tibble: 36,883 × 4
+<pre><code>## # A tibble: 38,067 × 4
 ##    day         hour kw_solar_to_grid kw_fortis_from_grid
 ##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt;
 ##  1 2019-01-01     0               NA               0.915
@@ -501,7 +494,7 @@ like:</p>
 ##  8 2019-01-01     7               NA               0.65 
 ##  9 2019-01-01     8               NA               0.4  
 ## 10 2019-01-01     9               NA               0.441
-## # … with 36,873 more rows</code></pre>
+## # ℹ 38,057 more rows</code></pre>
 <p>Let’s visualize the data to check for errors, first limiting the date
 to June 1 2022 and after:</p>
 <div class="figure">
@@ -622,29 +615,30 @@ grid (<code>kw_solar_to_grid</code>).</p>
 <code>kw_consumed_from_solar</code> plus
 <code>kw_fortis_from_grid</code>.</p>
 <pre><code>## # A tibble: 16 × 8
-##    day         hour kw_solar_to_grid kw_fortis_from_grid date                kw_solar_gross_produced kw_consumed_from_solar tot_kw_consumed
-##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt; &lt;dttm&gt;                                &lt;dbl&gt;                  &lt;dbl&gt;           &lt;dbl&gt;
-##  1 2022-07-29     6            0.056               0.659 2022-07-29 06:00:00                    0.41                  0.354           1.01 
-##  2 2022-07-29     7            1.01                0.015 2022-07-29 07:00:00                    1.63                  0.617           0.632
-##  3 2022-07-29     8            1.24                1.24  2022-07-29 08:00:00                    3.85                  2.61            3.85 
-##  4 2022-07-29     9            3.13                0.144 2022-07-29 09:00:00                    6.03                  2.9             3.04 
-##  5 2022-07-29    10            6.70                0     2022-07-29 10:00:00                    7.75                  1.05            1.05 
-##  6 2022-07-29    11            7.95                0     2022-07-29 11:00:00                    9.2                   1.25            1.25 
-##  7 2022-07-29    12            6.84                0     2022-07-29 12:00:00                    8.77                  1.93            1.93 
-##  8 2022-07-29    13            6.35                0     2022-07-29 13:00:00                    9.5                   3.15            3.15 
-##  9 2022-07-29    14            5.52                0.007 2022-07-29 14:00:00                    8.75                  3.23            3.24 
-## 10 2022-07-29    15            3.6                 0     2022-07-29 15:00:00                    7.67                  4.07            4.07 
-## 11 2022-07-29    16            2.17                0     2022-07-29 16:00:00                    5.36                  3.19            3.19 
-## 12 2022-07-29    17            0.388               0.813 2022-07-29 17:00:00                    2.69                  2.30            3.12 
-## 13 2022-07-29    18            0.006               1.20  2022-07-29 18:00:00                    0.98                  0.974           2.18 
-## 14 2022-07-29    19            0                   2.28  2022-07-29 19:00:00                    0.37                  0.37            2.65 
-## 15 2022-07-29    20            0                   1.18  2022-07-29 20:00:00                    0.09                  0.09            1.27 
-## 16 2022-07-29    21            0                   2.07  NA                                     0                     0               2.07</code></pre>
+##    day         hour kw_solar_to_grid kw_fortis_from_grid date                kw_solar_gross_produ…¹ kw_consumed_from_solar tot_kw_consumed
+##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt; &lt;dttm&gt;                               &lt;dbl&gt;                  &lt;dbl&gt;           &lt;dbl&gt;
+##  1 2022-07-29     6            0.056               0.659 2022-07-29 06:00:00                   0.41                  0.354           1.01 
+##  2 2022-07-29     7            1.01                0.015 2022-07-29 07:00:00                   1.63                  0.617           0.632
+##  3 2022-07-29     8            1.24                1.24  2022-07-29 08:00:00                   3.85                  2.61            3.85 
+##  4 2022-07-29     9            3.13                0.144 2022-07-29 09:00:00                   6.03                  2.9             3.04 
+##  5 2022-07-29    10            6.70                0     2022-07-29 10:00:00                   7.75                  1.05            1.05 
+##  6 2022-07-29    11            7.95                0     2022-07-29 11:00:00                   9.2                   1.25            1.25 
+##  7 2022-07-29    12            6.84                0     2022-07-29 12:00:00                   8.77                  1.93            1.93 
+##  8 2022-07-29    13            6.35                0     2022-07-29 13:00:00                   9.5                   3.15            3.15 
+##  9 2022-07-29    14            5.52                0.007 2022-07-29 14:00:00                   8.75                  3.23            3.24 
+## 10 2022-07-29    15            3.6                 0     2022-07-29 15:00:00                   7.67                  4.07            4.07 
+## 11 2022-07-29    16            2.17                0     2022-07-29 16:00:00                   5.36                  3.19            3.19 
+## 12 2022-07-29    17            0.388               0.813 2022-07-29 17:00:00                   2.69                  2.30            3.12 
+## 13 2022-07-29    18            0.006               1.20  2022-07-29 18:00:00                   0.98                  0.974           2.18 
+## 14 2022-07-29    19            0                   2.28  2022-07-29 19:00:00                   0.37                  0.37            2.65 
+## 15 2022-07-29    20            0                   1.18  2022-07-29 20:00:00                   0.09                  0.09            1.27 
+## 16 2022-07-29    21            0                   2.07  NA                                    0                     0               2.07 
+## # ℹ abbreviated name: ¹​kw_solar_gross_produced</code></pre>
 <p>Next we’ll calculate some summary statistics…</p>
 <hr />
 <div id="summary-data" class="section level3">
 <h3>Summary data</h3>
-<p>From July 8th to 2023-04-13 (last day of data), let’s calculate how
+<p>From July 8th to 2023-05-25 (last day of data), let’s calculate how
 much:</p>
 <ul>
 <li>total energy consumed from grid
@@ -684,19 +678,19 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-7574.92
+8283.33
 </td>
 <td style="text-align:right;">
-5801.54
+7872.68
 </td>
 <td style="text-align:right;">
-9674.56
+12203.58
 </td>
 <td style="text-align:right;">
-2940.15
+3617.05
 </td>
 <td style="text-align:right;">
-10515.06
+11900.38
 </td>
 </tr>
 </tbody>
@@ -728,19 +722,19 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-7494.53
+8202.94
 </td>
 <td style="text-align:right;">
-5801.54
+7872.68
 </td>
 <td style="text-align:right;">
-9130.78
+11659.81
 </td>
 <td style="text-align:right;">
-2940.15
+3617.05
 </td>
 <td style="text-align:right;">
-10434.68
+11819.99
 </td>
 </tr>
 </tbody>
@@ -898,11 +892,11 @@ total_kw_consumed
 </table>
 <p>Still a little off.</p>
 <p>A reminder of the amounts for the total period, July 15, 2022 through
-2023-04-13 (last day of data):</p>
+2023-05-25 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 Summary of energy production and consumption from 2022-07-15 to
-2023-04-13
+2023-05-25
 </caption>
 <thead>
 <tr>
@@ -926,25 +920,25 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-7494.53
+8202.94
 </td>
 <td style="text-align:right;">
-5801.54
+7872.68
 </td>
 <td style="text-align:right;">
-9130.78
+11659.81
 </td>
 <td style="text-align:right;">
-2940.15
+3617.05
 </td>
 <td style="text-align:right;">
-10434.68
+11819.99
 </td>
 </tr>
 </tbody>
 </table>
 <p>That’s pretty amazing… we’re through the most cloudy period of the
-year (Nov/Dec/Jan), and we produced almost 88% of our energy needs.</p>
+year (Nov/Dec/Jan), and we produced almost 99% of our energy needs.</p>
 <p>Even with the new addition, it seems likely that we’ll produce and
 bank enough energy (especially in spring/summer) to more than cover our
 annual needs.</p>

@@ -2,7 +2,12 @@
 title: "House solar energy data analysis"
 author: "Jason"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  rmdformats::robobook:
+    toc_depth: 2
+    toc_float: 
+      collapsed: FALSE
+    use_bookdown: TRUE
 fig_caption: TRUE
 ---
 
@@ -38,7 +43,7 @@ When we were researching solar panels for our house, we found lots of websites d
 
 To fill this gap, I've decided to share our own data!  
 
->Caveat: we built an addition (short-term rental) at the same time as installing the solar array, therefore these two factors are entirely conflated for my data analyses.  In other words, (until we get a current metre) I won't be able to directly compare our electricity consumption (or billing) data from before solar installation with after, because electricity used by the addition will be included.  
+>Caveat: we built an addition (short-term rental) at the same time as installing the solar array, therefore these two factors are entirely conflated for my data analyses.  In other words, until we get a current metre, I won't be able to directly compare our electricity consumption (or billing) data from before solar installation with after, because electricity used by the addition will be included.  
 
 ## Our household
 
@@ -84,14 +89,13 @@ Note that the flatter part of the roof extends over our patio.
 
 An added benefit of covering the south-facing roof with solar panels: the kids' dormer bedrooms are even cooler in the summer, because the panels are intercepting the energy before they hit the roof tiles. 
 
-### Cost
+## Installation cost
 
 The array with installation, including some angled mounting brackets for our flatter roof, cost just under `$25K`. This does not include the extra electrical upgrades we needed, which we were going to have to do anyways for the addition.  These upgrades included a new 200A panel, and a new meter with a new location on our lot.  These latter upgrades cost us about `$8K`, including electricity hookup etc...
 
 OK Solar led us through the Energy Audit process, which ultimately got us the full `$5K` rebate from the federal green homes initiative, plus the `$600` for the audit activities themselves.  
 
 So, for the solar array installation, the net cost was under `$20K` after rebates, but not including electrical upgrades.
-
 
 * * *
 
@@ -101,30 +105,27 @@ Fortis BC is our electricity provider, and like most places in North America, we
 
 As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, and uses a tiered charging system, such that the first 1600kWh are currently charged at `$0.12365/kWh`, and `$0.13713` for any kWh beyond that. They also charge a flat service / delivery fee of about $40 for the two months.  
 
+**NOTE** As of 2023, there doesn't appear to be a tiered billing system anymore.  It's fixed at **\$0.13266**.
+
 Be sure to consult their website to keep track of any updates to rates.  
 
 **Net metering** 
 
-Fortis BC has a [net metering program](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering), in which any energy produced by the solar array that is not used immediately on site is put back into the grid, and Fortis keeps track of this and "banks" the kWh on the account. In theory, Fortis then uses these banked amounts against future bills.  However, I have yet to receive a bills that correctly reflect this, and their [website that explains a net-metering bill](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5) shows a new bill format that looks nothing like mine... I'll update this website as soon as this is figured out.  
+Fortis BC has a [net metering program](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering), in which any energy produced by the solar array that is not used immediately on site is put back into the grid, and Fortis keeps track of this and "banks" the kWh on the account. In theory, Fortis then uses these banked amounts against future bills.   
 
-If we happen to have anything left in our "bank" at the end of March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to $0.10 / kWh.  Given our cloudy winters, it's unlikely we'll have anything left in the bank in March.
+Their [website explains what a net-metering bill looks like](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5).  
 
-**UPDATE March 10, 2023**
-The kWh we had banked from July 15 2022 onward were sufficient to offset demands through February 2023... see the [production/consumption section below](#production).
+If we happen to have anything left in our "bank" at the end of March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to $0.10 / kWh.  
 
 * * *
 
-## Power up!
+# Consumption and Production Data
 
 We officially started producing solar power on July 8, 2022, and net metering started on July 15, 2022.  So, between July 8 and July 15, the grid benefited from our solar output! 
 
-* * *
-
-# The Data!
-
 ## Solar energy production data
 
-I have another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd) that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into an appropriate (tidy) format.
+I have another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd) that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into an appropriate format.
 
 ```{r echo = FALSE}
 solar.data <- readr::read_csv("./outdata/solar_data.csv", show_col_types = FALSE)
@@ -173,7 +174,7 @@ solar.data %>%
   theme_bw()
 ```
 
-And FYI, Kelowna got an early winter... beginning of November saw more than 30cm of snow fall, and it STAYED!  Which meant that the solar panels were covered for the better part of 5 days.  I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun.  However, from November through February each year, Kelowna tends to be very grey... the clouds settle in the valley and just stay here. But it's often sunny at higher elevation.
+And FYI, in 2022 Kelowna got an early start to winter... beginning of November saw more than 30cm of snow fall, and it STAYED!  Which meant that the solar panels were covered for the better part of 5 days.  I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun.  However, from November through February each year, Kelowna tends to be very grey... the clouds settle in the valley and just stay here. But it's often sunny at higher elevation.  
 
 The sun started peaking out more in mid-January in the end, so we've had more energy production than anticipated!
 
@@ -181,19 +182,15 @@ The sun started peaking out more in mid-January in the end, so we've had more en
 
 ## Grid energy consumption data
 
-Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_electricity_data.Rmd) imports the raw Fortis energy consumption data for our account, downloaded from the FortisBC [website](www.fortisbc.com), and wrangles them into an appropriate (tidy) format.
+Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_electricity_data.Rmd) imports the raw Fortis energy consumption data for our account, downloaded from the FortisBC [website](www.fortisbc.com), and wrangles them into an appropriate format.  
+
+Annoyingly, these data downloaded from the Fortis portal do not necessarily line up with what Fortis actually uses for billing calculations; this is because they rely on our meter to communicate with them, which doesn't always happen, in which case they estimate consumption for billing.
 
 ```{r echo = FALSE}
 consumption.data <- readr::read_csv("./outdata/fortis_data.csv", show_col_types = FALSE)
 ```
 
-Unfortunately, I could only get historical consumption data back to June 1st, 2022. 
-
-Despite valiant efforts by a helpful Fortis customer service employee, Fortis was unable to provide me historical consumption data in any format that was readily usable.  They're working on improving this...
-
-**UPDATE Jan 2023** I now have hourly data going back to January 1, 2019!
-
-So we'll append the historical data to the more recent data, then have a look.
+I was able to get hourly data going back to January 1, 2019.
 
 ```{r echo = FALSE}
 historical.data <- readr::read_csv(here::here("outdata", "fortis_historical_data.csv"), show_col_types = FALSE)
@@ -202,8 +199,7 @@ consumption.data <- dplyr::bind_rows(historical.data, consumption.data)
 consumption.data <- consumption.data %>% rename(kw_solar_to_grid = kw_returned, kw_fortis_from_grid = kw_consumed)
 ```
 
-
-Here's what the first few rows of the June 1st onward data look like:
+Let's first look at last summer's data (2022), staring June 1st:
 
 ```{r}
 consumption.data
@@ -241,7 +237,7 @@ consumption.data %>%
   theme_bw()
 ```
 
-Note that the low consumption in June is due to data gaps, which are also a mystery to Fortis. 
+Note that the low consumption in June is due to data gaps, which are a mystery to Fortis. 
 
 The substantial increase in energy consumption in November was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do final upgrades at our house: replacing 4 windows and a door in the main house.  So, over the first 3 weeks of November, we were using more electricity than usual, and we had little sun for solar energy production. 
 
@@ -272,7 +268,7 @@ all_data %>%
 
 * * *
 
-### Historical data
+## Historical data
 
 Let's have a look at historical data for comparison
 
@@ -340,7 +336,7 @@ Next we'll calculate some summary statistics...
 
 * * *
 
-### Summary data
+## Summary data
 
 From July 8th to `r max(all_data$day)` (last day of data), let's calculate how much: 
 
@@ -478,18 +474,111 @@ kbl(final_summary, caption = paste("Summary of energy production and consumption
 
 That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost `r round(100*final_summary$total_kw_solar_gross_produced/final_summary$total_kw_consumed, 0)`% of our energy needs.
 
-Even with the new addition, it seems likely that we'll produce and bank enough energy (especially in spring/summer) to more than cover our annual needs.
+Even with the new addition, it seems possible that we'll produce and bank enough energy (especially in spring/summer) to more than cover our annual needs.  However, a key unknown is the added consumption caused by the A/C (heat pumps) in the short-term rental.
 
-Next we'll figure out money savings...
+Next we'll figure out money savings.
 
-## Financial costs/benefits
+* * *
 
-At this stage we won't have realized the full potential annual savings of the system, because we only started banking kWh on July 15th 2022.  Even though our total annual energy consumption has increased due to our AirBnB (from around 10mWh to what I estimate will be 14mWh), I anticipate we'll bank enough energy in the summer to cover all the winter demand.  If so, we'll be saving about $1900 per year.
+# Estimating the break-even point
 
-Let's see what our bills say so far...
+The **break-even point** (BEP) (or "payback period") is the time it takes for the energy savings to exceed the cost of installation. This [website](https://www.solar.com/learn/what-is-the-average-payback-period-for-solar-panels/) provides a useful description.  
+
+In its simplified form, BEP is calculated as:  
+
+(Initial cost of installation) / (Annual savings)
+
+However, annual savings depends on: 
+
+* the given year's billing rate, currently  (which is likely to increase annually). 
+* any interest paid on loans used to finance the initial installation. 
+* the performance of the solar (e.g. smoky summer skies may decrease savings)
+
+We don't yet have a full years' data to accurately estimate the last variable. 
+
+So, for now, we'll consider the following:  
+
+* initial cost of installation (\$20K)
+* interest rate for financing installation (for us, 3.24%)
+* estimated savings in first year (as shown below, \$1900)
+* estimated annual inflation in electricity cost (2.5%)
+
+I got ChatGPT to write me an R function to calculate BEP, and the function spits out the annual calculations:
+
+```
+payback_period <- function(initial_cost, annual_savings, annual_increase, interest_rate) {
+  years <- 0
+  annual_results <- data.frame(Year = integer(), Starting_Cost = numeric(), Savings = numeric(), Compound_Interest = numeric(), Ending_Cost = numeric())
+  
+  while (initial_cost > 0) {
+    years <- years + 1
+    compound_interest <- initial_cost * interest_rate
+    starting_cost <- initial_cost
+    savings <- annual_savings
+    initial_cost <- initial_cost - annual_savings + compound_interest
+    ending_cost <- initial_cost
+    annual_savings <- annual_savings * (1 + annual_increase)
+    annual_results[years,] <- c(years, starting_cost, savings, compound_interest, ending_cost)
+  }
+  
+  colnames(annual_results) <- c("Year", "Starting Cost", "Savings", "Compound Interest", "Ending Cost")
+  
+  return(list(years = years, annual_results = annual_results))
+}
+```
+
+The arguments for the function: 
+
+* initial_cost: the initial cost of the solar panels installation.  
+* annual_savings: the amount of money saved in the first year on electricity.  
+* annual_increase: the annual percentage increase in the cost of electricity.  
+* interest_rate: the annual interest rate on the financing.  
+
+```{r, echo = FALSE}
+
+payback_period <- function(initial_cost, annual_savings, annual_increase, interest_rate) {
+  years <- 0
+  annual_results <- data.frame(Year = integer(), Starting_Cost = numeric(), Savings = numeric(), Compound_Interest = numeric(), Ending_Cost = numeric())
+  
+  while (initial_cost > 0) {
+    years <- years + 1
+    compound_interest <- initial_cost * interest_rate
+    starting_cost <- initial_cost
+    savings <- annual_savings
+    initial_cost <- initial_cost - annual_savings + compound_interest
+    ending_cost <- initial_cost
+    annual_savings <- annual_savings * (1 + annual_increase)
+    annual_results[years,] <- c(years, starting_cost, savings, compound_interest, ending_cost)
+  }
+  
+  colnames(annual_results) <- c("Year", "Starting Cost", "Savings", "Compound Interest", "Ending Cost")
+  
+  return(list(years = years, annual_results = annual_results))
+}
+```
+
+* * *
+
+A few important points to consider prior to estimating our BEP:  
+
+* our BEP will be longer than normal, because we added a 500 ft$^{2}$ short-term rental to our house at the same time we added solar. I hope to install a current meter so that we can directly measure energy use in the rental.  For now, and based on data so far, I estimate that the short-term rental will increase our annual electricity consumption by around 40%. So, our BEP will be longer because we need to make up for our additional energy demands.  
+
+* even though we have high efficiency heat pumps for heating and cooling the rental, the unit consumes more energy than one might expect... probably because when people are on vacation, being energy conscious (like we are in our house) is not top of mind.  
+
+* at this early stage we haven't realized the full benefits of the solar system, because we only started banking kWh on July 15th 2022. I anticipate we'll bank enough energy in the summer to cover all the winter demand. If so, we'll be saving about $1900 per year.  However, a major source of uncertainty is how much energy the rental unit will use in the summer (due to cooling demands on heat pumps)  
+
+* the current billing rate from Fortis is 0.13266 per kWh.  
+
+* * *
+
+### Billing data 
+
+Let's first see what our bills say so far...
 
 ```{r echo = FALSE}
 meter.data <- readr::read_csv("./rawdata/fortis_billing/meter_paid.csv", show_col_types = FALSE)
+meter.data <- meter.data %>%
+  select(bill_date, kw_fortis_from_grid, kw_solar_to_grid, bank_reading, meter_reading, rate, paid)
 ```
 
 ```{r}
@@ -503,7 +592,8 @@ We can calculate what the cost would have been "real_cost" and what our savings 
 ```{r echo = FALSE}
 meter.data <- meter.data %>%
   mutate(real_cost = kw_fortis_from_grid * rate,
-         saving = real_cost - paid)
+         saving = real_cost - paid) %>%
+  select(bill_date, kw_fortis_from_grid, kw_solar_to_grid, bank_reading, meter_reading, rate, real_cost, paid, saving)
 ```
 
 ```{r}
@@ -512,8 +602,58 @@ kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to April
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So, based on billing numbers, the amount we would have had to pay since July 2022 is `r sum(meter.data$real_cost)`, what we actually paid was `r sum(meter.data$paid)`, and our savings were `r sum(meter.data$saving)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)` percent saving.
+So, based on billing numbers, the amount we would have had to pay since July 2022 is \$`r round(sum(meter.data$real_cost),2)`, what we actually paid was \$`r round(sum(meter.data$paid), 2)`, and our savings were \$`r round(sum(meter.data$saving), 2)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)`% saving.
 
 That's not bad, but not as good as it will be!
 
+* * *
+
+### Calculate BEP
+
+Now we'll use our function to estimate the BEP.
+
+To reiterate, we don't yet have a years' worth of data to accurately estimate the initial year of savings. AND, we're using around 40% more electricity than we did before installing solar (due to short term rental)...
+
+So, we'll explore a few scenarios, all of which assume an inflation rate of 2.5% (this can be varied also...), use the financing interest rate of 3.24%, and initial installation cost of \$20K. 
+
+We assume that there's no banked kWh left for payback at the end of the year.
+
+(1) Assume we produce enough solar to cover annual needs; At the current billing rate of \$0.13266/kWh, and estimating we'll consume 14mWh, this translates to \$1857.24 / yr savings.
+
+(2) Assume we cover 80% of needs, which results in \$1485.79 savings
+
+(3) Assume we cover 70% of needs, which results in \$1300.07 savings.
+
+Here we go:
+
+```{r echo = FALSE}
+
+result <- as.data.frame(rbind(
+  payback_period(20000, 1857.24, 0.025, 0.0324)$annual_results[, c("Year", "Ending Cost")],
+  payback_period(20000, 1485.79, 0.025, 0.0324)$annual_results[, c("Year", "Ending Cost")],
+  payback_period(20000, 1300.07, 0.025, 0.0324)$annual_results[, c("Year", "Ending Cost")]))
+result$Scenario <- as.factor(c(
+  rep(1, payback_period(20000, 1857.24, 0.025, 0.0324)$years),
+  rep(2, payback_period(20000, 1485.79, 0.025, 0.0324)$years),
+  rep(3, payback_period(20000, 1300.07, 0.025, 0.0324)$years)
+))
+```
+
+```{r}
+ggplot(result, aes(x = Year, y = `Ending Cost`, color = Scenario)) +
+  geom_hline(yintercept = 0, size = 1, color = "black") +
+  geom_line() +
+  xlab("Year") +
+  ylab("Year-end balance ($)") +
+  scale_x_continuous(breaks = seq(0, 20, 2)) +
+  ylim(-1200, 20000) +
+  theme_bw()
+
+```
+
+So for now, the optimistic estimate for BEP is just under 12 years.  
+
+The estimates for the BEP if we didn't have the short-term rental (a more reasonable scenario for most folks) require a bit more work...
+
+Stay tuned - I'll update these numbers as we get more data!
 

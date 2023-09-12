@@ -103,9 +103,7 @@ So, for the solar array installation, the net cost was under `$20K` after rebate
 
 Fortis BC is our electricity provider, and like most places in North America, we don't have a choice about who we purchase electricity from.
 
-As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, and uses a tiered charging system, such that the first 1600kWh are currently charged at `$0.12365/kWh`, and `$0.13713` for any kWh beyond that. They also charge a flat service / delivery fee of about $40 for the two months.  
-
-**NOTE** As of 2023, there doesn't appear to be a tiered billing system anymore.  It's fixed at **\$0.13266**.
+As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, as of 2023, they charge at a fixed rate of **\$0.13266**.
 
 Be sure to consult their website to keep track of any updates to rates.  
 
@@ -380,6 +378,24 @@ kbl(begin.tot2, caption = "Summary of energy production and consumption from Jul
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
+Now do for one full year of data, July 15 2022 through July 14, 2023 inclusive.
+
+```{r tots, echo = FALSE}
+year.tot <- all_data %>%
+  filter(day >= ymd("2022-07-15") & day <= ymd("2023-07-14")) %>%
+  summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),
+            total_kw_solar_to_grid = sum(kw_solar_to_grid, na.rm = TRUE),
+            total_kw_solar_gross_produced = sum(kw_solar_gross_produced, na.rm = TRUE),
+            total_kw_solar_used = sum(kw_consumed_from_solar, na.rm = TRUE),
+            total_kw_consumed = sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE))
+```
+
+```{r}
+kbl(year.tot, caption = "Summary of energy production and consumption from July 15 2022 to July 14, 2023.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
+```
+
 * * *
 
 ## Check bill numbers
@@ -493,8 +509,7 @@ However, annual savings depends on:
 * the given year's billing rate, currently  (which is likely to increase annually). 
 * any interest paid on loans used to finance the initial installation. 
 * the performance of the solar (e.g. smoky summer skies may decrease savings)
-
-We don't yet have a full years' data to accurately estimate the last variable. 
+* how much electricity one used on average
 
 So, for now, we'll consider the following:  
 
@@ -582,7 +597,7 @@ meter.data <- meter.data %>%
 ```
 
 ```{r}
-kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to April 5 2023.", 
+kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to July 25 2023.", 
     booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
@@ -597,7 +612,7 @@ meter.data <- meter.data %>%
 ```
 
 ```{r}
-kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to April 5 2023.", 
+kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to uly 25 2023.", 
     booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```

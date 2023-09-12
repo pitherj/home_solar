@@ -133,9 +133,10 @@
           <li><a href="#solar-energy-production-data" id="toc-solar-energy-production-data"><span class="toc-section-number">2.1</span> Solar energy production data</a></li>
           <li><a href="#grid-energy-consumption-data" id="toc-grid-energy-consumption-data"><span class="toc-section-number">2.2</span> Grid energy consumption data</a></li>
           <li><a href="#historical-data" id="toc-historical-data"><span class="toc-section-number">2.3</span> Historical data</a></li>
-          <li><a href="#production" id="toc-production"><span class="toc-section-number">2.4</span> Calculate total production and consumption</a></li>
-          <li><a href="#summary-data" id="toc-summary-data"><span class="toc-section-number">2.5</span> Summary data</a></li>
-          <li><a href="#check-bill-numbers" id="toc-check-bill-numbers"><span class="toc-section-number">2.6</span> Check bill numbers</a></li>
+          <li><a href="#average-annual-consumption-hist_consumption." id="toc-average-annual-consumption-hist_consumption."><span class="toc-section-number">2.4</span> Average annual consumption {#hist_consumption}.</a></li>
+          <li><a href="#production" id="toc-production"><span class="toc-section-number">2.5</span> Calculate total production and consumption</a></li>
+          <li><a href="#summary-data" id="toc-summary-data"><span class="toc-section-number">2.6</span> Summary data</a></li>
+          <li><a href="#check-bill-numbers" id="toc-check-bill-numbers"><span class="toc-section-number">2.7</span> Check bill numbers</a></li>
           </ul></li>
           <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">3</span> Estimating the break-even point</a></li>
           </ul>
@@ -190,7 +191,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 </div>
 <div id="household-energy-consumption" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> Household energy consumption</h2>
-<p>Our typical annual household energy consumption was about 10,000 kWh. We’ll show the data for this in a bit…</p>
+<p>Our typical annual household energy consumption was about 9700 kWh. We’ll show the data for this in a later <a href="#hist_consumption">section</a>.</p>
 <p>We heat our house with an efficient gas furnace, so the laundry drier and electric stove/oven are probably the biggest consumers of electricity throughout the year. In the summer, air conditioning draws more. Of course we use A/C mostly when solar production should be greatest…</p>
 <hr />
 </div>
@@ -327,10 +328,74 @@ Figure 2.6: Figure 6: Daily energy consumption (kWh) for our house, starting Jan
 </div>
 <p>Yikes! Despite not being rented out much, the new short-term rental clearly increased our electricity consumption during the cold snap at the end of December 2022, relative to the preceding 3 winters. However, we were still trying to figure out the optimal way to maintain a low temperature (10 degrees) while the suite was unoccupied. The heat pumps work very hard to keep the place warm when it’s -10 or lower outside.</p>
 <p>We’ll have to see how we do next winter, and depending on occupancy!</p>
+</div>
+<div id="average-annual-consumption-hist_consumption." class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Average annual consumption {#hist_consumption}.</h2>
+<p>We have historical consumption data dating back to January 1st 2019. So let’s calculate annual consumption for the years since then, using the calendar year as the timeframe:</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-9">Table 2.1: </span>Historical annual (calendar year) electricity consumption.
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+tot_kWh_used
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+9112
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+9776
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+9826
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+9742
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+4954
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the year 2023 is not yet finished, and in 2022 is when we installed the solar.</p>
+<p>So, around 9400 kWh was our typical annual electricity consumption, which is a bit lower than average household consumption <a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&amp;pickMembers%5B0%5D=1.1&amp;pickMembers%5B1%5D=3.2&amp;cubeTimeFrame.startYear=2017&amp;cubeTimeFrame.endYear=2019&amp;referencePeriods=20170101%2C20190101">across the country</a>.</p>
+<p>One important implication of this is that it will take us longer than average to reach the “break even point” on our solar system, simply because we use less electricity annually than a typical household.</p>
 <hr />
 </div>
-<div id="production" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> Calculate total production and consumption</h2>
+<div id="production" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Calculate total production and consumption</h2>
 <p>Let’s do some calculations on the hourly data. Have a look a the data to start, taking a sample of records from July 28th, 2022:</p>
 <pre><code>## # A tibble: 16 × 5
 ##    day         hour kw_solar_to_grid kw_fortis_from_grid kw_solar_gross_produced
@@ -365,30 +430,29 @@ Figure 2.6: Figure 6: Daily energy consumption (kWh) for our house, starting Jan
 <p>This is calculated as the gross solar produced (<code>kw_solar_gross_produced</code>) minus the energy returned to the grid (<code>kw_solar_to_grid</code>).</p>
 <p>We’ll then calculate the total energy consumed (<code>tot_kw_consumed</code>), which equals <code>kw_consumed_from_solar</code> plus <code>kw_fortis_from_grid</code>.</p>
 <pre><code>## # A tibble: 16 × 8
-##    day         hour kw_solar_to_grid kw_fortis_from_grid date                kw_solar_gross_produced
-##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt; &lt;dttm&gt;                                &lt;dbl&gt;
-##  1 2022-07-29     6            0.056               0.659 2022-07-29 06:00:00                    0.41
-##  2 2022-07-29     7            1.01                0.015 2022-07-29 07:00:00                    1.63
-##  3 2022-07-29     8            1.24                1.24  2022-07-29 08:00:00                    3.85
-##  4 2022-07-29     9            3.13                0.144 2022-07-29 09:00:00                    6.03
-##  5 2022-07-29    10            6.70                0     2022-07-29 10:00:00                    7.75
-##  6 2022-07-29    11            7.95                0     2022-07-29 11:00:00                    9.2 
-##  7 2022-07-29    12            6.84                0     2022-07-29 12:00:00                    8.77
-##  8 2022-07-29    13            6.35                0     2022-07-29 13:00:00                    9.5 
-##  9 2022-07-29    14            5.52                0.007 2022-07-29 14:00:00                    8.75
-## 10 2022-07-29    15            3.6                 0     2022-07-29 15:00:00                    7.67
-## 11 2022-07-29    16            2.17                0     2022-07-29 16:00:00                    5.36
-## 12 2022-07-29    17            0.388               0.813 2022-07-29 17:00:00                    2.69
-## 13 2022-07-29    18            0.006               1.20  2022-07-29 18:00:00                    0.98
-## 14 2022-07-29    19            0                   2.28  2022-07-29 19:00:00                    0.37
-## 15 2022-07-29    20            0                   1.18  2022-07-29 20:00:00                    0.09
-## 16 2022-07-29    21            0                   2.07  NA                                     0   
-## # ℹ 2 more variables: kw_consumed_from_solar &lt;dbl&gt;, tot_kw_consumed &lt;dbl&gt;</code></pre>
+##    day         hour kw_solar_to_grid kw_fortis_from_grid date                kw_solar_gross_produced kw_consumed_from_solar tot_kw_consumed
+##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt; &lt;dttm&gt;                                &lt;dbl&gt;                  &lt;dbl&gt;           &lt;dbl&gt;
+##  1 2022-07-29     6            0.056               0.659 2022-07-29 06:00:00                    0.41                  0.354           1.01 
+##  2 2022-07-29     7            1.01                0.015 2022-07-29 07:00:00                    1.63                  0.617           0.632
+##  3 2022-07-29     8            1.24                1.24  2022-07-29 08:00:00                    3.85                  2.61            3.85 
+##  4 2022-07-29     9            3.13                0.144 2022-07-29 09:00:00                    6.03                  2.9             3.04 
+##  5 2022-07-29    10            6.70                0     2022-07-29 10:00:00                    7.75                  1.05            1.05 
+##  6 2022-07-29    11            7.95                0     2022-07-29 11:00:00                    9.2                   1.25            1.25 
+##  7 2022-07-29    12            6.84                0     2022-07-29 12:00:00                    8.77                  1.93            1.93 
+##  8 2022-07-29    13            6.35                0     2022-07-29 13:00:00                    9.5                   3.15            3.15 
+##  9 2022-07-29    14            5.52                0.007 2022-07-29 14:00:00                    8.75                  3.23            3.24 
+## 10 2022-07-29    15            3.6                 0     2022-07-29 15:00:00                    7.67                  4.07            4.07 
+## 11 2022-07-29    16            2.17                0     2022-07-29 16:00:00                    5.36                  3.19            3.19 
+## 12 2022-07-29    17            0.388               0.813 2022-07-29 17:00:00                    2.69                  2.30            3.12 
+## 13 2022-07-29    18            0.006               1.20  2022-07-29 18:00:00                    0.98                  0.974           2.18 
+## 14 2022-07-29    19            0                   2.28  2022-07-29 19:00:00                    0.37                  0.37            2.65 
+## 15 2022-07-29    20            0                   1.18  2022-07-29 20:00:00                    0.09                  0.09            1.27 
+## 16 2022-07-29    21            0                   2.07  NA                                     0                     0               2.07</code></pre>
 <p>Next we’ll calculate some summary statistics…</p>
 <hr />
 </div>
-<div id="summary-data" class="section level2" number="2.5">
-<h2><span class="header-section-number">2.5</span> Summary data</h2>
+<div id="summary-data" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Summary data</h2>
 <p>From July 8th to 2023-09-07 (last day of data), let’s calculate how much:</p>
 <ul>
 <li>total energy consumed from grid (<code>total_kw_fortis_from_grid</code>)</li>
@@ -399,7 +463,7 @@ Figure 2.6: Figure 6: Daily energy consumption (kWh) for our house, starting Jan
 </ul>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-13">Table 2.1: </span>Summary of energy production and consumption from July 8 2022 onward.
+<span id="tab:unnamed-chunk-14">Table 2.2: </span>Summary of energy production and consumption from July 8 2022 onward.
 </caption>
 <thead>
 <tr>
@@ -443,7 +507,7 @@ total_kw_consumed
 <p>Do the same for when we started net metering (July 15)</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-14">Table 2.2: </span>Summary of energy production and consumption from July 15 2022 onward.
+<span id="tab:unnamed-chunk-15">Table 2.3: </span>Summary of energy production and consumption from July 15 2022 onward.
 </caption>
 <thead>
 <tr>
@@ -487,7 +551,7 @@ total_kw_consumed
 <p>Now do for one full year of data, July 15 2022 through July 14, 2023 inclusive.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-15">Table 2.3: </span>Summary of energy production and consumption from July 15 2022 to July 14, 2023.
+<span id="tab:unnamed-chunk-16">Table 2.4: </span>Summary of energy production and consumption from July 15 2022 to July 14, 2023.
 </caption>
 <thead>
 <tr>
@@ -530,14 +594,14 @@ total_kw_consumed
 </table>
 <hr />
 </div>
-<div id="check-bill-numbers" class="section level2" number="2.6">
-<h2><span class="header-section-number">2.6</span> Check bill numbers</h2>
+<div id="check-bill-numbers" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Check bill numbers</h2>
 <p>Let’s check the data reported on the bill for July 28th through September 28, 2022.</p>
 <p>According to the Fortis bill, we consumed 875 kWh from the grid over that 62 days, and we delivered 2674 kWh back to the grid over that same period.</p>
 <p>Using the data downloaded from our solar system and the hourly consumption data downloaded directly from the Fortis website, we get the following numbers:</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-17">Table 2.4: </span>Summary of energy production and consumption from July 29 to Sept 28 2022, inclusive.
+<span id="tab:unnamed-chunk-18">Table 2.5: </span>Summary of energy production and consumption from July 29 to Sept 28 2022, inclusive.
 </caption>
 <thead>
 <tr>
@@ -582,7 +646,7 @@ total_kw_consumed
 <p>Now let’s check Sept 29 to Nov 28, which shows 1929 kWh consumed, and 921 kWh returned.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-19">Table 2.5: </span>Summary of energy production and consumption from Sept 29 to Nov 28 2022, inclusive.
+<span id="tab:unnamed-chunk-20">Table 2.6: </span>Summary of energy production and consumption from Sept 29 to Nov 28 2022, inclusive.
 </caption>
 <thead>
 <tr>
@@ -627,7 +691,7 @@ total_kw_consumed
 <p>Now let’s check Nov 29 to Jan 28, which were extremely cloudy months… it shows 2712 kWh consumed, and 123 kWh returned.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-21">Table 2.6: </span>Summary of energy production and consumption from Nov 29 2022 to Jan 28 2023, inclusive.
+<span id="tab:unnamed-chunk-22">Table 2.7: </span>Summary of energy production and consumption from Nov 29 2022 to Jan 28 2023, inclusive.
 </caption>
 <thead>
 <tr>
@@ -672,7 +736,7 @@ total_kw_consumed
 <p>A reminder of the amounts for the total period, July 15, 2022 through 2023-09-07 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-23">Table 2.7: </span>Summary of energy production and consumption from 2022-07-15 to 2023-09-07
+<span id="tab:unnamed-chunk-24">Table 2.8: </span>Summary of energy production and consumption from 2022-07-15 to 2023-09-07
 </caption>
 <thead>
 <tr>
@@ -782,7 +846,7 @@ total_kw_consumed
 <p>Let’s first see what our bills say so far…</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-26">Table 3.1: </span>Summary of data from bills from July 28 2022 to July 25 2023.
+<span id="tab:unnamed-chunk-27">Table 3.1: </span>Summary of data from bills from July 28 2022 to July 25 2023.
 </caption>
 <thead>
 <tr>
@@ -976,7 +1040,7 @@ paid
 <p>We can calculate what the cost would have been “real_cost” and what our savings were based on what we actually paid:</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-28">Table 3.2: </span>Summary of data from bills from July 28 2022 to uly 25 2023.
+<span id="tab:unnamed-chunk-29">Table 3.2: </span>Summary of data from bills from July 28 2022 to uly 25 2023.
 </caption>
 <thead>
 <tr>
@@ -1231,7 +1295,7 @@ saving
 <li><p>Assume we cover 70% of needs, which results in $1300.07 savings.</p></li>
 </ol>
 <p>Here we go:</p>
-<p><img src="index_files/figure-html/unnamed-chunk-30-1.png" width="768" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-31-1.png" width="768" /></p>
 <p>So for now, the optimistic estimate for BEP is just under 12 years.</p>
 <p>The estimates for the BEP if we didn’t have the short-term rental (a more reasonable scenario for most folks) require a bit more work…</p>
 <p>Stay tuned - I’ll update these numbers as we get more data!</p>

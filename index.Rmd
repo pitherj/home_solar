@@ -380,7 +380,7 @@ kbl(begin.tot2, caption = "Summary of energy production and consumption from Jul
 
 Now do for one full year of data, July 15 2022 through July 14, 2023 inclusive.
 
-```{r tots, echo = FALSE}
+```{r tots2, echo = FALSE}
 year.tot <- all_data %>%
   filter(day >= ymd("2022-07-15") & day <= ymd("2023-07-14")) %>%
   summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),

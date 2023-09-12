@@ -65,7 +65,7 @@ In November 2022 we replaced the remaining old, large windows on the main floor 
 
 ## Household energy consumption 
 
-Our typical annual household energy consumption was about 9700 kWh. We'll show the data for this in a later [section](#hist_consumption).
+Our typical annual household energy consumption was about 9500 kWh. We'll show the data for this in a later [section](#hist_consumption).  For reference, this StatsCan [website](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=3.2&cubeTimeFrame.startYear=2017&cubeTimeFrame.endYear=2019&referencePeriods=20170101%2C20190101) has data about household energy consumption from across Canada.
 
 We heat our house with an efficient gas furnace, so the laundry drier and electric stove/oven are probably the biggest consumers of electricity throughout the year. In the summer, air conditioning draws more. Of course we use A/C mostly when solar production should be greatest...  
 
@@ -289,7 +289,7 @@ Yikes!  Despite not being rented out much, the new short-term rental clearly inc
 
 We'll have to see how we do next winter, and depending on occupancy!  
 
-## Average annual consumption {#hist_consumption}. 
+## Average annual consumption {#hist_consumption}
 
 We have historical consumption data dating back to January 1st 2019.  So let's calculate annual consumption for the years since then, using the calendar year as the timeframe:
 
@@ -308,7 +308,7 @@ kbl(annual_hist_cons, caption = "Historical annual (calendar year) electricity c
 
 Note that the year 2023 is not yet finished, and in 2022 is when we installed the solar.  
 
-So, around 9400 kWh was our typical annual electricity consumption, which is a bit lower than average household consumption [across the country](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=3.2&cubeTimeFrame.startYear=2017&cubeTimeFrame.endYear=2019&referencePeriods=20170101%2C20190101).
+So, averaging consumption for 2019 through 2021, `r round(mean(annual_hist_cons$tot_kWh_used[1:3]), 0)` kWh was our typical annual electricity consumption, which is a bit lower than average household consumption [across the country](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=3.2&cubeTimeFrame.startYear=2017&cubeTimeFrame.endYear=2019&referencePeriods=20170101%2C20190101).
 
 One important implication of this is that it will take us longer than average to reach the "break even point" on our solar system, simply because we use less electricity annually than a typical household.
 

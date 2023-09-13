@@ -421,75 +421,9 @@ kbl(year.tot, caption = "Summary of energy production and consumption from July 
 
 * * *
 
-## Check bill numbers
+## Check bill and net metering numbers
 
-Let's check the data reported on the bill for July 28th through September 28, 2022.
-
-According to the Fortis bill, we consumed 875 kWh from the grid over that 62 days, and we delivered 2674 kWh back to the grid over that same period.
-
-Using the data downloaded from our solar system and the hourly consumption data downloaded directly from the Fortis website, we get the following numbers:
-
-```{r, echo = FALSE}
-tot3 <- all_data %>%
-  filter(day > ymd("2022-07-28") & day <= ymd("2022-09-28")) %>%
-  summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),
-            total_kw_solar_to_grid = sum(kw_solar_to_grid, na.rm = TRUE),
-            total_kw_solar_gross_produced = sum(kw_solar_gross_produced, na.rm = TRUE),
-            total_kw_solar_used = sum(kw_consumed_from_solar, na.rm = TRUE),
-            total_kw_consumed = sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE))
-```
-
-
-```{r}
-kbl(tot3, caption = "Summary of energy production and consumption from July 29 to Sept 28 2022, inclusive.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
-  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
-```
-
-So, a little off, but not too bad.  
-
-Now let's check Sept 29 to Nov 28, which shows 1929 kWh consumed, and 921 kWh returned. 
-
-
-```{r, echo = FALSE}
-tot4 <- all_data %>%
-  filter(day > ymd("2022-09-28") & day <= ymd("2022-11-28")) %>%
-  summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),
-            total_kw_solar_to_grid = sum(kw_solar_to_grid, na.rm = TRUE),
-            total_kw_solar_gross_produced = sum(kw_solar_gross_produced, na.rm = TRUE),
-            total_kw_solar_used = sum(kw_consumed_from_solar, na.rm = TRUE),
-            total_kw_consumed = sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE))
-```
-
-```{r}
-kbl(tot4, caption = "Summary of energy production and consumption from Sept 29 to Nov 28 2022, inclusive.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
-  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
-```
-
-A little off again...
-
-Now let's check Nov 29 to Jan 28, which were extremely cloudy months... it shows 2712 kWh consumed, and 123 kWh returned. 
-
-
-```{r, echo = FALSE}
-tot5 <- all_data %>%
-  filter(day > ymd("2022-11-28") & day <= ymd("2023-01-28")) %>%
-  summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),
-            total_kw_solar_to_grid = sum(kw_solar_to_grid, na.rm = TRUE),
-            total_kw_solar_gross_produced = sum(kw_solar_gross_produced, na.rm = TRUE),
-            total_kw_solar_used = sum(kw_consumed_from_solar, na.rm = TRUE),
-            total_kw_consumed = sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE))
-```
-
-
-```{r}
-kbl(tot5, caption = "Summary of energy production and consumption from Nov 29 2022 to Jan 28 2023, inclusive.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
-  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
-```
-
-Still a little off.
+This is in progress ... 
 
 A reminder of the amounts for the total period, July 15, 2022 through `r max(all_data$day)` (last day of data):
 
@@ -511,9 +445,18 @@ kbl(final_summary, caption = paste("Summary of energy production and consumption
 ```
 
 
-That's pretty amazing... we're through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost `r round(100*final_summary$total_kw_solar_gross_produced/final_summary$total_kw_consumed, 0)`% of our energy needs.
+Our latest bill (from May 25 to July 17, 2023) shows our net metering "bank" has a balance of 3419kWh.  That's huge. 
 
-Even with the new addition, it seems possible that we'll produce and bank enough energy (especially in spring/summer) to more than cover our annual needs.  However, a key unknown is the added consumption caused by the A/C (heat pumps) in the short-term rental.
+```{r}
+new_net <- all_data %>%
+  filter(day > "2023-07-17") %>%
+  summarise(excess_kWh  = sum(kw_solar_gross_produced, na.rm = TRUE) -  (sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE)))
+```
+
+
+And based on our solar and downloaded Fortis data, since July 17th we have produced a net amount of `r new_net$excess_kWh`.  Adding this to the existing bank balance we get `r new_net$excess_kWh + 3419` kWh banked.
+
+This looks promising to be able to more than cover the upcoming cloudier winter months when energy demand exceeds solar production!
 
 Next we'll figure out money savings.
 
@@ -609,7 +552,7 @@ A few important points to consider prior to estimating our BEP:
 
 * * *
 
-### Billing data 
+## Billing data 
 
 Let's first see what our bills say so far...
 
@@ -620,7 +563,7 @@ meter.data <- meter.data %>%
 ```
 
 ```{r}
-kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to July 25 2023.", 
+kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to July 17 2023.", 
     booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
@@ -635,22 +578,22 @@ meter.data <- meter.data %>%
 ```
 
 ```{r}
-kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to uly 25 2023.", 
+kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to July 17 2023.", 
     booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
 So, based on billing numbers, the amount we would have had to pay since July 2022 is \$`r round(sum(meter.data$real_cost),2)`, what we actually paid was \$`r round(sum(meter.data$paid), 2)`, and our savings were \$`r round(sum(meter.data$saving), 2)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)`% saving.
 
-That's not bad, but not as good as it will be!
+That's not bad!
 
 * * *
 
-### Calculate BEP
+## Calculate BEP
 
 Now we'll use our function to estimate the BEP.
 
-To reiterate, we don't yet have a years' worth of data to accurately estimate the initial year of savings. AND, we're using around 40% more electricity than we did before installing solar (due to short term rental)...
+To reiterate, we don't yet have sufficient data to accurately estimate savings, because unlike last summer, when we only started solar in mid-July, this year we have banked a lot of solar energy from the entire  summer that will be used against energy needs this winter. AND, this winter we'll have more typical occupancy of our short-term rental (last year we only started renting it out in December).
 
 So, we'll explore a few scenarios, all of which assume an inflation rate of 2.5% (this can be varied also...), use the financing interest rate of 3.24%, and initial installation cost of \$20K. 
 
@@ -691,7 +634,7 @@ ggplot(result, aes(x = Year, y = `Ending Cost`, color = Scenario)) +
 
 So for now, the optimistic estimate for BEP is just under 12 years.  
 
-The estimates for the BEP if we didn't have the short-term rental (a more reasonable scenario for most folks) require a bit more work...
+Recall that these BEP times are shorter than they would be for a typical household, because we generally consume less energy yearly than a typical household.
 
 Stay tuned - I'll update these numbers as we get more data!
 

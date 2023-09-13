@@ -136,9 +136,13 @@
           <li><a href="#hist_consumption" id="toc-hist_consumption"><span class="toc-section-number">2.4</span> Average annual consumption</a></li>
           <li><a href="#production" id="toc-production"><span class="toc-section-number">2.5</span> Calculate total production and consumption</a></li>
           <li><a href="#summary-data" id="toc-summary-data"><span class="toc-section-number">2.6</span> Summary data</a></li>
-          <li><a href="#check-bill-numbers" id="toc-check-bill-numbers"><span class="toc-section-number">2.7</span> Check bill numbers</a></li>
+          <li><a href="#check-bill-and-net-metering-numbers" id="toc-check-bill-and-net-metering-numbers"><span class="toc-section-number">2.7</span> Check bill and net metering numbers</a></li>
           </ul></li>
-          <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">3</span> Estimating the break-even point</a></li>
+          <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">3</span> Estimating the break-even point</a>
+          <ul>
+          <li><a href="#billing-data" id="toc-billing-data"><span class="toc-section-number">3.1</span> Billing data</a></li>
+          <li><a href="#calculate-bep" id="toc-calculate-bep"><span class="toc-section-number">3.2</span> Calculate BEP</a></li>
+          </ul></li>
           </ul>
         </nav>
         <ul class="authors">
@@ -594,149 +598,13 @@ total_kw_consumed
 </table>
 <hr />
 </div>
-<div id="check-bill-numbers" class="section level2" number="2.7">
-<h2><span class="header-section-number">2.7</span> Check bill numbers</h2>
-<p>Let’s check the data reported on the bill for July 28th through September 28, 2022.</p>
-<p>According to the Fortis bill, we consumed 875 kWh from the grid over that 62 days, and we delivered 2674 kWh back to the grid over that same period.</p>
-<p>Using the data downloaded from our solar system and the hourly consumption data downloaded directly from the Fortis website, we get the following numbers:</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-18">Table 2.5: </span>Summary of energy production and consumption from July 29 to Sept 28 2022, inclusive.
-</caption>
-<thead>
-<tr>
-<th style="text-align:right;">
-total_kw_fortis_from_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_gross_produced
-</th>
-<th style="text-align:right;">
-total_kw_solar_used
-</th>
-<th style="text-align:right;">
-total_kw_consumed
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
-871.18
-</td>
-<td style="text-align:right;">
-2653.79
-</td>
-<td style="text-align:right;">
-3498.2
-</td>
-<td style="text-align:right;">
-844.38
-</td>
-<td style="text-align:right;">
-1715.56
-</td>
-</tr>
-</tbody>
-</table>
-<p>So, a little off, but not too bad.</p>
-<p>Now let’s check Sept 29 to Nov 28, which shows 1929 kWh consumed, and 921 kWh returned.</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-20">Table 2.6: </span>Summary of energy production and consumption from Sept 29 to Nov 28 2022, inclusive.
-</caption>
-<thead>
-<tr>
-<th style="text-align:right;">
-total_kw_fortis_from_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_gross_produced
-</th>
-<th style="text-align:right;">
-total_kw_solar_used
-</th>
-<th style="text-align:right;">
-total_kw_consumed
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
-1954.8
-</td>
-<td style="text-align:right;">
-892.4
-</td>
-<td style="text-align:right;">
-1445.03
-</td>
-<td style="text-align:right;">
-552.62
-</td>
-<td style="text-align:right;">
-2507.42
-</td>
-</tr>
-</tbody>
-</table>
-<p>A little off again…</p>
-<p>Now let’s check Nov 29 to Jan 28, which were extremely cloudy months… it shows 2712 kWh consumed, and 123 kWh returned.</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-22">Table 2.7: </span>Summary of energy production and consumption from Nov 29 2022 to Jan 28 2023, inclusive.
-</caption>
-<thead>
-<tr>
-<th style="text-align:right;">
-total_kw_fortis_from_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_gross_produced
-</th>
-<th style="text-align:right;">
-total_kw_solar_used
-</th>
-<th style="text-align:right;">
-total_kw_consumed
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
-2694
-</td>
-<td style="text-align:right;">
-148.6
-</td>
-<td style="text-align:right;">
-476.78
-</td>
-<td style="text-align:right;">
-328.18
-</td>
-<td style="text-align:right;">
-3022.19
-</td>
-</tr>
-</tbody>
-</table>
-<p>Still a little off.</p>
+<div id="check-bill-and-net-metering-numbers" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Check bill and net metering numbers</h2>
+<p>This is in progress …</p>
 <p>A reminder of the amounts for the total period, July 15, 2022 through 2023-09-07 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-24">Table 2.8: </span>Summary of energy production and consumption from 2022-07-15 to 2023-09-07
+<span id="tab:unnamed-chunk-18">Table 2.5: </span>Summary of energy production and consumption from 2022-07-15 to 2023-09-07
 </caption>
 <thead>
 <tr>
@@ -777,8 +645,9 @@ total_kw_consumed
 </tr>
 </tbody>
 </table>
-<p>That’s pretty amazing… we’re through the most cloudy period of the year (Nov/Dec/Jan), and we produced almost 124% of our energy needs.</p>
-<p>Even with the new addition, it seems possible that we’ll produce and bank enough energy (especially in spring/summer) to more than cover our annual needs. However, a key unknown is the added consumption caused by the A/C (heat pumps) in the short-term rental.</p>
+<p>Our latest bill (from May 25 to July 17, 2023) shows our net metering “bank” has a balance of 3419kWh. That’s huge.</p>
+<p>And based on our solar and downloaded Fortis data, since July 17th we have produced a net amount of 1785.6878. Adding this to the existing bank balance we get 5204.6878 kWh banked.</p>
+<p>This looks promising to be able to more than cover the upcoming cloudier winter months when energy demand exceeds solar production!</p>
 <p>Next we’ll figure out money savings.</p>
 <hr />
 </div>
@@ -841,12 +710,12 @@ total_kw_consumed
 <li><p>the current billing rate from Fortis is 0.13266 per kWh.</p></li>
 </ul>
 <hr />
-<div id="billing-data" class="section level3" number="3.0.1">
-<h3><span class="header-section-number">3.0.1</span> Billing data</h3>
+<div id="billing-data" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Billing data</h2>
 <p>Let’s first see what our bills say so far…</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-27">Table 3.1: </span>Summary of data from bills from July 28 2022 to July 25 2023.
+<span id="tab:unnamed-chunk-22">Table 3.1: </span>Summary of data from bills from July 28 2022 to July 17 2023.
 </caption>
 <thead>
 <tr>
@@ -1040,7 +909,7 @@ paid
 <p>We can calculate what the cost would have been “real_cost” and what our savings were based on what we actually paid:</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-29">Table 3.2: </span>Summary of data from bills from July 28 2022 to uly 25 2023.
+<span id="tab:unnamed-chunk-24">Table 3.2: </span>Summary of data from bills from July 28 2022 to July 17 2023.
 </caption>
 <thead>
 <tr>
@@ -1280,13 +1149,13 @@ saving
 </tbody>
 </table>
 <p>So, based on billing numbers, the amount we would have had to pay since July 2022 is $1326.84, what we actually paid was $326, and our savings were $1000.84. That’s a 75% saving.</p>
-<p>That’s not bad, but not as good as it will be!</p>
+<p>That’s not bad!</p>
 <hr />
 </div>
-<div id="calculate-bep" class="section level3" number="3.0.2">
-<h3><span class="header-section-number">3.0.2</span> Calculate BEP</h3>
+<div id="calculate-bep" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Calculate BEP</h2>
 <p>Now we’ll use our function to estimate the BEP.</p>
-<p>To reiterate, we don’t yet have a years’ worth of data to accurately estimate the initial year of savings. AND, we’re using around 40% more electricity than we did before installing solar (due to short term rental)…</p>
+<p>To reiterate, we don’t yet have sufficient data to accurately estimate savings, because unlike last summer, when we only started solar in mid-July, this year we have banked a lot of solar energy from the entire summer that will be used against energy needs this winter. AND, this winter we’ll have more typical occupancy of our short-term rental (last year we only started renting it out in December).</p>
 <p>So, we’ll explore a few scenarios, all of which assume an inflation rate of 2.5% (this can be varied also…), use the financing interest rate of 3.24%, and initial installation cost of $20K.</p>
 <p>We assume that there’s no banked kWh left for payback at the end of the year.</p>
 <ol style="list-style-type: decimal">
@@ -1295,9 +1164,9 @@ saving
 <li><p>Assume we cover 70% of needs, which results in $1300.07 savings.</p></li>
 </ol>
 <p>Here we go:</p>
-<p><img src="index_files/figure-html/unnamed-chunk-31-1.png" width="768" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-26-1.png" width="768" /></p>
 <p>So for now, the optimistic estimate for BEP is just under 12 years.</p>
-<p>The estimates for the BEP if we didn’t have the short-term rental (a more reasonable scenario for most folks) require a bit more work…</p>
+<p>Recall that these BEP times are shorter than they would be for a typical household, because we generally consume less energy yearly than a typical household.</p>
 <p>Stay tuned - I’ll update these numbers as we get more data!</p>
 </div>
 </div>

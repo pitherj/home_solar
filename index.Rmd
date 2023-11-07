@@ -445,18 +445,29 @@ kbl(final_summary, caption = paste("Summary of energy production and consumption
 ```
 
 
-Our latest bill (from May 25 to July 17, 2023) shows our net metering "bank" has a balance of 3419kWh.  That's huge. 
+Our latest bill (from July 17 to September 16, 2023) shows our net metering "bank" has a balance of 5132 kWh.  That's huge. 
 
 ```{r}
 new_net <- all_data %>%
-  filter(day > "2023-07-17") %>%
+  filter(day > "2023-09-16") %>%
   summarise(excess_kWh  = sum(kw_solar_gross_produced, na.rm = TRUE) -  (sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE)))
 ```
 
 
-And based on our solar and downloaded Fortis data, since July 17th we have produced a net amount of `r new_net$excess_kWh`.  Adding this to the existing bank balance we get `r new_net$excess_kWh + 3419` kWh banked.
+And based on our solar and downloaded Fortis data, since July 17th we have produced a net amount of `r new_net$excess_kWh`.  Adding this to the existing bank balance we get `r new_net$excess_kWh + 5132` kWh banked.
 
 This looks promising to be able to more than cover the upcoming cloudier winter months when energy demand exceeds solar production!
+
+Last year (which was really cold from early November) from this time in November through March we used:
+
+```{r}
+winter_usage <- all_data %>%
+  filter(day > "2022-11-05" & day < "2023-04-01") %>%
+  summarise(excess_kWh  = sum(kw_solar_gross_produced, na.rm = TRUE) -  (sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE)))
+abs(winter_usage)
+```
+
+So we should have `r winter_usage + 5132` buffer in banked hours. 
 
 Next we'll figure out money savings.
 
@@ -563,8 +574,8 @@ meter.data <- meter.data %>%
 ```
 
 ```{r}
-kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to July 17 2023.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to Sept 16 2023.", 
+    booktabs = TRUE, digits = c(2, 2, 2, 2, 2, 3)) %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
@@ -593,7 +604,7 @@ That's not bad!
 
 Now we'll use our function to estimate the BEP.
 
-To reiterate, we don't yet have sufficient data to accurately estimate savings, because unlike last summer, when we only started solar in mid-July, this year we have banked a lot of solar energy from the entire  summer that will be used against energy needs this winter. AND, this winter we'll have more typical occupancy of our short-term rental (last year we only started renting it out in December).
+To reiterate, we don't yet have sufficient data to accurately estimate savings, because unlike last summer, when we only started solar in mid-July, this year we have banked a lot of solar energy from the entire  summer that will be used against energy needs this winter. AND, this winter we'll have more typical occupancy of our short-term rental (last year we only started renting it out in December, but in-laws were there for the cold spell in November).
 
 So, we'll explore a few scenarios, all of which assume an inflation rate of 2.5% (this can be varied also...), use the financing interest rate of 3.24%, and initial installation cost of \$20K. 
 
@@ -603,7 +614,7 @@ We assume that there's no banked kWh left for payback at the end of the year.
 
 (2) Assume we cover 80% of needs, which results in \$1485.79 savings
 
-(3) Assume we cover 70% of needs, which results in \$1300.07 savings.
+(3) Assume we cover 70% of needs, which results in \$1300.07 savings.  
 
 Here we go:
 
@@ -634,7 +645,7 @@ ggplot(result, aes(x = Year, y = `Ending Cost`, color = Scenario)) +
 
 So for now, the optimistic estimate for BEP is just under 12 years.  
 
-Recall that these BEP times are shorter than they would be for a typical household, because we generally consume less energy yearly than a typical household.
+Recall that these BEP times are **longer** than they would be for a typical household, because we generally consume less energy yearly than a typical household.  For example, a house that uses electrical baseboard heating would have a much shorter BEP.  
 
 Stay tuned - I'll update these numbers as we get more data!
 

@@ -7,7 +7,7 @@
 
         <meta name="author" content="Jason" />
     
-        <meta name="date" content="2023-09-12" />
+        <meta name="date" content="2023-11-07" />
     
     <title>House solar energy data analysis</title>
 
@@ -148,7 +148,7 @@
         <ul class="authors">
           <li class="divider"></li>
                                 <li><span><i class="glyphicon glyphicon-user"></i> Jason</span></li>
-                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2023-09-12</span></li>
+                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2023-11-07</span></li>
                   </ul>     
       </div>
       <div class="book-body fixed">
@@ -236,7 +236,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 <h2><span class="header-section-number">2.1</span> Solar energy production data</h2>
 <p>I have another <a href="https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd">script</a> that imports the raw solar energy data files, downloaded from the <a href="https://www.apsystemsema.com">AP Systems website</a>, and wrangles them into an appropriate format.</p>
 <p>Here’s what the first few rows of the resulting data table looks like:</p>
-<pre><code>## # A tibble: 5,943 × 4
+<pre><code>## # A tibble: 6,657 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -249,7 +249,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # ℹ 5,933 more rows</code></pre>
+## # ℹ 6,647 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure"><span style="display:block;" id="fig:firstplot"></span>
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="768" />
@@ -280,7 +280,7 @@ Figure 2.2: Figure 2: Daily energy output (kWh) for the 36-panel solar array, st
 <p>Annoyingly, these data downloaded from the Fortis portal do not necessarily line up with what Fortis actually uses for billing calculations; this is because they rely on our meter to communicate with them, which doesn’t always happen, in which case they estimate consumption for billing.</p>
 <p>I was able to get hourly data going back to January 1, 2019.</p>
 <p>Let’s first look at last summer’s data (2022), staring June 1st:</p>
-<pre><code>## # A tibble: 40,595 × 4
+<pre><code>## # A tibble: 41,964 × 4
 ##    day         hour kw_solar_to_grid kw_fortis_from_grid
 ##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt;
 ##  1 2019-01-01     0               NA               0.915
@@ -293,7 +293,7 @@ Figure 2.2: Figure 2: Daily energy output (kWh) for the 36-panel solar array, st
 ##  8 2019-01-01     7               NA               0.65 
 ##  9 2019-01-01     8               NA               0.4  
 ## 10 2019-01-01     9               NA               0.441
-## # ℹ 40,585 more rows</code></pre>
+## # ℹ 41,954 more rows</code></pre>
 <p>Let’s visualize the data to check for errors, first limiting the date to June 1 2022 and after:</p>
 <div class="figure"><span style="display:block;" id="fig:thirdplot"></span>
 <img src="index_files/figure-html/thirdplot-1.png" alt="Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022." width="768" />
@@ -388,7 +388,7 @@ tot_kWh_used
 2023
 </td>
 <td style="text-align:right;">
-4954
+6009
 </td>
 </tr>
 </tbody>
@@ -457,7 +457,7 @@ tot_kWh_used
 </div>
 <div id="summary-data" class="section level2" number="2.6">
 <h2><span class="header-section-number">2.6</span> Summary data</h2>
-<p>From July 8th to 2023-09-07 (last day of data), let’s calculate how much:</p>
+<p>From July 8th to 2023-11-05 (last day of data), let’s calculate how much:</p>
 <ul>
 <li>total energy consumed from grid (<code>total_kw_fortis_from_grid</code>)</li>
 <li>total solar energy returned to grid (<code>total_kw_solar_to_grid</code>)</li>
@@ -491,19 +491,19 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-9786.08
+10840.98
 </td>
 <td style="text-align:right;">
-11971.5
+13297.98
 </td>
 <td style="text-align:right;">
-18881.13
+20960.89
 </td>
 <td style="text-align:right;">
-5048.03
+5659.3
 </td>
 <td style="text-align:right;">
-14834.12
+16500.28
 </td>
 </tr>
 </tbody>
@@ -535,19 +535,19 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-9705.7
+10760.6
 </td>
 <td style="text-align:right;">
-11971.5
+13297.98
 </td>
 <td style="text-align:right;">
-18337.36
+20417.11
 </td>
 <td style="text-align:right;">
-5048.03
+5659.3
 </td>
 <td style="text-align:right;">
-14753.73
+16419.9
 </td>
 </tr>
 </tbody>
@@ -601,10 +601,10 @@ total_kw_consumed
 <div id="check-bill-and-net-metering-numbers" class="section level2" number="2.7">
 <h2><span class="header-section-number">2.7</span> Check bill and net metering numbers</h2>
 <p>This is in progress …</p>
-<p>A reminder of the amounts for the total period, July 15, 2022 through 2023-09-07 (last day of data):</p>
+<p>A reminder of the amounts for the total period, July 15, 2022 through 2023-11-05 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-18">Table 2.5: </span>Summary of energy production and consumption from 2022-07-15 to 2023-09-07
+<span id="tab:unnamed-chunk-18">Table 2.5: </span>Summary of energy production and consumption from 2022-07-15 to 2023-11-05
 </caption>
 <thead>
 <tr>
@@ -628,26 +628,32 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-9705.7
+10760.6
 </td>
 <td style="text-align:right;">
-11971.5
+13297.98
 </td>
 <td style="text-align:right;">
-18337.36
+20417.11
 </td>
 <td style="text-align:right;">
-5048.03
+5659.3
 </td>
 <td style="text-align:right;">
-14753.73
+16419.9
 </td>
 </tr>
 </tbody>
 </table>
-<p>Our latest bill (from May 25 to July 17, 2023) shows our net metering “bank” has a balance of 3419kWh. That’s huge.</p>
-<p>And based on our solar and downloaded Fortis data, since July 17th we have produced a net amount of 1785.6878. Adding this to the existing bank balance we get 5204.6878 kWh banked.</p>
+<p>Our latest bill (from July 17 to September 16, 2023) shows our net metering “bank” has a balance of 5132 kWh. That’s huge.</p>
+<p>And based on our solar and downloaded Fortis data, since July 17th we have produced a net amount of 87.472. Adding this to the existing bank balance we get 5219.472 kWh banked.</p>
 <p>This looks promising to be able to more than cover the upcoming cloudier winter months when energy demand exceeds solar production!</p>
+<p>Last year (which was really cold from early November) from this time in November through March we used:</p>
+<pre><code>## # A tibble: 1 × 1
+##   excess_kWh
+##        &lt;dbl&gt;
+## 1      4134.</code></pre>
+<p>So we should have 997.818 buffer in banked hours.</p>
 <p>Next we’ll figure out money savings.</p>
 <hr />
 </div>
@@ -715,7 +721,7 @@ total_kw_consumed
 <p>Let’s first see what our bills say so far…</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-22">Table 3.1: </span>Summary of data from bills from July 28 2022 to July 17 2023.
+<span id="tab:unnamed-chunk-23">Table 3.1: </span>Summary of data from bills from July 28 2022 to Sept 16 2023.
 </caption>
 <thead>
 <tr>
@@ -760,7 +766,7 @@ paid
 69883
 </td>
 <td style="text-align:right;">
-0.12
+0.124
 </td>
 <td style="text-align:right;">
 24.36
@@ -783,7 +789,7 @@ paid
 70758
 </td>
 <td style="text-align:right;">
-0.12
+0.124
 </td>
 <td style="text-align:right;">
 0.00
@@ -806,7 +812,7 @@ paid
 72687
 </td>
 <td style="text-align:right;">
-0.12
+0.124
 </td>
 <td style="text-align:right;">
 0.00
@@ -829,7 +835,7 @@ paid
 75399
 </td>
 <td style="text-align:right;">
-0.13
+0.132
 </td>
 <td style="text-align:right;">
 231.20
@@ -852,7 +858,7 @@ paid
 77327
 </td>
 <td style="text-align:right;">
-0.13
+0.133
 </td>
 <td style="text-align:right;">
 70.44
@@ -875,7 +881,7 @@ paid
 78040
 </td>
 <td style="text-align:right;">
-0.13
+0.133
 </td>
 <td style="text-align:right;">
 0.00
@@ -883,7 +889,7 @@ paid
 </tr>
 <tr>
 <td style="text-align:left;">
-2023-07-25
+2023-07-17
 </td>
 <td style="text-align:right;">
 764
@@ -898,7 +904,30 @@ paid
 78804
 </td>
 <td style="text-align:right;">
-0.13
+0.133
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2023-09-16
+</td>
+<td style="text-align:right;">
+865
+</td>
+<td style="text-align:right;">
+2567
+</td>
+<td style="text-align:right;">
+13761
+</td>
+<td style="text-align:right;">
+79669
+</td>
+<td style="text-align:right;">
+0.133
 </td>
 <td style="text-align:right;">
 0.00
@@ -909,7 +938,7 @@ paid
 <p>We can calculate what the cost would have been “real_cost” and what our savings were based on what we actually paid:</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-24">Table 3.2: </span>Summary of data from bills from July 28 2022 to July 17 2023.
+<span id="tab:unnamed-chunk-25">Table 3.2: </span>Summary of data from bills from July 28 2022 to July 17 2023.
 </caption>
 <thead>
 <tr>
@@ -1119,7 +1148,7 @@ saving
 </tr>
 <tr>
 <td style="text-align:left;">
-2023-07-25
+2023-07-17
 </td>
 <td style="text-align:right;">
 764
@@ -1146,16 +1175,45 @@ saving
 101.31
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+2023-09-16
+</td>
+<td style="text-align:right;">
+865
+</td>
+<td style="text-align:right;">
+2567
+</td>
+<td style="text-align:right;">
+13761
+</td>
+<td style="text-align:right;">
+79669
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+114.70
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+114.70
+</td>
+</tr>
 </tbody>
 </table>
-<p>So, based on billing numbers, the amount we would have had to pay since July 2022 is $1326.84, what we actually paid was $326, and our savings were $1000.84. That’s a 75% saving.</p>
+<p>So, based on billing numbers, the amount we would have had to pay since July 2022 is $1441.54, what we actually paid was $326, and our savings were $1115.54. That’s a 77% saving.</p>
 <p>That’s not bad!</p>
 <hr />
 </div>
 <div id="calculate-bep" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Calculate BEP</h2>
 <p>Now we’ll use our function to estimate the BEP.</p>
-<p>To reiterate, we don’t yet have sufficient data to accurately estimate savings, because unlike last summer, when we only started solar in mid-July, this year we have banked a lot of solar energy from the entire summer that will be used against energy needs this winter. AND, this winter we’ll have more typical occupancy of our short-term rental (last year we only started renting it out in December).</p>
+<p>To reiterate, we don’t yet have sufficient data to accurately estimate savings, because unlike last summer, when we only started solar in mid-July, this year we have banked a lot of solar energy from the entire summer that will be used against energy needs this winter. AND, this winter we’ll have more typical occupancy of our short-term rental (last year we only started renting it out in December, but in-laws were there for the cold spell in November).</p>
 <p>So, we’ll explore a few scenarios, all of which assume an inflation rate of 2.5% (this can be varied also…), use the financing interest rate of 3.24%, and initial installation cost of $20K.</p>
 <p>We assume that there’s no banked kWh left for payback at the end of the year.</p>
 <ol style="list-style-type: decimal">
@@ -1164,9 +1222,9 @@ saving
 <li><p>Assume we cover 70% of needs, which results in $1300.07 savings.</p></li>
 </ol>
 <p>Here we go:</p>
-<p><img src="index_files/figure-html/unnamed-chunk-26-1.png" width="768" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-27-1.png" width="768" /></p>
 <p>So for now, the optimistic estimate for BEP is just under 12 years.</p>
-<p>Recall that these BEP times are shorter than they would be for a typical household, because we generally consume less energy yearly than a typical household.</p>
+<p>Recall that these BEP times are <strong>longer</strong> than they would be for a typical household, because we generally consume less energy yearly than a typical household. For example, a house that uses electrical baseboard heating would have a much shorter BEP.</p>
 <p>Stay tuned - I’ll update these numbers as we get more data!</p>
 </div>
 </div>

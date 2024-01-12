@@ -7,7 +7,7 @@
 
         <meta name="author" content="Jason" />
     
-        <meta name="date" content="2023-11-07" />
+        <meta name="date" content="2024-01-11" />
     
     <title>House solar energy data analysis</title>
 
@@ -148,7 +148,7 @@
         <ul class="authors">
           <li class="divider"></li>
                                 <li><span><i class="glyphicon glyphicon-user"></i> Jason</span></li>
-                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2023-11-07</span></li>
+                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2024-01-11</span></li>
                   </ul>     
       </div>
       <div class="book-body fixed">
@@ -236,7 +236,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 <h2><span class="header-section-number">2.1</span> Solar energy production data</h2>
 <p>I have another <a href="https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd">script</a> that imports the raw solar energy data files, downloaded from the <a href="https://www.apsystemsema.com">AP Systems website</a>, and wrangles them into an appropriate format.</p>
 <p>Here’s what the first few rows of the resulting data table looks like:</p>
-<pre><code>## # A tibble: 6,657 × 4
+<pre><code>## # A tibble: 7,308 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -249,7 +249,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # ℹ 6,647 more rows</code></pre>
+## # ℹ 7,298 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure"><span style="display:block;" id="fig:firstplot"></span>
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="768" />
@@ -271,7 +271,6 @@ Figure 2.2: Figure 2: Daily energy output (kWh) for the 36-panel solar array, st
 </p>
 </div>
 <p>And FYI, in 2022 Kelowna got an early start to winter… beginning of November saw more than 30cm of snow fall, and it STAYED! Which meant that the solar panels were covered for the better part of 5 days. I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun. However, from November through February each year, Kelowna tends to be very grey… the clouds settle in the valley and just stay here. But it’s often sunny at higher elevation.</p>
-<p>The sun started peaking out more in mid-January in the end, so we’ve had more energy production than anticipated!</p>
 <hr />
 </div>
 <div id="grid-energy-consumption-data" class="section level2" number="2.2">
@@ -280,7 +279,7 @@ Figure 2.2: Figure 2: Daily energy output (kWh) for the 36-panel solar array, st
 <p>Annoyingly, these data downloaded from the Fortis portal do not necessarily line up with what Fortis actually uses for billing calculations; this is because they rely on our meter to communicate with them, which doesn’t always happen, in which case they estimate consumption for billing.</p>
 <p>I was able to get hourly data going back to January 1, 2019.</p>
 <p>Let’s first look at last summer’s data (2022), staring June 1st:</p>
-<pre><code>## # A tibble: 41,964 × 4
+<pre><code>## # A tibble: 43,548 × 4
 ##    day         hour kw_solar_to_grid kw_fortis_from_grid
 ##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt;
 ##  1 2019-01-01     0               NA               0.915
@@ -293,7 +292,7 @@ Figure 2.2: Figure 2: Daily energy output (kWh) for the 36-panel solar array, st
 ##  8 2019-01-01     7               NA               0.65 
 ##  9 2019-01-01     8               NA               0.4  
 ## 10 2019-01-01     9               NA               0.441
-## # ℹ 41,954 more rows</code></pre>
+## # ℹ 43,538 more rows</code></pre>
 <p>Let’s visualize the data to check for errors, first limiting the date to June 1 2022 and after:</p>
 <div class="figure"><span style="display:block;" id="fig:thirdplot"></span>
 <img src="index_files/figure-html/thirdplot-1.png" alt="Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022." width="768" />
@@ -301,7 +300,7 @@ Figure 2.2: Figure 2: Daily energy output (kWh) for the 36-panel solar array, st
 Figure 2.3: Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022.
 </p>
 </div>
-<p>hmm, that’s messy… but it does show that once the solar system was online (July 8), and during daytimes up to the end of October, we typically drew directly from solar, thus zero kWh consumed from the grid.</p>
+<p>hmm, that’s messy…</p>
 <p>Let’s sum up the total kWh consumed by day, and visualize:</p>
 <div class="figure"><span style="display:block;" id="fig:fourthplot"></span>
 <img src="index_files/figure-html/fourthplot-1.png" alt="Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022." width="768" />
@@ -309,8 +308,8 @@ Figure 2.3: Figure 3: Hourly energy consumption (kWh) for our house, starting Ju
 Figure 2.4: Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022.
 </p>
 </div>
-<p>Note that the low consumption in June is due to data gaps, which are a mystery to Fortis.</p>
-<p>The substantial increase in energy consumption in November was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do final upgrades at our house: replacing 4 windows and a door in the main house. So, over the first 3 weeks of November, we were using more electricity than usual, and we had little sun for solar energy production.</p>
+<p>Note that the low consumption in June 2022 is due to data gaps, which are a mystery to Fortis.</p>
+<p>The substantial increase in energy consumption in November 2022 was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do renos at our house. So, over the first 3 weeks of November 2022, we were using more electricity than usual, and we had little sun for solar energy production.</p>
 <p>Let’s combine the data into one plot.</p>
 <pre><code>## `summarise()` has grouped output by &#39;day&#39;. You can override using the `.groups` argument.</code></pre>
 <div class="figure"><span style="display:block;" id="fig:fifthplot"></span>
@@ -325,13 +324,12 @@ Figure 2.5: Figure 5: Daily energy consumption (red) and solar production (blue)
 <h2><span class="header-section-number">2.3</span> Historical data</h2>
 <p>Let’s have a look at historical data for comparison</p>
 <div class="figure"><span style="display:block;" id="fig:histplot"></span>
-<img src="index_files/figure-html/histplot-1.png" alt="Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019." width="768" />
+<img src="index_files/figure-html/histplot-1.png" alt="Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019. July 2022 is when solar production started." width="768" />
 <p class="caption">
-Figure 2.6: Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019.
+Figure 2.6: Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019. July 2022 is when solar production started.
 </p>
 </div>
-<p>Yikes! Despite not being rented out much, the new short-term rental clearly increased our electricity consumption during the cold snap at the end of December 2022, relative to the preceding 3 winters. However, we were still trying to figure out the optimal way to maintain a low temperature (10 degrees) while the suite was unoccupied. The heat pumps work very hard to keep the place warm when it’s -10 or lower outside.</p>
-<p>We’ll have to see how we do next winter, and depending on occupancy!</p>
+<hr />
 </div>
 <div id="hist_consumption" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Average annual consumption</h2>
@@ -388,12 +386,20 @@ tot_kWh_used
 2023
 </td>
 <td style="text-align:right;">
-6009
+7930
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2024
+</td>
+<td style="text-align:right;">
+281
 </td>
 </tr>
 </tbody>
 </table>
-<p>Note that the year 2023 is not yet finished, and in 2022 is when we installed the solar.</p>
+<p>So we see a substantial drop in 2023. In July 2022 is when we installed the solar.</p>
 <p>So, averaging consumption for 2019 through 2021, 9572 kWh was our typical annual electricity consumption, which is a bit lower than average household consumption <a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&amp;pickMembers%5B0%5D=1.1&amp;pickMembers%5B1%5D=3.2&amp;cubeTimeFrame.startYear=2017&amp;cubeTimeFrame.endYear=2019&amp;referencePeriods=20170101%2C20190101">across the country</a>.</p>
 <p>One important implication of this is that it will take us longer than average to reach the “break even point” on our solar system, simply because we use less electricity annually than a typical household.</p>
 <hr />
@@ -457,7 +463,7 @@ tot_kWh_used
 </div>
 <div id="summary-data" class="section level2" number="2.6">
 <h2><span class="header-section-number">2.6</span> Summary data</h2>
-<p>From July 8th to 2023-11-05 (last day of data), let’s calculate how much:</p>
+<p>From July 8th to 2024-01-10 (last day of data), let’s calculate how much:</p>
 <ul>
 <li>total energy consumed from grid (<code>total_kw_fortis_from_grid</code>)</li>
 <li>total solar energy returned to grid (<code>total_kw_solar_to_grid</code>)</li>
@@ -491,19 +497,19 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-10840.98
+13042.46
 </td>
 <td style="text-align:right;">
-13297.98
+13536.2
 </td>
 <td style="text-align:right;">
-20960.89
+21626.91
 </td>
 <td style="text-align:right;">
-5659.3
+6082.73
 </td>
 <td style="text-align:right;">
-16500.28
+19125.18
 </td>
 </tr>
 </tbody>
@@ -535,19 +541,19 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-10760.6
+12962.07
 </td>
 <td style="text-align:right;">
-13297.98
+13536.2
 </td>
 <td style="text-align:right;">
-20417.11
+21083.14
 </td>
 <td style="text-align:right;">
-5659.3
+6082.73
 </td>
 <td style="text-align:right;">
-16419.9
+19044.8
 </td>
 </tr>
 </tbody>
@@ -601,10 +607,10 @@ total_kw_consumed
 <div id="check-bill-and-net-metering-numbers" class="section level2" number="2.7">
 <h2><span class="header-section-number">2.7</span> Check bill and net metering numbers</h2>
 <p>This is in progress …</p>
-<p>A reminder of the amounts for the total period, July 15, 2022 through 2023-11-05 (last day of data):</p>
+<p>A reminder of the amounts for the total period, July 15, 2022 through 2024-01-10 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-18">Table 2.5: </span>Summary of energy production and consumption from 2022-07-15 to 2023-11-05
+<span id="tab:unnamed-chunk-18">Table 2.5: </span>Summary of energy production and consumption from 2022-07-15 to 2024-01-10
 </caption>
 <thead>
 <tr>
@@ -628,32 +634,30 @@ total_kw_consumed
 <tbody>
 <tr>
 <td style="text-align:right;">
-10760.6
+12962.07
 </td>
 <td style="text-align:right;">
-13297.98
+13536.2
 </td>
 <td style="text-align:right;">
-20417.11
+21083.14
 </td>
 <td style="text-align:right;">
-5659.3
+6082.73
 </td>
 <td style="text-align:right;">
-16419.9
+19044.8
 </td>
 </tr>
 </tbody>
 </table>
-<p>Our latest bill (from July 17 to September 16, 2023) shows our net metering “bank” has a balance of 5132 kWh. That’s huge.</p>
-<p>And based on our solar and downloaded Fortis data, since July 17th we have produced a net amount of 87.472. Adding this to the existing bank balance we get 5219.472 kWh banked.</p>
-<p>This looks promising to be able to more than cover the upcoming cloudier winter months when energy demand exceeds solar production!</p>
-<p>Last year (which was really cold from early November) from this time in November through March we used:</p>
+<p>Our latest bill (from Sept 17 2023 to November 16, 2023) shows our net metering “bank” has a balance of 5048 kWh.</p>
+<p>Last year (which was really cold from early November) from November 5th through March 31st we used:</p>
 <pre><code>## # A tibble: 1 × 1
 ##   excess_kWh
 ##        &lt;dbl&gt;
 ## 1      4134.</code></pre>
-<p>So we should have 997.818 buffer in banked hours.</p>
+<p>So we should have 913.818 buffer in banked hours.</p>
 <p>Next we’ll figure out money savings.</p>
 <hr />
 </div>
@@ -933,6 +937,29 @@ paid
 0.00
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+2023-11-16
+</td>
+<td style="text-align:right;">
+1286
+</td>
+<td style="text-align:right;">
+1202
+</td>
+<td style="text-align:right;">
+14963
+</td>
+<td style="text-align:right;">
+80955
+</td>
+<td style="text-align:right;">
+0.133
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
 </tbody>
 </table>
 <p>We can calculate what the cost would have been “real_cost” and what our savings were based on what we actually paid:</p>
@@ -1204,9 +1231,38 @@ saving
 114.70
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+2023-11-16
+</td>
+<td style="text-align:right;">
+1286
+</td>
+<td style="text-align:right;">
+1202
+</td>
+<td style="text-align:right;">
+14963
+</td>
+<td style="text-align:right;">
+80955
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+170.52
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+170.52
+</td>
+</tr>
 </tbody>
 </table>
-<p>So, based on billing numbers, the amount we would have had to pay since July 2022 is $1441.54, what we actually paid was $326, and our savings were $1115.54. That’s a 77% saving.</p>
+<p>So, based on billing numbers, the amount we would have had to pay since July 2022 is $1612.06, what we actually paid was $326, and our savings were $1286.06. That’s a 80% saving.</p>
 <p>That’s not bad!</p>
 <hr />
 </div>

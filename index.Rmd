@@ -174,8 +174,6 @@ solar.data %>%
 
 And FYI, in 2022 Kelowna got an early start to winter... beginning of November saw more than 30cm of snow fall, and it STAYED!  Which meant that the solar panels were covered for the better part of 5 days.  I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun.  However, from November through February each year, Kelowna tends to be very grey... the clouds settle in the valley and just stay here. But it's often sunny at higher elevation.  
 
-The sun started peaking out more in mid-January in the end, so we've had more energy production than anticipated!
-
 * * *
 
 ## Grid energy consumption data
@@ -216,7 +214,7 @@ consumption.data %>%
   theme_bw()
 ```
 
-hmm, that's messy...  but it does show that once the solar system was online (July 8), and during daytimes up to the end of October, we typically drew directly from solar, thus zero kWh consumed from the grid.
+hmm, that's messy...  
 
 Let's sum up the total kWh consumed by day, and visualize:
 
@@ -235,9 +233,9 @@ consumption.data %>%
   theme_bw()
 ```
 
-Note that the low consumption in June is due to data gaps, which are a mystery to Fortis. 
+Note that the low consumption in June 2022 is due to data gaps, which are a mystery to Fortis. 
 
-The substantial increase in energy consumption in November was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do final upgrades at our house: replacing 4 windows and a door in the main house.  So, over the first 3 weeks of November, we were using more electricity than usual, and we had little sun for solar energy production. 
+The substantial increase in energy consumption in November 2022 was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do renos at our house.  So, over the first 3 weeks of November 2022, we were using more electricity than usual, and we had little sun for solar energy production. 
 
 Let's combine the data into one plot.
 
@@ -270,7 +268,7 @@ all_data %>%
 
 Let's have a look at historical data for comparison
 
-```{r histplot, warning = FALSE, echo = FALSE, fig.cap = "Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019."}
+```{r histplot, warning = FALSE, echo = FALSE, fig.cap = "Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019. July 2022 is when solar production started."}
 
 consumption.data %>%
   #filter(day > "2022-06-1") %>%
@@ -285,9 +283,8 @@ consumption.data %>%
   theme_bw()
 ```
 
-Yikes!  Despite not being rented out much, the new short-term rental clearly increased our electricity consumption during the cold snap at the end of December 2022, relative to the preceding 3 winters.  However, we were still trying to figure out the optimal way to maintain a low temperature (10 degrees) while the suite was unoccupied.  The heat pumps work very hard to keep the place warm when it's -10 or lower outside.
 
-We'll have to see how we do next winter, and depending on occupancy!  
+* * *
 
 ## Average annual consumption {#hist_consumption}
 
@@ -306,7 +303,7 @@ kbl(annual_hist_cons, caption = "Historical annual (calendar year) electricity c
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-Note that the year 2023 is not yet finished, and in 2022 is when we installed the solar.  
+So we see a substantial drop in 2023.  In July 2022 is when we installed the solar.  
 
 So, averaging consumption for 2019 through 2021, `r round(mean(annual_hist_cons$tot_kWh_used[1:3]), 0)` kWh was our typical annual electricity consumption, which is a bit lower than average household consumption [across the country](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=3.2&cubeTimeFrame.startYear=2017&cubeTimeFrame.endYear=2019&referencePeriods=20170101%2C20190101).
 
@@ -445,7 +442,7 @@ kbl(final_summary, caption = paste("Summary of energy production and consumption
 ```
 
 
-Our latest bill (from July 17 to September 16, 2023) shows our net metering "bank" has a balance of 5132 kWh.  That's huge. 
+Our latest bill (from Sept 17 2023 to November 16, 2023) shows our net metering "bank" has a balance of 5048 kWh.  
 
 ```{r}
 new_net <- all_data %>%
@@ -453,12 +450,7 @@ new_net <- all_data %>%
   summarise(excess_kWh  = sum(kw_solar_gross_produced, na.rm = TRUE) -  (sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE)))
 ```
 
-
-And based on our solar and downloaded Fortis data, since July 17th we have produced a net amount of `r new_net$excess_kWh`.  Adding this to the existing bank balance we get `r new_net$excess_kWh + 5132` kWh banked.
-
-This looks promising to be able to more than cover the upcoming cloudier winter months when energy demand exceeds solar production!
-
-Last year (which was really cold from early November) from this time in November through March we used:
+Last year (which was really cold from early November) from November 5th through March 31st we used:
 
 ```{r}
 winter_usage <- all_data %>%
@@ -467,7 +459,7 @@ winter_usage <- all_data %>%
 abs(winter_usage)
 ```
 
-So we should have `r winter_usage + 5132` buffer in banked hours. 
+So we should have `r winter_usage + 5048` buffer in banked hours. 
 
 Next we'll figure out money savings.
 

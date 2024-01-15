@@ -28,6 +28,7 @@ library(tools)
 library(hablar)
 library(lubridate)
 library(knitr)
+library(timetk)
 library(kableExtra)
 ```
 
@@ -91,7 +92,7 @@ An added benefit of covering the south-facing roof with solar panels: the kids' 
 
 ## Installation cost
 
-The array with installation, including some angled mounting brackets for our flatter roof, cost just under `$25K`. This does not include the extra electrical upgrades we needed, which we were going to have to do anyways for the addition.  These upgrades included a new 200A panel, and a new meter with a new location on our lot.  These latter upgrades cost us about `$8K`, including electricity hookup etc...
+The array with installation, including some angled mounting brackets for our flatter roof, cost just under `$25K`. This does not include the extra electrical upgrades we needed, which we were going to have to do anyways for the addition and for accommodating a future EV charger.  These upgrades included a new 200A panel, and a new meter with a new location on our lot.  These latter upgrades cost us about `$8K`, including electricity hookup etc...
 
 OK Solar led us through the Energy Audit process, which ultimately got us the full `$5K` rebate from the federal green homes initiative, plus the `$600` for the audit activities themselves.  
 
@@ -103,7 +104,7 @@ So, for the solar array installation, the net cost was under `$20K` after rebate
 
 Fortis BC is our electricity provider, and like most places in North America, we don't have a choice about who we purchase electricity from.
 
-As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, as of 2023, they charge at a fixed rate of **\$0.13266**.
+As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, as of 2023, they charge at a fixed rate of **\$0.13266 per kWh**, which is increasing to **\$0.1416013** in 2024.
 
 Be sure to consult their website to keep track of any updates to rates.  
 
@@ -375,8 +376,8 @@ begin.tot <- all_data %>%
 ```
 
 ```{r}
-kbl(begin.tot, caption = "Summary of energy production and consumption from July 8 2022 onward.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+kbl(t(begin.tot), caption = "Summary of energy production and consumption from July 8 2022 onward.", 
+    booktabs = TRUE, digits = c(2), col.names = "kWh") %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
@@ -393,10 +394,11 @@ begin.tot2 <- all_data %>%
 ```
 
 ```{r}
-kbl(begin.tot2, caption = "Summary of energy production and consumption from July 15 2022 onward.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
-  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
+kbl(t(begin.tot2), caption = "Summary of energy production and consumption from July 15 2022 onward.", 
+    booktabs = TRUE, digits = c(2), col.names = c("kWh")) %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "left")
 ```
+
 
 Now do for one full year of data, July 15 2022 through July 14, 2023 inclusive.
 
@@ -411,16 +413,18 @@ year.tot <- all_data %>%
 ```
 
 ```{r}
-kbl(year.tot, caption = "Summary of energy production and consumption from July 15 2022 to July 14, 2023.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+kbl(t(year.tot), caption = "Summary of energy production and consumption from July 15 2022 to July 14, 2023.", 
+    booktabs = TRUE, digits = c(2), col.names = "kWh") %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
+So over our first full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.   
+
+Once we start consuming more energy than our solar can produce in a given year, on average, that excess energy demand will cost us the going rate in 2024 of \$0.1416013 per kWh.  
+
 * * *
 
-## Check bill and net metering numbers
-
-This is in progress ... 
+# Check bill and net metering numbers
 
 A reminder of the amounts for the total period, July 15, 2022 through `r max(all_data$day)` (last day of data):
 
@@ -436,8 +440,8 @@ final_summary <- all_data %>%
 
 
 ```{r}
-kbl(final_summary, caption = paste("Summary of energy production and consumption from 2022-07-15 to", max(all_data$day)), 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
+kbl(t(final_summary), caption = paste("Summary of energy production and consumption from 2022-07-15 to", max(all_data$day)), 
+    booktabs = TRUE, digits = c(2), col.names = "kWh") %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
@@ -461,183 +465,33 @@ abs(winter_usage)
 
 So we should have `r winter_usage + 5048` buffer in banked hours. 
 
-Next we'll figure out money savings.
+* * *
+
+# Consumption and savings through calendar year of 2023 
+
+We need to calculate total consumption (Fortis-metered energy use, IN ADDITION to the energy we drew directly from our solar, which Fortis would not have recorded) for a year, and for simplicity, we'll start at January 1, 2023, when Fortis introduced the new rate of `$0.13266/kWh`.  
+
+```{r, echo = FALSE}
+consumed.2023 <- all_data %>%
+  filter(day >= ymd("2023-01-01") & day <= "2023-12-31") %>%
+  summarise(tot_kwh_consumed = sum(tot_kw_consumed, na.rm = TRUE))
+```
+
+In 2023 we consumed a total of `r consumed.2023` kWh of energy.
+
+At the rate of `$0.13266/kWh`, that would have cost us `r round(consumed.2023 * 0.13266, 2)` dollars.
+
+What did we actually pay?  A total of $188.93 (including 5% GST).  That's a savings of `r round(consumed.2023 * 0.13266 - 188.93, 2)` dollars.  
+
+HOWEVER, it is likely that in 2024 we will not pay anything for electricity, because we have enough banked energy from 2023 to get us through to spring.  If that's true, and combined with the rate increase to `$0.1416013 / kWh` then we'll save `r round(consumed.2023 * 0.1416013, 2)` dollars in 2024, assuming the same amount of energy consumed as in 2023.  
+
+But we have to account for the cost of financing the loan too...
+
+Over a calendar year, the portion of our loan payments attributable to the solar is about `$1165.56`.  So, in 2023, we saved **`r round(consumed.2023 * 0.13266 - 188.93, 2) - 1165.56`** after all costs.  In 2024, we can anticipate those savings to increase to **`r round(consumed.2023 * 0.1416013, 2) - 1165.56`**.  
 
 * * *
 
 # Estimating the break-even point
 
-The **break-even point** (BEP) (or "payback period") is the time it takes for the energy savings to exceed the cost of installation. This [website](https://www.solar.com/learn/what-is-the-average-payback-period-for-solar-panels/) provides a useful description.  
-
-In its simplified form, BEP is calculated as:  
-
-(Initial cost of installation) / (Annual savings)
-
-However, annual savings depends on: 
-
-* the given year's billing rate, currently  (which is likely to increase annually). 
-* any interest paid on loans used to finance the initial installation. 
-* the performance of the solar (e.g. smoky summer skies may decrease savings)
-* how much electricity one used on average
-
-So, for now, we'll consider the following:  
-
-* initial cost of installation (\$20K)
-* interest rate for financing installation (for us, 3.24%)
-* estimated savings in first year (as shown below, \$1900)
-* estimated annual inflation in electricity cost (2.5%)
-
-I got ChatGPT to write me an R function to calculate BEP, and the function spits out the annual calculations:
-
-```
-payback_period <- function(initial_cost, annual_savings, annual_increase, interest_rate) {
-  years <- 0
-  annual_results <- data.frame(Year = integer(), Starting_Cost = numeric(), Savings = numeric(), Compound_Interest = numeric(), Ending_Cost = numeric())
-  
-  while (initial_cost > 0) {
-    years <- years + 1
-    compound_interest <- initial_cost * interest_rate
-    starting_cost <- initial_cost
-    savings <- annual_savings
-    initial_cost <- initial_cost - annual_savings + compound_interest
-    ending_cost <- initial_cost
-    annual_savings <- annual_savings * (1 + annual_increase)
-    annual_results[years,] <- c(years, starting_cost, savings, compound_interest, ending_cost)
-  }
-  
-  colnames(annual_results) <- c("Year", "Starting Cost", "Savings", "Compound Interest", "Ending Cost")
-  
-  return(list(years = years, annual_results = annual_results))
-}
-```
-
-The arguments for the function: 
-
-* initial_cost: the initial cost of the solar panels installation.  
-* annual_savings: the amount of money saved in the first year on electricity.  
-* annual_increase: the annual percentage increase in the cost of electricity.  
-* interest_rate: the annual interest rate on the financing.  
-
-```{r, echo = FALSE}
-
-payback_period <- function(initial_cost, annual_savings, annual_increase, interest_rate) {
-  years <- 0
-  annual_results <- data.frame(Year = integer(), Starting_Cost = numeric(), Savings = numeric(), Compound_Interest = numeric(), Ending_Cost = numeric())
-  
-  while (initial_cost > 0) {
-    years <- years + 1
-    compound_interest <- initial_cost * interest_rate
-    starting_cost <- initial_cost
-    savings <- annual_savings
-    initial_cost <- initial_cost - annual_savings + compound_interest
-    ending_cost <- initial_cost
-    annual_savings <- annual_savings * (1 + annual_increase)
-    annual_results[years,] <- c(years, starting_cost, savings, compound_interest, ending_cost)
-  }
-  
-  colnames(annual_results) <- c("Year", "Starting Cost", "Savings", "Compound Interest", "Ending Cost")
-  
-  return(list(years = years, annual_results = annual_results))
-}
-```
-
-* * *
-
-A few important points to consider prior to estimating our BEP:  
-
-* our BEP will be longer than normal, because we added a 500 ft$^{2}$ short-term rental to our house at the same time we added solar. I hope to install a current meter so that we can directly measure energy use in the rental.  For now, and based on data so far, I estimate that the short-term rental will increase our annual electricity consumption by around 40%. So, our BEP will be longer because we need to make up for our additional energy demands.  
-
-* even though we have high efficiency heat pumps for heating and cooling the rental, the unit consumes more energy than one might expect... probably because when people are on vacation, being energy conscious (like we are in our house) is not top of mind.  
-
-* at this early stage we haven't realized the full benefits of the solar system, because we only started banking kWh on July 15th 2022. I anticipate we'll bank enough energy in the summer to cover all the winter demand. If so, we'll be saving about $1900 per year.  However, a major source of uncertainty is how much energy the rental unit will use in the summer (due to cooling demands on heat pumps)  
-
-* the current billing rate from Fortis is 0.13266 per kWh.  
-
-* * *
-
-## Billing data 
-
-Let's first see what our bills say so far...
-
-```{r echo = FALSE}
-meter.data <- readr::read_csv("./rawdata/fortis_billing/meter_paid.csv", show_col_types = FALSE)
-meter.data <- meter.data %>%
-  select(bill_date, kw_fortis_from_grid, kw_solar_to_grid, bank_reading, meter_reading, rate, paid)
-```
-
-```{r}
-kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to Sept 16 2023.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2, 3)) %>% 
-  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
-```
-
-We can calculate what the cost would have been "real_cost" and what our savings were based on what we actually paid:
-
-```{r echo = FALSE}
-meter.data <- meter.data %>%
-  mutate(real_cost = kw_fortis_from_grid * rate,
-         saving = real_cost - paid) %>%
-  select(bill_date, kw_fortis_from_grid, kw_solar_to_grid, bank_reading, meter_reading, rate, real_cost, paid, saving)
-```
-
-```{r}
-kbl(meter.data, caption = "Summary of data from bills from July 28 2022 to July 17 2023.", 
-    booktabs = TRUE, digits = c(2, 2, 2, 2, 2)) %>% 
-  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
-```
-
-So, based on billing numbers, the amount we would have had to pay since July 2022 is \$`r round(sum(meter.data$real_cost),2)`, what we actually paid was \$`r round(sum(meter.data$paid), 2)`, and our savings were \$`r round(sum(meter.data$saving), 2)`.  That's a `r round(100*sum(meter.data$saving)/sum(meter.data$real_cost), 0)`% saving.
-
-That's not bad!
-
-* * *
-
-## Calculate BEP
-
-Now we'll use our function to estimate the BEP.
-
-To reiterate, we don't yet have sufficient data to accurately estimate savings, because unlike last summer, when we only started solar in mid-July, this year we have banked a lot of solar energy from the entire  summer that will be used against energy needs this winter. AND, this winter we'll have more typical occupancy of our short-term rental (last year we only started renting it out in December, but in-laws were there for the cold spell in November).
-
-So, we'll explore a few scenarios, all of which assume an inflation rate of 2.5% (this can be varied also...), use the financing interest rate of 3.24%, and initial installation cost of \$20K. 
-
-We assume that there's no banked kWh left for payback at the end of the year.
-
-(1) Assume we produce enough solar to cover annual needs; At the current billing rate of \$0.13266/kWh, and estimating we'll consume 14mWh, this translates to \$1857.24 / yr savings.
-
-(2) Assume we cover 80% of needs, which results in \$1485.79 savings
-
-(3) Assume we cover 70% of needs, which results in \$1300.07 savings.  
-
-Here we go:
-
-```{r echo = FALSE}
-
-result <- as.data.frame(rbind(
-  payback_period(20000, 1857.24, 0.025, 0.0324)$annual_results[, c("Year", "Ending Cost")],
-  payback_period(20000, 1485.79, 0.025, 0.0324)$annual_results[, c("Year", "Ending Cost")],
-  payback_period(20000, 1300.07, 0.025, 0.0324)$annual_results[, c("Year", "Ending Cost")]))
-result$Scenario <- as.factor(c(
-  rep(1, payback_period(20000, 1857.24, 0.025, 0.0324)$years),
-  rep(2, payback_period(20000, 1485.79, 0.025, 0.0324)$years),
-  rep(3, payback_period(20000, 1300.07, 0.025, 0.0324)$years)
-))
-```
-
-```{r}
-ggplot(result, aes(x = Year, y = `Ending Cost`, color = Scenario)) +
-  geom_hline(yintercept = 0, size = 1, color = "black") +
-  geom_line() +
-  xlab("Year") +
-  ylab("Year-end balance ($)") +
-  scale_x_continuous(breaks = seq(0, 20, 2)) +
-  ylim(-1200, 20000) +
-  theme_bw()
-
-```
-
-So for now, the optimistic estimate for BEP is just under 12 years.  
-
-Recall that these BEP times are **longer** than they would be for a typical household, because we generally consume less energy yearly than a typical household.  For example, a house that uses electrical baseboard heating would have a much shorter BEP.  
-
-Stay tuned - I'll update these numbers as we get more data!
+TO BE COMPLETED
 

@@ -7,7 +7,7 @@
 
         <meta name="author" content="Jason" />
     
-        <meta name="date" content="2024-01-11" />
+        <meta name="date" content="2024-01-14" />
     
     <title>House solar energy data analysis</title>
 
@@ -136,19 +136,16 @@
           <li><a href="#hist_consumption" id="toc-hist_consumption"><span class="toc-section-number">2.4</span> Average annual consumption</a></li>
           <li><a href="#production" id="toc-production"><span class="toc-section-number">2.5</span> Calculate total production and consumption</a></li>
           <li><a href="#summary-data" id="toc-summary-data"><span class="toc-section-number">2.6</span> Summary data</a></li>
-          <li><a href="#check-bill-and-net-metering-numbers" id="toc-check-bill-and-net-metering-numbers"><span class="toc-section-number">2.7</span> Check bill and net metering numbers</a></li>
           </ul></li>
-          <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">3</span> Estimating the break-even point</a>
-          <ul>
-          <li><a href="#billing-data" id="toc-billing-data"><span class="toc-section-number">3.1</span> Billing data</a></li>
-          <li><a href="#calculate-bep" id="toc-calculate-bep"><span class="toc-section-number">3.2</span> Calculate BEP</a></li>
-          </ul></li>
+          <li><a href="#check-bill-and-net-metering-numbers" id="toc-check-bill-and-net-metering-numbers"><span class="toc-section-number">3</span> Check bill and net metering numbers</a></li>
+          <li><a href="#consumption-and-savings-through-calendar-year-of-2023" id="toc-consumption-and-savings-through-calendar-year-of-2023"><span class="toc-section-number">4</span> Consumption and savings through calendar year of 2023</a></li>
+          <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">5</span> Estimating the break-even point</a></li>
           </ul>
         </nav>
         <ul class="authors">
           <li class="divider"></li>
                                 <li><span><i class="glyphicon glyphicon-user"></i> Jason</span></li>
-                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2024-01-11</span></li>
+                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2024-01-14</span></li>
                   </ul>     
       </div>
       <div class="book-body fixed">
@@ -212,7 +209,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 </div>
 <div id="installation-cost" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> Installation cost</h2>
-<p>The array with installation, including some angled mounting brackets for our flatter roof, cost just under <code>$25K</code>. This does not include the extra electrical upgrades we needed, which we were going to have to do anyways for the addition. These upgrades included a new 200A panel, and a new meter with a new location on our lot. These latter upgrades cost us about <code>$8K</code>, including electricity hookup etc…</p>
+<p>The array with installation, including some angled mounting brackets for our flatter roof, cost just under <code>$25K</code>. This does not include the extra electrical upgrades we needed, which we were going to have to do anyways for the addition and for accommodating a future EV charger. These upgrades included a new 200A panel, and a new meter with a new location on our lot. These latter upgrades cost us about <code>$8K</code>, including electricity hookup etc…</p>
 <p>OK Solar led us through the Energy Audit process, which ultimately got us the full <code>$5K</code> rebate from the federal green homes initiative, plus the <code>$600</code> for the audit activities themselves.</p>
 <p>So, for the solar array installation, the net cost was under <code>$20K</code> after rebates, but not including electrical upgrades.</p>
 <hr />
@@ -220,7 +217,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 <div id="electricity-supplier" class="section level2" number="1.5">
 <h2><span class="header-section-number">1.5</span> Electricity supplier</h2>
 <p>Fortis BC is our electricity provider, and like most places in North America, we don’t have a choice about who we purchase electricity from.</p>
-<p>As described at their <a href="https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates">website</a>, Fortis bills customers bi-monthly, as of 2023, they charge at a fixed rate of <strong>$0.13266</strong>.</p>
+<p>As described at their <a href="https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates">website</a>, Fortis bills customers bi-monthly, as of 2023, they charge at a fixed rate of <strong>$0.13266 per kWh</strong>, which is increasing to <strong>$0.1416013</strong> in 2024.</p>
 <p>Be sure to consult their website to keep track of any updates to rates.</p>
 <p><strong>Net metering</strong></p>
 <p>Fortis BC has a <a href="https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering">net metering program</a>, in which any energy produced by the solar array that is not used immediately on site is put back into the grid, and Fortis keeps track of this and “banks” the kWh on the account. In theory, Fortis then uses these banked amounts against future bills.</p>
@@ -477,36 +474,49 @@ tot_kWh_used
 </caption>
 <thead>
 <tr>
-<th style="text-align:right;">
-total_kw_fortis_from_grid
+<th style="text-align:left;">
 </th>
 <th style="text-align:right;">
-total_kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_gross_produced
-</th>
-<th style="text-align:right;">
-total_kw_solar_used
-</th>
-<th style="text-align:right;">
-total_kw_consumed
+kWh
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td style="text-align:left;">
+total_kw_fortis_from_grid
+</td>
 <td style="text-align:right;">
 13042.46
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_to_grid
+</td>
 <td style="text-align:right;">
-13536.2
+13536.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_gross_produced
 </td>
 <td style="text-align:right;">
 21626.91
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_used
+</td>
 <td style="text-align:right;">
 6082.73
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_consumed
 </td>
 <td style="text-align:right;">
 19125.18
@@ -515,45 +525,58 @@ total_kw_consumed
 </tbody>
 </table>
 <p>Do the same for when we started net metering (July 15)</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
+<table class="table" style>
 <caption>
 <span id="tab:unnamed-chunk-15">Table 2.3: </span>Summary of energy production and consumption from July 15 2022 onward.
 </caption>
 <thead>
 <tr>
-<th style="text-align:right;">
-total_kw_fortis_from_grid
+<th style="text-align:left;">
 </th>
 <th style="text-align:right;">
-total_kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_gross_produced
-</th>
-<th style="text-align:right;">
-total_kw_solar_used
-</th>
-<th style="text-align:right;">
-total_kw_consumed
+kWh
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td style="text-align:left;">
+total_kw_fortis_from_grid
+</td>
 <td style="text-align:right;">
 12962.07
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_to_grid
+</td>
 <td style="text-align:right;">
-13536.2
+13536.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_gross_produced
 </td>
 <td style="text-align:right;">
 21083.14
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_used
+</td>
 <td style="text-align:right;">
 6082.73
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_consumed
+</td>
 <td style="text-align:right;">
-19044.8
+19044.80
 </td>
 </tr>
 </tbody>
@@ -565,36 +588,49 @@ total_kw_consumed
 </caption>
 <thead>
 <tr>
-<th style="text-align:right;">
-total_kw_fortis_from_grid
+<th style="text-align:left;">
 </th>
 <th style="text-align:right;">
-total_kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_gross_produced
-</th>
-<th style="text-align:right;">
-total_kw_solar_used
-</th>
-<th style="text-align:right;">
-total_kw_consumed
+kWh
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td style="text-align:left;">
+total_kw_fortis_from_grid
+</td>
 <td style="text-align:right;">
-8921.3
+8921.30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_to_grid
 </td>
 <td style="text-align:right;">
 10486.96
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_gross_produced
+</td>
 <td style="text-align:right;">
 15083.81
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_used
+</td>
 <td style="text-align:right;">
 4476.77
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_consumed
 </td>
 <td style="text-align:right;">
 13398.06
@@ -602,51 +638,66 @@ total_kw_consumed
 </tr>
 </tbody>
 </table>
+<p>So over our first full year, we produced 15083.8082 kWh of energy, and consumed 13398.0622 kWh. We thus produced an excess of 1685.746 kWh.</p>
+<p>Once we start consuming more energy than our solar can produce in a given year, on average, that excess energy demand will cost us the going rate in 2024 of $0.1416013 per kWh.</p>
 <hr />
 </div>
-<div id="check-bill-and-net-metering-numbers" class="section level2" number="2.7">
-<h2><span class="header-section-number">2.7</span> Check bill and net metering numbers</h2>
-<p>This is in progress …</p>
+</div>
+<div id="check-bill-and-net-metering-numbers" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Check bill and net metering numbers</h1>
 <p>A reminder of the amounts for the total period, July 15, 2022 through 2024-01-10 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-18">Table 2.5: </span>Summary of energy production and consumption from 2022-07-15 to 2024-01-10
+<span id="tab:unnamed-chunk-18">Table 3.1: </span>Summary of energy production and consumption from 2022-07-15 to 2024-01-10
 </caption>
 <thead>
 <tr>
-<th style="text-align:right;">
-total_kw_fortis_from_grid
+<th style="text-align:left;">
 </th>
 <th style="text-align:right;">
-total_kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-total_kw_solar_gross_produced
-</th>
-<th style="text-align:right;">
-total_kw_solar_used
-</th>
-<th style="text-align:right;">
-total_kw_consumed
+kWh
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td style="text-align:left;">
+total_kw_fortis_from_grid
+</td>
 <td style="text-align:right;">
 12962.07
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_to_grid
+</td>
 <td style="text-align:right;">
-13536.2
+13536.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_gross_produced
 </td>
 <td style="text-align:right;">
 21083.14
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_used
+</td>
 <td style="text-align:right;">
 6082.73
 </td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_consumed
+</td>
 <td style="text-align:right;">
-19044.8
+19044.80
 </td>
 </tr>
 </tbody>
@@ -658,631 +709,22 @@ total_kw_consumed
 ##        &lt;dbl&gt;
 ## 1      4134.</code></pre>
 <p>So we should have 913.818 buffer in banked hours.</p>
-<p>Next we’ll figure out money savings.</p>
 <hr />
 </div>
-</div>
-<div id="estimating-the-break-even-point" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Estimating the break-even point</h1>
-<p>The <strong>break-even point</strong> (BEP) (or “payback period”) is the time it takes for the energy savings to exceed the cost of installation. This <a href="https://www.solar.com/learn/what-is-the-average-payback-period-for-solar-panels/">website</a> provides a useful description.</p>
-<p>In its simplified form, BEP is calculated as:</p>
-<p>(Initial cost of installation) / (Annual savings)</p>
-<p>However, annual savings depends on:</p>
-<ul>
-<li>the given year’s billing rate, currently (which is likely to increase annually).</li>
-<li>any interest paid on loans used to finance the initial installation.</li>
-<li>the performance of the solar (e.g. smoky summer skies may decrease savings)</li>
-<li>how much electricity one used on average</li>
-</ul>
-<p>So, for now, we’ll consider the following:</p>
-<ul>
-<li>initial cost of installation ($20K)</li>
-<li>interest rate for financing installation (for us, 3.24%)</li>
-<li>estimated savings in first year (as shown below, $1900)</li>
-<li>estimated annual inflation in electricity cost (2.5%)</li>
-</ul>
-<p>I got ChatGPT to write me an R function to calculate BEP, and the function spits out the annual calculations:</p>
-<pre><code>payback_period &lt;- function(initial_cost, annual_savings, annual_increase, interest_rate) {
-  years &lt;- 0
-  annual_results &lt;- data.frame(Year = integer(), Starting_Cost = numeric(), Savings = numeric(), Compound_Interest = numeric(), Ending_Cost = numeric())
-  
-  while (initial_cost &gt; 0) {
-    years &lt;- years + 1
-    compound_interest &lt;- initial_cost * interest_rate
-    starting_cost &lt;- initial_cost
-    savings &lt;- annual_savings
-    initial_cost &lt;- initial_cost - annual_savings + compound_interest
-    ending_cost &lt;- initial_cost
-    annual_savings &lt;- annual_savings * (1 + annual_increase)
-    annual_results[years,] &lt;- c(years, starting_cost, savings, compound_interest, ending_cost)
-  }
-  
-  colnames(annual_results) &lt;- c(&quot;Year&quot;, &quot;Starting Cost&quot;, &quot;Savings&quot;, &quot;Compound Interest&quot;, &quot;Ending Cost&quot;)
-  
-  return(list(years = years, annual_results = annual_results))
-}</code></pre>
-<p>The arguments for the function:</p>
-<ul>
-<li>initial_cost: the initial cost of the solar panels installation.<br />
-</li>
-<li>annual_savings: the amount of money saved in the first year on electricity.<br />
-</li>
-<li>annual_increase: the annual percentage increase in the cost of electricity.<br />
-</li>
-<li>interest_rate: the annual interest rate on the financing.</li>
-</ul>
-<hr />
-<p>A few important points to consider prior to estimating our BEP:</p>
-<ul>
-<li><p>our BEP will be longer than normal, because we added a 500 ft<span class="math inline">\(^{2}\)</span> short-term rental to our house at the same time we added solar. I hope to install a current meter so that we can directly measure energy use in the rental. For now, and based on data so far, I estimate that the short-term rental will increase our annual electricity consumption by around 40%. So, our BEP will be longer because we need to make up for our additional energy demands.</p></li>
-<li><p>even though we have high efficiency heat pumps for heating and cooling the rental, the unit consumes more energy than one might expect… probably because when people are on vacation, being energy conscious (like we are in our house) is not top of mind.</p></li>
-<li><p>at this early stage we haven’t realized the full benefits of the solar system, because we only started banking kWh on July 15th 2022. I anticipate we’ll bank enough energy in the summer to cover all the winter demand. If so, we’ll be saving about $1900 per year. However, a major source of uncertainty is how much energy the rental unit will use in the summer (due to cooling demands on heat pumps)</p></li>
-<li><p>the current billing rate from Fortis is 0.13266 per kWh.</p></li>
-</ul>
-<hr />
-<div id="billing-data" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Billing data</h2>
-<p>Let’s first see what our bills say so far…</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-23">Table 3.1: </span>Summary of data from bills from July 28 2022 to Sept 16 2023.
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-bill_date
-</th>
-<th style="text-align:right;">
-kw_fortis_from_grid
-</th>
-<th style="text-align:right;">
-kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-bank_reading
-</th>
-<th style="text-align:right;">
-meter_reading
-</th>
-<th style="text-align:right;">
-rate
-</th>
-<th style="text-align:right;">
-paid
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-2022-07-28
-</td>
-<td style="text-align:right;">
-1380
-</td>
-<td style="text-align:right;">
-1183
-</td>
-<td style="text-align:right;">
-1183
-</td>
-<td style="text-align:right;">
-69883
-</td>
-<td style="text-align:right;">
-0.124
-</td>
-<td style="text-align:right;">
-24.36
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2022-09-28
-</td>
-<td style="text-align:right;">
-875
-</td>
-<td style="text-align:right;">
-2674
-</td>
-<td style="text-align:right;">
-3857
-</td>
-<td style="text-align:right;">
-70758
-</td>
-<td style="text-align:right;">
-0.124
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2022-11-28
-</td>
-<td style="text-align:right;">
-1929
-</td>
-<td style="text-align:right;">
-921
-</td>
-<td style="text-align:right;">
-4778
-</td>
-<td style="text-align:right;">
-72687
-</td>
-<td style="text-align:right;">
-0.124
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-01-28
-</td>
-<td style="text-align:right;">
-2712
-</td>
-<td style="text-align:right;">
-123
-</td>
-<td style="text-align:right;">
-4901
-</td>
-<td style="text-align:right;">
-75399
-</td>
-<td style="text-align:right;">
-0.132
-</td>
-<td style="text-align:right;">
-231.20
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-04-05
-</td>
-<td style="text-align:right;">
-1928
-</td>
-<td style="text-align:right;">
-1397
-</td>
-<td style="text-align:right;">
-6298
-</td>
-<td style="text-align:right;">
-77327
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-70.44
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-05-25
-</td>
-<td style="text-align:right;">
-713
-</td>
-<td style="text-align:right;">
-2120
-</td>
-<td style="text-align:right;">
-8418
-</td>
-<td style="text-align:right;">
-78040
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-07-17
-</td>
-<td style="text-align:right;">
-764
-</td>
-<td style="text-align:right;">
-2776
-</td>
-<td style="text-align:right;">
-11194
-</td>
-<td style="text-align:right;">
-78804
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-09-16
-</td>
-<td style="text-align:right;">
-865
-</td>
-<td style="text-align:right;">
-2567
-</td>
-<td style="text-align:right;">
-13761
-</td>
-<td style="text-align:right;">
-79669
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-11-16
-</td>
-<td style="text-align:right;">
-1286
-</td>
-<td style="text-align:right;">
-1202
-</td>
-<td style="text-align:right;">
-14963
-</td>
-<td style="text-align:right;">
-80955
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-</tbody>
-</table>
-<p>We can calculate what the cost would have been “real_cost” and what our savings were based on what we actually paid:</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-25">Table 3.2: </span>Summary of data from bills from July 28 2022 to July 17 2023.
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-bill_date
-</th>
-<th style="text-align:right;">
-kw_fortis_from_grid
-</th>
-<th style="text-align:right;">
-kw_solar_to_grid
-</th>
-<th style="text-align:right;">
-bank_reading
-</th>
-<th style="text-align:right;">
-meter_reading
-</th>
-<th style="text-align:right;">
-rate
-</th>
-<th style="text-align:right;">
-real_cost
-</th>
-<th style="text-align:right;">
-paid
-</th>
-<th style="text-align:right;">
-saving
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-2022-07-28
-</td>
-<td style="text-align:right;">
-1380
-</td>
-<td style="text-align:right;">
-1183
-</td>
-<td style="text-align:right;">
-1183
-</td>
-<td style="text-align:right;">
-69883
-</td>
-<td style="text-align:right;">
-0.12
-</td>
-<td style="text-align:right;">
-170.64
-</td>
-<td style="text-align:right;">
-24.36
-</td>
-<td style="text-align:right;">
-146.28
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2022-09-28
-</td>
-<td style="text-align:right;">
-875
-</td>
-<td style="text-align:right;">
-2674
-</td>
-<td style="text-align:right;">
-3857
-</td>
-<td style="text-align:right;">
-70758
-</td>
-<td style="text-align:right;">
-0.12
-</td>
-<td style="text-align:right;">
-108.19
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-108.19
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2022-11-28
-</td>
-<td style="text-align:right;">
-1929
-</td>
-<td style="text-align:right;">
-921
-</td>
-<td style="text-align:right;">
-4778
-</td>
-<td style="text-align:right;">
-72687
-</td>
-<td style="text-align:right;">
-0.12
-</td>
-<td style="text-align:right;">
-238.52
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-238.52
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-01-28
-</td>
-<td style="text-align:right;">
-2712
-</td>
-<td style="text-align:right;">
-123
-</td>
-<td style="text-align:right;">
-4901
-</td>
-<td style="text-align:right;">
-75399
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-357.98
-</td>
-<td style="text-align:right;">
-231.20
-</td>
-<td style="text-align:right;">
-126.78
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-04-05
-</td>
-<td style="text-align:right;">
-1928
-</td>
-<td style="text-align:right;">
-1397
-</td>
-<td style="text-align:right;">
-6298
-</td>
-<td style="text-align:right;">
-77327
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-255.65
-</td>
-<td style="text-align:right;">
-70.44
-</td>
-<td style="text-align:right;">
-185.21
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-05-25
-</td>
-<td style="text-align:right;">
-713
-</td>
-<td style="text-align:right;">
-2120
-</td>
-<td style="text-align:right;">
-8418
-</td>
-<td style="text-align:right;">
-78040
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-94.54
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-94.54
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-07-17
-</td>
-<td style="text-align:right;">
-764
-</td>
-<td style="text-align:right;">
-2776
-</td>
-<td style="text-align:right;">
-11194
-</td>
-<td style="text-align:right;">
-78804
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-101.31
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-101.31
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-09-16
-</td>
-<td style="text-align:right;">
-865
-</td>
-<td style="text-align:right;">
-2567
-</td>
-<td style="text-align:right;">
-13761
-</td>
-<td style="text-align:right;">
-79669
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-114.70
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-114.70
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2023-11-16
-</td>
-<td style="text-align:right;">
-1286
-</td>
-<td style="text-align:right;">
-1202
-</td>
-<td style="text-align:right;">
-14963
-</td>
-<td style="text-align:right;">
-80955
-</td>
-<td style="text-align:right;">
-0.13
-</td>
-<td style="text-align:right;">
-170.52
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-170.52
-</td>
-</tr>
-</tbody>
-</table>
-<p>So, based on billing numbers, the amount we would have had to pay since July 2022 is $1612.06, what we actually paid was $326, and our savings were $1286.06. That’s a 80% saving.</p>
-<p>That’s not bad!</p>
+<div id="consumption-and-savings-through-calendar-year-of-2023" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Consumption and savings through calendar year of 2023</h1>
+<p>We need to calculate total consumption (Fortis-metered energy use, IN ADDITION to the energy we drew directly from our solar, which Fortis would not have recorded) for a year, and for simplicity, we’ll start at January 1, 2023, when Fortis introduced the new rate of <code>$0.13266/kWh</code>.</p>
+<p>In 2023 we consumed a total of 12043.8899 kWh of energy.</p>
+<p>At the rate of <code>$0.13266/kWh</code>, that would have cost us 1597.74 dollars.</p>
+<p>What did we actually pay? A total of $188.93 (including 5% GST). That’s a savings of 1408.81 dollars.</p>
+<p>HOWEVER, it is likely that in 2024 we will not pay anything for electricity, because we have enough banked energy from 2023 to get us through to spring. If that’s true, and combined with the rate increase to <code>$0.1416013 / kWh</code> then we’ll save 1705.43 dollars in 2024, assuming the same amount of energy consumed as in 2023.</p>
+<p>But we have to account for the cost of financing the loan too…</p>
+<p>Over a calendar year, the portion of our loan payments attributable to the solar is about <code>$1165.56</code>. So, in 2023, we saved <strong>243.25</strong> after all costs. In 2024, we can anticipate those savings to increase to <strong>539.87</strong>.</p>
 <hr />
 </div>
-<div id="calculate-bep" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Calculate BEP</h2>
-<p>Now we’ll use our function to estimate the BEP.</p>
-<p>To reiterate, we don’t yet have sufficient data to accurately estimate savings, because unlike last summer, when we only started solar in mid-July, this year we have banked a lot of solar energy from the entire summer that will be used against energy needs this winter. AND, this winter we’ll have more typical occupancy of our short-term rental (last year we only started renting it out in December, but in-laws were there for the cold spell in November).</p>
-<p>So, we’ll explore a few scenarios, all of which assume an inflation rate of 2.5% (this can be varied also…), use the financing interest rate of 3.24%, and initial installation cost of $20K.</p>
-<p>We assume that there’s no banked kWh left for payback at the end of the year.</p>
-<ol style="list-style-type: decimal">
-<li><p>Assume we produce enough solar to cover annual needs; At the current billing rate of $0.13266/kWh, and estimating we’ll consume 14mWh, this translates to $1857.24 / yr savings.</p></li>
-<li><p>Assume we cover 80% of needs, which results in $1485.79 savings</p></li>
-<li><p>Assume we cover 70% of needs, which results in $1300.07 savings.</p></li>
-</ol>
-<p>Here we go:</p>
-<p><img src="index_files/figure-html/unnamed-chunk-27-1.png" width="768" /></p>
-<p>So for now, the optimistic estimate for BEP is just under 12 years.</p>
-<p>Recall that these BEP times are <strong>longer</strong> than they would be for a typical household, because we generally consume less energy yearly than a typical household. For example, a house that uses electrical baseboard heating would have a much shorter BEP.</p>
-<p>Stay tuned - I’ll update these numbers as we get more data!</p>
-</div>
+<div id="estimating-the-break-even-point" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Estimating the break-even point</h1>
+<p>TO BE COMPLETED</p>
 </div>
 
    

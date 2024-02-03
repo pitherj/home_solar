@@ -446,24 +446,28 @@ kbl(t(final_summary), caption = paste("Summary of energy production and consumpt
 ```
 
 
-Our latest bill (from Sept 17 2023 to November 16, 2023) shows our net metering "bank" has a balance of 5048 kWh.  
+```{r echo = FALSE}
+latest.bill.bank.number <- 2936
+```
+
+Our latest bill (from Nov 17 2023 to Jan 16, 2024) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
 
 ```{r}
 new_net <- all_data %>%
-  filter(day > "2023-09-16") %>%
+  filter(day > "2023-11-16") %>%
   summarise(excess_kWh  = sum(kw_solar_gross_produced, na.rm = TRUE) -  (sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE)))
 ```
 
-Last year (which was really cold from early November) from November 5th through March 31st we used:
+Last year from January 17 through March 31st we used:
 
 ```{r}
 winter_usage <- all_data %>%
-  filter(day > "2022-11-05" & day < "2023-04-01") %>%
+  filter(day > "2023-01-16" & day < "2023-04-01") %>%
   summarise(excess_kWh  = sum(kw_solar_gross_produced, na.rm = TRUE) -  (sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE)))
 abs(winter_usage)
 ```
 
-So we should have `r winter_usage + 5048` buffer in banked hours. 
+So we should have `r winter_usage + latest.bill.bank.number` buffer in banked hours. 
 
 * * *
 

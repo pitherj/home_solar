@@ -114,7 +114,7 @@ Fortis BC has a [net metering program](https://www.fortisbc.com/services/electri
 
 Their [website explains what a net-metering bill looks like](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5).  
 
-If we happen to have anything left in our "bank" at the end of March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to $0.10 / kWh.  
+If we happen to have anything left in our "bank" at the end of March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to ~~\$0.10 / kWh~~ (actually, it's only \$0.05374 / kWh, based on the [Rate Schedule 3808 Tranche 1 Energy Price](https://www.bchydro.com/content/dam/BCHydro/customer-portal/documents/corporate/tariff-filings/electric-tariff/bchydro-electric-tariff.pdf) that BC Hydro charges Fortis).  
 
 * * *
 
@@ -492,6 +492,10 @@ HOWEVER, it is likely that in 2024 we will not pay anything for electricity, bec
 But we have to account for the cost of financing the loan too...
 
 Over a calendar year, the portion of our loan payments attributable to the solar is about `$1165.56`.  So, in 2023, we saved **`r round(consumed.2023 * 0.13266 - 188.93, 2) - 1165.56`** after all costs.  In 2024, we can anticipate those savings to increase to **`r round(consumed.2023 * 0.1416013, 2) - 1165.56`**.  
+
+**UPDATE MAY 21 2024**
+
+We received our last bill of the fiscal year (April 2023 - March 2024), and as anticipated, did not pay for any electricity over that period.  We had 1702 kWh left in our bank on March 31st 2024, and for this we were credited 1702 x \$0.05374 = \$91.47.  And for the period April 1st to May 16th, 2024, we have already banked 1736 kWh!
 
 * * *
 

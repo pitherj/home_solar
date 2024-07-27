@@ -104,10 +104,22 @@ solar.data <-solar.data %>%
   select(date, day, hour, kWh)
 ```
 
+Eliminate any mistaken duplicate records
+
+```{r}
+solar.data <- solar.data %>%
+  distinct()
+```
+
 Write csv
 
 ```{r}
 readr::write_csv(solar.data, here::here("outdata", "solar_data.csv"))
 ```
 
+Eliminate extraneous files
+
+```{r}
+file.remove(solar.output.files)
+```
 

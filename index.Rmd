@@ -422,6 +422,27 @@ So over our first full year, we produced `r year.tot$total_kw_solar_gross_produc
 
 Once we start consuming more energy than our solar can produce in a given year, on average, that excess energy demand will cost us the going rate in 2024 of \$0.1416013 per kWh.  
 
+Now do the same for July 15, 2023 through July 15 2024:
+
+```{r tots3, echo = FALSE}
+year2023_24.tot <- all_data %>%
+  filter(day >= ymd("2023-07-15") & day <= ymd("2024-07-14")) %>%
+  summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),
+            total_kw_solar_to_grid = sum(kw_solar_to_grid, na.rm = TRUE),
+            total_kw_solar_gross_produced = sum(kw_solar_gross_produced, na.rm = TRUE),
+            total_kw_solar_used = sum(kw_consumed_from_solar, na.rm = TRUE),
+            total_kw_consumed = sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE))
+```
+
+```{r}
+kbl(t(year2023_24.tot), caption = "Summary of energy production and consumption from July 15 2023 to July 14, 2024.", 
+    booktabs = TRUE, digits = c(2), col.names = "kWh") %>% 
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
+```
+
+So over our second full year, we produced `r year2023_24.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year2023_24.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year2023_24.tot$total_kw_solar_gross_produced - year2023_24.tot$total_kw_consumed` kWh.   
+
+
 * * *
 
 # Check bill and net metering numbers
@@ -447,27 +468,12 @@ kbl(t(final_summary), caption = paste("Summary of energy production and consumpt
 
 
 ```{r echo = FALSE}
-latest.bill.bank.number <- 1702
+latest.bill.bank.number <- 3835
 ```
 
-Our latest bill (from Nov 17 2023 to March 16, 2024) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
+Our latest bill (from May 16 2024 to July 16, 2024) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
 
-```{r}
-new_net <- all_data %>%
-  filter(day > "2024-01-16") %>%
-  summarise(excess_kWh  = sum(kw_solar_gross_produced, na.rm = TRUE) -  (sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE)))
-```
-
-Last year from March 17 through March 31st we used:
-
-```{r}
-winter_usage <- all_data %>%
-  filter(day > "2023-03-16" & day < "2023-04-01") %>%
-  summarise(excess_kWh  = sum(kw_solar_gross_produced, na.rm = TRUE) -  (sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE)))
-abs(winter_usage)
-```
-
-So we should have `r winter_usage + latest.bill.bank.number` buffer in banked hours.  So we should get a net-metering refund of  `r round((winter_usage + latest.bill.bank.number) * 0.1, 2)` dollars.
+At 2023 fiscal-year-end (March 31, 2023) we had 1702kWh left in our bank, and we got a refund (at \$0.05374/kWh) of \$91.47.
 
 * * *
 

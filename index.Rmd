@@ -238,10 +238,15 @@ Note that the low consumption in June 2022 is due to data gaps, which are a myst
 
 The substantial increase in energy consumption in November 2022 was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do renos at our house.  So, over the first 3 weeks of November 2022, we were using more electricity than usual, and we had little sun for solar energy production. 
 
+And in June 2024 we purchased a 2019 Chevy Bolt, so started charging this EV at home regularly.
+
 Let's combine the data into one plot.
 
 ```{r, echo = FALSE}
-all_data <- full_join(consumption.data, solar.data, by = c("day", "hour"))
+if(max(consumption.data$day) <= max(solar.data$day)) {
+all_data <- left_join(consumption.data, solar.data, by = c("day", "hour")) } else {
+  all_data <- left_join(solar.data, consumption.data,by = c("day", "hour"))
+}
 ```
 
 ```{r fifthplot, echo = FALSE, fig.cap = "Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8."}
@@ -262,6 +267,7 @@ all_data %>%
   labs(x = "Date", y = "Energy (kWh)") +
   theme_bw()
 ```
+Lots more consumption with the addition of our EV... but boy are we saving money and emissions on gas!
 
 * * *
 
@@ -308,7 +314,7 @@ So we see a substantial drop in 2023.  In July 2022 is when we installed the sol
 
 So, averaging consumption for 2019 through 2021, `r round(mean(annual_hist_cons$tot_kWh_used[1:3]), 0)` kWh was our typical annual electricity consumption, which is a bit lower than average household consumption [across the country](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=3.2&cubeTimeFrame.startYear=2017&cubeTimeFrame.endYear=2019&referencePeriods=20170101%2C20190101).
 
-However, in 2024 we've already used more than 2400 kWh in the first three months, which seems high, and is probably due to more heat pump use in the AirBnB.  We'll look into this later...
+However, so far in 2024 we've used more than `r `annual_hist_cons[nrow(annual_hist_cons), 2]$tot_kWh_used` kWh in the first three months, which seems pretty good given our EV charging..
 
 * * *
 
@@ -400,11 +406,11 @@ kbl(t(begin.tot2), caption = "Summary of energy production and consumption from 
 ```
 
 
-Now do for one full year of data, July 15 2022 through July 14, 2023 inclusive.
+Now do for one full year of data, December 16 2022 through December 15, 2023 inclusive.
 
 ```{r tots2, echo = FALSE}
 year.tot <- all_data %>%
-  filter(day >= ymd("2022-07-15") & day <= ymd("2023-07-14")) %>%
+  filter(day >= ymd("2022-12-16") & day <= ymd("2023-12-15")) %>%
   summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),
             total_kw_solar_to_grid = sum(kw_solar_to_grid, na.rm = TRUE),
             total_kw_solar_gross_produced = sum(kw_solar_gross_produced, na.rm = TRUE),
@@ -413,20 +419,20 @@ year.tot <- all_data %>%
 ```
 
 ```{r}
-kbl(t(year.tot), caption = "Summary of energy production and consumption from July 15 2022 to July 14, 2023.", 
+kbl(t(year.tot), caption = "Summary of energy production and consumption from December 16 2022 through December 15, 2023.", 
     booktabs = TRUE, digits = c(2), col.names = "kWh") %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So over our first full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.   
+So over our last full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.   
 
 Once we start consuming more energy than our solar can produce in a given year, on average, that excess energy demand will cost us the going rate in 2024 of \$0.1416013 per kWh.  
 
-Now do the same for July 15, 2023 through July 15 2024:
+Now do the same for December 16, 2023 through December 15 2024:
 
 ```{r tots3, echo = FALSE}
 year2023_24.tot <- all_data %>%
-  filter(day >= ymd("2023-07-15") & day <= ymd("2024-07-14")) %>%
+  filter(day >= ymd("2023-12-16") & day <= ymd("2024-12-15")) %>%
   summarise(total_kw_fortis_from_grid  = sum(kw_fortis_from_grid, na.rm = TRUE),
             total_kw_solar_to_grid = sum(kw_solar_to_grid, na.rm = TRUE),
             total_kw_solar_gross_produced = sum(kw_solar_gross_produced, na.rm = TRUE),
@@ -435,7 +441,7 @@ year2023_24.tot <- all_data %>%
 ```
 
 ```{r}
-kbl(t(year2023_24.tot), caption = "Summary of energy production and consumption from July 15 2023 to July 14, 2024.", 
+kbl(t(year2023_24.tot), caption = "Summary of energy production and consumption from December 16 2022 through December 15, 2023.", 
     booktabs = TRUE, digits = c(2), col.names = "kWh") %>% 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
@@ -468,10 +474,10 @@ kbl(t(final_summary), caption = paste("Summary of energy production and consumpt
 
 
 ```{r echo = FALSE}
-latest.bill.bank.number <- 3835
+latest.bill.bank.number <- 4685
 ```
 
-Our latest bill (from May 16 2024 to July 16, 2024) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
+Our latest bill (from Sept 16 2024 to Nov 16, 2024) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
 
 At 2023 fiscal-year-end (March 31, 2023) we had 1702kWh left in our bank, and we got a refund (at \$0.05374/kWh) of \$91.47.
 

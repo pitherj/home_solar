@@ -307,6 +307,7 @@ Figure 2.4: Figure 4: Daily energy consumption (kWh) for our house, starting Jun
 </div>
 <p>Note that the low consumption in June 2022 is due to data gaps, which are a mystery to Fortis.</p>
 <p>The substantial increase in energy consumption in November 2022 was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do renos at our house. So, over the first 3 weeks of November 2022, we were using more electricity than usual, and we had little sun for solar energy production.</p>
+<p>And in June 2024 we purchased a 2019 Chevy Bolt, so started charging this EV at home regularly.</p>
 <p>Let’s combine the data into one plot.</p>
 <pre><code>## `summarise()` has grouped output by &#39;day&#39;. You can override using the `.groups` argument.</code></pre>
 <div class="figure"><span style="display:block;" id="fig:fifthplot"></span>
@@ -315,6 +316,7 @@ Figure 2.4: Figure 4: Daily energy consumption (kWh) for our house, starting Jun
 Figure 2.5: Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8.
 </p>
 </div>
+<p>Lots more consumption with the addition of our EV… but boy are we saving money and emissions on gas!</p>
 <hr />
 </div>
 <div id="historical-data" class="section level2" number="2.3">
@@ -398,7 +400,7 @@ tot_kWh_used
 </table>
 <p>So we see a substantial drop in 2023. In July 2022 is when we installed the solar.</p>
 <p>So, averaging consumption for 2019 through 2021, 9572 kWh was our typical annual electricity consumption, which is a bit lower than average household consumption <a href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&amp;pickMembers%5B0%5D=1.1&amp;pickMembers%5B1%5D=3.2&amp;cubeTimeFrame.startYear=2017&amp;cubeTimeFrame.endYear=2019&amp;referencePeriods=20170101%2C20190101">across the country</a>.</p>
-<p>However, in 2024 we’ve already used more than 2400 kWh in the first three months, which seems high, and is probably due to more heat pump use in the AirBnB. We’ll look into this later…</p>
+<p>However, so far in 2024 we’ve used more than <code>r</code>annual_hist_cons[nrow(annual_hist_cons), 2]$tot_kWh_used` kWh in the first three months, which seems pretty good given our EV charging..</p>
 <hr />
 </div>
 <div id="production" class="section level2" number="2.5">
@@ -581,10 +583,10 @@ total_kw_consumed
 </tr>
 </tbody>
 </table>
-<p>Now do for one full year of data, July 15 2022 through July 14, 2023 inclusive.</p>
+<p>Now do for one full year of data, December 16 2022 through December 15, 2023 inclusive.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-16">Table 2.4: </span>Summary of energy production and consumption from July 15 2022 to July 14, 2023.
+<span id="tab:unnamed-chunk-16">Table 2.4: </span>Summary of energy production and consumption from December 16 2022 through December 15, 2023.
 </caption>
 <thead>
 <tr>
@@ -601,7 +603,7 @@ kWh
 total_kw_fortis_from_grid
 </td>
 <td style="text-align:right;">
-8921.30
+8259.42
 </td>
 </tr>
 <tr>
@@ -609,7 +611,7 @@ total_kw_fortis_from_grid
 total_kw_solar_to_grid
 </td>
 <td style="text-align:right;">
-10486.96
+9104.20
 </td>
 </tr>
 <tr>
@@ -617,7 +619,7 @@ total_kw_solar_to_grid
 total_kw_solar_gross_produced
 </td>
 <td style="text-align:right;">
-15083.81
+14852.96
 </td>
 </tr>
 <tr>
@@ -625,7 +627,7 @@ total_kw_solar_gross_produced
 total_kw_solar_used
 </td>
 <td style="text-align:right;">
-4476.77
+4284.57
 </td>
 </tr>
 <tr>
@@ -633,17 +635,17 @@ total_kw_solar_used
 total_kw_consumed
 </td>
 <td style="text-align:right;">
-13398.06
+12543.99
 </td>
 </tr>
 </tbody>
 </table>
-<p>So over our first full year, we produced 15083.8082 kWh of energy, and consumed 13398.0622 kWh. We thus produced an excess of 1685.746 kWh.</p>
+<p>So over our last full year, we produced 14852.9643 kWh of energy, and consumed 12543.9915 kWh. We thus produced an excess of 2308.9728 kWh.</p>
 <p>Once we start consuming more energy than our solar can produce in a given year, on average, that excess energy demand will cost us the going rate in 2024 of $0.1416013 per kWh.</p>
-<p>Now do the same for July 15, 2023 through July 15 2024:</p>
+<p>Now do the same for December 16, 2023 through December 15 2024:</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-17">Table 2.5: </span>Summary of energy production and consumption from July 15 2023 to July 14, 2024.
+<span id="tab:unnamed-chunk-17">Table 2.5: </span>Summary of energy production and consumption from December 16 2022 through December 15, 2023.
 </caption>
 <thead>
 <tr>
@@ -660,7 +662,7 @@ kWh
 total_kw_fortis_from_grid
 </td>
 <td style="text-align:right;">
-7984.46
+4992.30
 </td>
 </tr>
 <tr>
@@ -668,7 +670,7 @@ total_kw_fortis_from_grid
 total_kw_solar_to_grid
 </td>
 <td style="text-align:right;">
-9235.84
+6808.93
 </td>
 </tr>
 <tr>
@@ -676,7 +678,7 @@ total_kw_solar_to_grid
 total_kw_solar_gross_produced
 </td>
 <td style="text-align:right;">
-14730.28
+9417.46
 </td>
 </tr>
 <tr>
@@ -684,7 +686,7 @@ total_kw_solar_gross_produced
 total_kw_solar_used
 </td>
 <td style="text-align:right;">
-4068.52
+2526.74
 </td>
 </tr>
 <tr>
@@ -692,12 +694,12 @@ total_kw_solar_used
 total_kw_consumed
 </td>
 <td style="text-align:right;">
-12052.98
+7519.05
 </td>
 </tr>
 </tbody>
 </table>
-<p>So over our second full year, we produced 14730.2809 kWh of energy, and consumed 12052.9781 kWh. We thus produced an excess of 2677.3028 kWh.</p>
+<p>So over our second full year, we produced 9417.4576 kWh of energy, and consumed 7519.0466 kWh. We thus produced an excess of 1898.411 kWh.</p>
 <hr />
 </div>
 </div>
@@ -760,7 +762,7 @@ total_kw_consumed
 </tr>
 </tbody>
 </table>
-<p>Our latest bill (from May 16 2024 to July 16, 2024) shows our net metering “bank” has a balance of 3835 kWh.</p>
+<p>Our latest bill (from Sept 16 2024 to Nov 16, 2024) shows our net metering “bank” has a balance of 4685 kWh.</p>
 <p>At 2023 fiscal-year-end (March 31, 2023) we had 1702kWh left in our bank, and we got a refund (at $0.05374/kWh) of $91.47.</p>
 <hr />
 </div>

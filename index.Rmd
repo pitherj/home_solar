@@ -424,9 +424,7 @@ kbl(t(year.tot), caption = "Summary of energy production and consumption from De
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So over our last full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.   
-
-Once we start consuming more energy than our solar can produce in a given year, on average, that excess energy demand will cost us the going rate in 2024 of \$0.1416013 per kWh.  
+So over our previous full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.   
 
 Now do the same for December 16, 2023 through December 15 2024:
 
@@ -446,7 +444,7 @@ kbl(t(year2023_24.tot), caption = "Summary of energy production and consumption 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So over our second full year, we produced `r year2023_24.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year2023_24.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year2023_24.tot$total_kw_solar_gross_produced - year2023_24.tot$total_kw_consumed` kWh.   
+So over our last full year, we produced `r year2023_24.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year2023_24.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year2023_24.tot$total_kw_solar_gross_produced - year2023_24.tot$total_kw_consumed` kWh.   
 
 
 * * *

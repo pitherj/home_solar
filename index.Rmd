@@ -314,7 +314,7 @@ So we see a substantial drop in 2023.  In July 2022 is when we installed the sol
 
 So, averaging consumption for 2019 through 2021, `r round(mean(annual_hist_cons$tot_kWh_used[1:3]), 0)` kWh was our typical annual electricity consumption, which is a bit lower than average household consumption [across the country](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=3.2&cubeTimeFrame.startYear=2017&cubeTimeFrame.endYear=2019&referencePeriods=20170101%2C20190101).
 
-However, so far in 2024 we've used more than `r `annual_hist_cons[nrow(annual_hist_cons), 2]$tot_kWh_used` kWh in the first three months, which seems pretty good given our EV charging..
+However, so far in 2024 we've used more than `r annual_hist_cons[nrow(annual_hist_cons), 2]$tot_kWh_used` kWh in the first three months, which seems pretty good given our EV charging..
 
 * * *
 

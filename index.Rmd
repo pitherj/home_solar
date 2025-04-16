@@ -104,7 +104,7 @@ So, for the solar array installation, the net cost was under `$20K` after rebate
 
 Fortis BC is our electricity provider, and like most places in North America, we don't have a choice about who we purchase electricity from.
 
-As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, as of 2023, they charge at a fixed rate of **\$0.13266 per kWh**, which is increasing to **\$0.1416013** in 2024.
+As described at their [website](https://www.fortisbc.com/about-us/corporate-information/regulatory-affairs/our-electricity-utility/electric-bcuc-submissions/electricity-rates), Fortis bills customers bi-monthly, as of 2023, they charge at a fixed rate of **\$0.13266 per kWh**, which increased to **\$0.1416013** in 2024, and **\$0.1496** in January 2025.
 
 Be sure to consult their website to keep track of any updates to rates.  
 
@@ -114,7 +114,7 @@ Fortis BC has a [net metering program](https://www.fortisbc.com/services/electri
 
 Their [website explains what a net-metering bill looks like](https://www.fortisbc.com/services/electricity-services/generating-your-own-electricity/net-metering/understanding-your-net-metering-electricity-bill#item5).  
 
-If we happen to have anything left in our "bank" at the end of March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to ~~\$0.10 / kWh~~ (actually, it's only \$0.05374 / kWh, based on the [Rate Schedule 3808 Tranche 1 Energy Price](https://www.bchydro.com/content/dam/BCHydro/customer-portal/documents/corporate/tariff-filings/electric-tariff/bchydro-electric-tariff.pdf) that BC Hydro charges Fortis).  
+If we happen to have anything left in our "bank" at the end of each March, then our account will get credited at a rate equivalent to what Fortis pays their providers. This should be close to ~~\$0.10 / kWh~~ (actually, it's only \$0.05374 / kWh, based on the [Rate Schedule 3808 Tranche 1 Energy Price](https://www.bchydro.com/content/dam/BCHydro/customer-portal/documents/corporate/tariff-filings/electric-tariff/bchydro-electric-tariff.pdf) that BC Hydro charges Fortis). We don't know what the rate will be in 2025.
 
 * * *
 
@@ -167,10 +167,11 @@ solar.data %>%
   ggplot(aes(x = day, y = total)) +
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
-    scale_x_date(date_breaks="1 month", date_labels="%b") +
+    scale_x_date(date_breaks="4 month", date_labels="%b %y") +
   labs(x = "Date", y = "Daily solar energy production (kWh)") +
-  ylim(0, 90) +
-  theme_bw()
+  ylim(0, 90)  +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+  #theme_bw()
 ```
 
 And FYI, in 2022 Kelowna got an early start to winter... beginning of November saw more than 30cm of snow fall, and it STAYED!  Which meant that the solar panels were covered for the better part of 5 days.  I then cleared off a few of them (the steeper angled ones), and we saw a wee bit of sun.  However, from November through February each year, Kelowna tends to be very grey... the clouds settle in the valley and just stay here. But it's often sunny at higher elevation.  
@@ -210,9 +211,10 @@ consumption.data %>%
   filter(!is.na(kw_fortis_from_grid), day > "2022-06-1") %>%
   ggplot(aes(x = day, y = kw_fortis_from_grid)) +
   geom_line(colour = "darkgrey") +
-    scale_x_date(date_breaks="1 month", date_labels="%b") +
-  labs(x = "Date", y = "Hourly energy consumption from grid (kWh)") +
-  theme_bw()
+    scale_x_date(date_breaks="4 month", date_labels="%b %y") +
+  labs(x = "Date", y = "Hourly energy consumption from grid (kWh)")  +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+  #theme_bw()
 ```
 
 hmm, that's messy...  
@@ -229,9 +231,10 @@ consumption.data %>%
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
   lims(y = c(0,90)) +
-  scale_x_date(date_breaks="1 month", date_labels="%b") +
-  labs(x = "Date", y = "Daily energy consumption from grid (kWh)") +
-  theme_bw()
+  scale_x_date(date_breaks="4 month", date_labels="%b %y") +
+  labs(x = "Date", y = "Daily energy consumption from grid (kWh)")  +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+  #theme_bw()
 ```
 
 Note that the low consumption in June 2022 is due to data gaps, which are a mystery to Fortis. 
@@ -262,10 +265,11 @@ all_data %>%
   geom_point(aes(x = day, y = total_consumed), shape = 1, colour = "firebrick") +
   geom_line(aes(x = day, y = total_produced), colour = "blue") +
   geom_point(aes(x = day, y = total_produced), colour = "blue", shape = 1) +
-  scale_x_date(date_breaks="1 month", date_labels="%b") +
+  scale_x_date(date_breaks="4 month", date_labels="%b %y") +
     lims(y = c(0,90)) +
   labs(x = "Date", y = "Energy (kWh)") +
-  theme_bw()
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+  #theme_bw()
 ```
 Lots more consumption with the addition of our EV... but boy are we saving money and emissions on gas!
 
@@ -287,7 +291,8 @@ consumption.data %>%
   lims(y = c(0,90)) +
   scale_x_date(date_breaks="4 month", date_labels="%b %y") +
   labs(x = "Date", y = "Daily energy consumption from grid (kWh)") +
-  theme_bw()
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+  #theme_bw()
 ```
 
 
@@ -310,11 +315,8 @@ kbl(annual_hist_cons, caption = "Historical annual (calendar year) electricity c
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So we see a substantial drop in 2023.  In July 2022 is when we installed the solar.  
+Averaging consumption for 2019 through 2021, `r round(mean(annual_hist_cons$tot_kWh_used[1:3]), 0)` kWh was our typical annual electricity consumption, which is a bit lower than average household consumption [across the country](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=3.2&cubeTimeFrame.startYear=2017&cubeTimeFrame.endYear=2019&referencePeriods=20170101%2C20190101).
 
-So, averaging consumption for 2019 through 2021, `r round(mean(annual_hist_cons$tot_kWh_used[1:3]), 0)` kWh was our typical annual electricity consumption, which is a bit lower than average household consumption [across the country](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2510006201&pickMembers%5B0%5D=1.1&pickMembers%5B1%5D=3.2&cubeTimeFrame.startYear=2017&cubeTimeFrame.endYear=2019&referencePeriods=20170101%2C20190101).
-
-However, so far in 2024 we've used more than `r annual_hist_cons[nrow(annual_hist_cons), 2]$tot_kWh_used` kWh in the first three months, which seems pretty good given our EV charging..
 
 * * *
 
@@ -363,7 +365,7 @@ Next we'll calculate some summary statistics...
 
 ## Summary data
 
-From July 8th to `r max(all_data$day)` (last day of data), let's calculate how much: 
+From July 8th 2022 to `r max(all_data$day)` (last day of data), let's calculate how much: 
 
 * total energy consumed from grid (`total_kw_fortis_from_grid`)
 * total solar energy returned to grid (`total_kw_solar_to_grid`)
@@ -424,9 +426,32 @@ kbl(t(year.tot), caption = "Summary of energy production and consumption from De
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So over our previous full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.   
+So over our previous full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.  
+## Electric Vehicle in 2024
 
-Now do the same for December 16, 2023 through December 15 2024:
+In June 2024 we got a 2019 Chevy Bolt (battery replaced in 2021), and we installed a charger that was operational in July 2024. So, this represents a new draw of electricity.
+
+In this figure we saw earlier, we can see this new electricity usage:
+
+```{r fourthplot-2, warning = FALSE, echo = FALSE, fig.cap = "Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022."}
+
+consumption.data %>%
+  filter(day > "2022-06-1") %>%
+  group_by(day) %>%
+  summarise(total_consumed = sum(kw_fortis_from_grid)) %>%
+  ggplot(aes(x = day, y = total_consumed)) +
+  geom_line(colour = "darkgrey") +
+  geom_point(shape = 1) +
+  lims(y = c(0,90)) +
+  scale_x_date(date_breaks="4 month", date_labels="%b %y") +
+  labs(x = "Date", y = "Daily energy consumption from grid (kWh)")  +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+  #theme_bw()
+```
+
+## 2024 usage
+
+Evaluate usage for December 16, 2023 through December 15 2024:
 
 ```{r tots3, echo = FALSE}
 year2023_24.tot <- all_data %>%
@@ -444,7 +469,7 @@ kbl(t(year2023_24.tot), caption = "Summary of energy production and consumption 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So over our last full year, we produced `r year2023_24.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year2023_24.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year2023_24.tot$total_kw_solar_gross_produced - year2023_24.tot$total_kw_consumed` kWh.   
+So over our last full calendar year, we produced `r year2023_24.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year2023_24.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year2023_24.tot$total_kw_solar_gross_produced - year2023_24.tot$total_kw_consumed` kWh.   
 
 
 * * *
@@ -472,10 +497,10 @@ kbl(t(final_summary), caption = paste("Summary of energy production and consumpt
 
 
 ```{r echo = FALSE}
-latest.bill.bank.number <- 4685
+latest.bill.bank.number <- 209
 ```
 
-Our latest bill (from Sept 16 2024 to Nov 16, 2024) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
+Our latest bill (from Jan 16 2025 to March 16, 2025) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
 
 At 2023 fiscal-year-end (March 31, 2023) we had 1702kWh left in our bank, and we got a refund (at \$0.05374/kWh) of \$91.47.
 

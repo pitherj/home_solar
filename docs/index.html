@@ -136,11 +136,12 @@
           <li><a href="#hist_consumption" id="toc-hist_consumption"><span class="toc-section-number">2.4</span> Average annual consumption</a></li>
           <li><a href="#production" id="toc-production"><span class="toc-section-number">2.5</span> Calculate total production and consumption</a></li>
           <li><a href="#summary-data" id="toc-summary-data"><span class="toc-section-number">2.6</span> Summary data</a></li>
-          <li><a href="#usage" id="toc-usage"><span class="toc-section-number">2.7</span> 2024 usage</a></li>
           </ul></li>
-          <li><a href="#check-bill-and-net-metering-numbers" id="toc-check-bill-and-net-metering-numbers"><span class="toc-section-number">3</span> Check bill and net metering numbers</a></li>
-          <li><a href="#consumption-and-savings-through-calendar-year-of-2023" id="toc-consumption-and-savings-through-calendar-year-of-2023"><span class="toc-section-number">4</span> Consumption and savings through calendar year of 2023</a></li>
-          <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">5</span> Estimating the break-even point</a></li>
+          <li><a href="#electric-vehicle-in-2024" id="toc-electric-vehicle-in-2024"><span class="toc-section-number">3</span> Electric Vehicle in 2024</a></li>
+          <li><a href="#usage" id="toc-usage"><span class="toc-section-number">4</span> 2024 usage</a></li>
+          <li><a href="#check-bill-and-net-metering-numbers" id="toc-check-bill-and-net-metering-numbers"><span class="toc-section-number">5</span> Check bill and net metering numbers</a></li>
+          <li><a href="#consumption-and-savings-through-calendar-year-of-2023" id="toc-consumption-and-savings-through-calendar-year-of-2023"><span class="toc-section-number">6</span> Consumption and savings through calendar year of 2023</a></li>
+          <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">7</span> Estimating the break-even point</a></li>
           </ul>
         </nav>
         <ul class="authors">
@@ -310,8 +311,7 @@ Figure 2.4: Figure 4: Daily energy consumption (kWh) for our house, starting Jun
 <p>The substantial increase in energy consumption in November 2022 was from the combination of early winter/snow/cloud in Kelowna, and 3 weeks with our wonderfully handy in-laws living with us to do renos at our house. So, over the first 3 weeks of November 2022, we were using more electricity than usual, and we had little sun for solar energy production.</p>
 <p>And in June 2024 we purchased a 2019 Chevy Bolt, so started charging this EV at home regularly.</p>
 <p>Let’s combine the data into one plot.</p>
-<pre><code>## `summarise()` has grouped output by &#39;day&#39;. You can override using the `.groups`
-## argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;day&#39;. You can override using the `.groups` argument.</code></pre>
 <div class="figure"><span style="display:block;" id="fig:fifthplot"></span>
 <img src="index_files/figure-html/fifthplot-1.png" alt="Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8." width="768" />
 <p class="caption">
@@ -447,26 +447,25 @@ tot_kWh_used
 <p>This is calculated as the gross solar produced (<code>kw_solar_gross_produced</code>) minus the energy returned to the grid (<code>kw_solar_to_grid</code>).</p>
 <p>We’ll then calculate the total energy consumed (<code>tot_kw_consumed</code>), which equals <code>kw_consumed_from_solar</code> plus <code>kw_fortis_from_grid</code>.</p>
 <pre><code>## # A tibble: 16 × 8
-##    day         hour kw_solar_to_grid kw_fortis_from_grid date               
-##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt; &lt;dttm&gt;             
-##  1 2022-07-29     6            0.056               0.659 2022-07-29 06:00:00
-##  2 2022-07-29     7            1.01                0.015 2022-07-29 07:00:00
-##  3 2022-07-29     8            1.24                1.24  2022-07-29 08:00:00
-##  4 2022-07-29     9            3.13                0.144 2022-07-29 09:00:00
-##  5 2022-07-29    10            6.70                0     2022-07-29 10:00:00
-##  6 2022-07-29    11            7.95                0     2022-07-29 11:00:00
-##  7 2022-07-29    12            6.84                0     2022-07-29 12:00:00
-##  8 2022-07-29    13            6.35                0     2022-07-29 13:00:00
-##  9 2022-07-29    14            5.52                0.007 2022-07-29 14:00:00
-## 10 2022-07-29    15            3.6                 0     2022-07-29 15:00:00
-## 11 2022-07-29    16            2.17                0     2022-07-29 16:00:00
-## 12 2022-07-29    17            0.388               0.813 2022-07-29 17:00:00
-## 13 2022-07-29    18            0.006               1.20  2022-07-29 18:00:00
-## 14 2022-07-29    19            0                   2.28  2022-07-29 19:00:00
-## 15 2022-07-29    20            0                   1.18  2022-07-29 20:00:00
-## 16 2022-07-29    21            0                   2.07  NA                 
-## # ℹ 3 more variables: kw_solar_gross_produced &lt;dbl&gt;, kw_consumed_from_solar &lt;dbl&gt;,
-## #   tot_kw_consumed &lt;dbl&gt;</code></pre>
+##    day         hour kw_solar_to_grid kw_fortis_from_grid date                kw_solar_gross_produced
+##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt; &lt;dttm&gt;                                &lt;dbl&gt;
+##  1 2022-07-29     6            0.056               0.659 2022-07-29 06:00:00                    0.41
+##  2 2022-07-29     7            1.01                0.015 2022-07-29 07:00:00                    1.63
+##  3 2022-07-29     8            1.24                1.24  2022-07-29 08:00:00                    3.85
+##  4 2022-07-29     9            3.13                0.144 2022-07-29 09:00:00                    6.03
+##  5 2022-07-29    10            6.70                0     2022-07-29 10:00:00                    7.75
+##  6 2022-07-29    11            7.95                0     2022-07-29 11:00:00                    9.2 
+##  7 2022-07-29    12            6.84                0     2022-07-29 12:00:00                    8.77
+##  8 2022-07-29    13            6.35                0     2022-07-29 13:00:00                    9.5 
+##  9 2022-07-29    14            5.52                0.007 2022-07-29 14:00:00                    8.75
+## 10 2022-07-29    15            3.6                 0     2022-07-29 15:00:00                    7.67
+## 11 2022-07-29    16            2.17                0     2022-07-29 16:00:00                    5.36
+## 12 2022-07-29    17            0.388               0.813 2022-07-29 17:00:00                    2.69
+## 13 2022-07-29    18            0.006               1.20  2022-07-29 18:00:00                    0.98
+## 14 2022-07-29    19            0                   2.28  2022-07-29 19:00:00                    0.37
+## 15 2022-07-29    20            0                   1.18  2022-07-29 20:00:00                    0.09
+## 16 2022-07-29    21            0                   2.07  NA                                     0   
+## # ℹ 2 more variables: kw_consumed_from_solar &lt;dbl&gt;, tot_kw_consumed &lt;dbl&gt;</code></pre>
 <p>Next we’ll calculate some summary statistics…</p>
 <hr />
 </div>
@@ -650,23 +649,28 @@ total_kw_consumed
 </tr>
 </tbody>
 </table>
-<p>So over our previous full year, we produced 14577.8415 kWh of energy, and consumed 12543.9915 kWh. We thus produced an excess of 2033.85 kWh.<br />
-## Electric Vehicle in 2024</p>
+<p>So over our previous full year, we produced 14577.8415 kWh of energy, and consumed 12543.9915 kWh. We thus produced an excess of 2033.85 kWh.</p>
+<hr />
+</div>
+</div>
+<div id="electric-vehicle-in-2024" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Electric Vehicle in 2024</h1>
 <p>In June 2024 we got a 2019 Chevy Bolt (battery replaced in 2021), and we installed a charger that was operational in July 2024. So, this represents a new draw of electricity.</p>
 <p>In this figure we saw earlier, we can see this new electricity usage:</p>
 <div class="figure"><span style="display:block;" id="fig:fourthplot-2"></span>
 <img src="index_files/figure-html/fourthplot-2-1.png" alt="Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022." width="768" />
 <p class="caption">
-Figure 2.7: Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022.
+Figure 3.1: Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022.
 </p>
 </div>
+<hr />
 </div>
-<div id="usage" class="section level2" number="2.7">
-<h2><span class="header-section-number">2.7</span> 2024 usage</h2>
+<div id="usage" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> 2024 usage</h1>
 <p>Evaluate usage for December 16, 2023 through December 15 2024:</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-17">Table 2.5: </span>Summary of energy production and consumption from December 16 2022 through December 15, 2023.
+<span id="tab:unnamed-chunk-17">Table 4.1: </span>Summary of energy production and consumption from December 16 2022 through December 15, 2023.
 </caption>
 <thead>
 <tr>
@@ -723,13 +727,12 @@ total_kw_consumed
 <p>So over our last full calendar year, we produced 14632.8961 kWh of energy, and consumed 13591.4721 kWh. We thus produced an excess of 1041.424 kWh.</p>
 <hr />
 </div>
-</div>
-<div id="check-bill-and-net-metering-numbers" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Check bill and net metering numbers</h1>
+<div id="check-bill-and-net-metering-numbers" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Check bill and net metering numbers</h1>
 <p>A reminder of the amounts for the total period, July 15, 2022 through 2025-04-13 (last day of data):</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-19">Table 3.1: </span>Summary of energy production and consumption from 2022-07-15 to 2025-04-13
+<span id="tab:unnamed-chunk-19">Table 5.1: </span>Summary of energy production and consumption from 2022-07-15 to 2025-04-13
 </caption>
 <thead>
 <tr>
@@ -787,8 +790,8 @@ total_kw_consumed
 <p>At 2023 fiscal-year-end (March 31, 2023) we had 1702kWh left in our bank, and we got a refund (at $0.05374/kWh) of $91.47.</p>
 <hr />
 </div>
-<div id="consumption-and-savings-through-calendar-year-of-2023" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Consumption and savings through calendar year of 2023</h1>
+<div id="consumption-and-savings-through-calendar-year-of-2023" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Consumption and savings through calendar year of 2023</h1>
 <p>We need to calculate total consumption (Fortis-metered energy use, IN ADDITION to the energy we drew directly from our solar, which Fortis would not have recorded) for a year, and for simplicity, we’ll start at January 1, 2023, when Fortis introduced the new rate of <code>$0.13266/kWh</code>.</p>
 <p>In 2023 we consumed a total of 12043.8899 kWh of energy.</p>
 <p>At the rate of <code>$0.13266/kWh</code>, that would have cost us 1597.74 dollars.</p>
@@ -800,8 +803,8 @@ total_kw_consumed
 <p>We received our last bill of the fiscal year (April 2023 - March 2024), and as anticipated, did not pay for any electricity over that period. We had 1702 kWh left in our bank on March 31st 2024, and for this we were credited 1702 x $0.05374 = $91.47. And for the period April 1st to May 16th, 2024, we have already banked 1736 kWh!</p>
 <hr />
 </div>
-<div id="estimating-the-break-even-point" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Estimating the break-even point</h1>
+<div id="estimating-the-break-even-point" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Estimating the break-even point</h1>
 <p>TO BE COMPLETED</p>
 </div>
 

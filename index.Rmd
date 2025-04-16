@@ -427,7 +427,10 @@ kbl(t(year.tot), caption = "Summary of energy production and consumption from De
 ```
 
 So over our previous full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.  
-## Electric Vehicle in 2024
+
+* * *
+
+# Electric Vehicle in 2024
 
 In June 2024 we got a 2019 Chevy Bolt (battery replaced in 2021), and we installed a charger that was operational in July 2024. So, this represents a new draw of electricity.
 
@@ -449,7 +452,9 @@ consumption.data %>%
   #theme_bw()
 ```
 
-## 2024 usage
+* * *
+
+# 2024 usage
 
 Evaluate usage for December 16, 2023 through December 15 2024:
 

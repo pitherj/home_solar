@@ -454,6 +454,26 @@ consumption.data %>%
 
 * * *
 
+# 2023 Usage
+
+We need to calculate total consumption (Fortis-metered energy use, IN ADDITION to the energy we drew directly from our solar, which Fortis would not have recorded) for a year, and for simplicity, we'll start at January 1, 2023, when Fortis introduced the new rate of `$0.13266/kWh`.  
+
+```{r, echo = FALSE}
+consumed.2023 <- all_data %>%
+  filter(day >= ymd("2023-01-01") & day <= "2023-12-31") %>%
+  summarise(tot_kwh_consumed = sum(tot_kw_consumed, na.rm = TRUE))
+```
+
+In 2023 we consumed a total of `r consumed.2023` kWh of energy.
+
+At the rate of `$0.13266/kWh`, that would have cost us `r round(consumed.2023 * 0.13266, 2)` dollars.
+
+What did we actually pay?  A total of $188.93 (including 5% GST).  That's a savings of `r round(consumed.2023 * 0.13266 - 188.93, 2)` dollars.  
+
+HOWEVER, it is likely that in 2024 we will not pay anything for electricity, because we have enough banked energy from 2023 to get us through to spring.  If that's true, and combined with the rate increase to `$0.1416013 / kWh` then we'll save `r round(consumed.2023 * 0.1416013, 2)` dollars in 2024, assuming the same amount of energy consumed as in 2023.  
+
+* * *
+
 # 2024 usage
 
 Evaluate usage for December 16, 2023 through December 15 2024:
@@ -505,41 +525,25 @@ kbl(t(final_summary), caption = paste("Summary of energy production and consumpt
 latest.bill.bank.number <- 209
 ```
 
-Our latest bill (from Jan 16 2025 to March 16, 2025) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
+Our spring 2025 bill (from Jan 16 2025 to March 16, 2025) shows our net metering "bank" has a balance of `r latest.bill.bank.number` kWh.  
 
-At 2023 fiscal-year-end (March 31, 2023) we had 1702kWh left in our bank, and we got a refund (at \$0.05374/kWh) of \$91.47.
+At 2024 fiscal-year-end (March 31, 2025) we had 209kWh left in our bank, and we got a refund (at \$0.05234/kWh) of \$10.94.
 
-* * *
+For comparison, at 2023 fiscal-year-end (March 31, 2024) we had 1702kWh left in our bank, and we got a refund (at \$0.05374/kWh) of \$91.47.
 
-# Consumption and savings through calendar year of 2023 
+## 
 
-We need to calculate total consumption (Fortis-metered energy use, IN ADDITION to the energy we drew directly from our solar, which Fortis would not have recorded) for a year, and for simplicity, we'll start at January 1, 2023, when Fortis introduced the new rate of `$0.13266/kWh`.  
 
-```{r, echo = FALSE}
-consumed.2023 <- all_data %>%
-  filter(day >= ymd("2023-01-01") & day <= "2023-12-31") %>%
-  summarise(tot_kwh_consumed = sum(tot_kw_consumed, na.rm = TRUE))
-```
+**UPDATE October 2025**
 
-In 2023 we consumed a total of `r consumed.2023` kWh of energy.
 
-At the rate of `$0.13266/kWh`, that would have cost us `r round(consumed.2023 * 0.13266, 2)` dollars.
-
-What did we actually pay?  A total of $188.93 (including 5% GST).  That's a savings of `r round(consumed.2023 * 0.13266 - 188.93, 2)` dollars.  
-
-HOWEVER, it is likely that in 2024 we will not pay anything for electricity, because we have enough banked energy from 2023 to get us through to spring.  If that's true, and combined with the rate increase to `$0.1416013 / kWh` then we'll save `r round(consumed.2023 * 0.1416013, 2)` dollars in 2024, assuming the same amount of energy consumed as in 2023.  
-
-But we have to account for the cost of financing the loan too...
-
-Over a calendar year, the portion of our loan payments attributable to the solar is about `$1165.56`.  So, in 2023, we saved **`r round(consumed.2023 * 0.13266 - 188.93, 2) - 1165.56`** after all costs.  In 2024, we can anticipate those savings to increase to **`r round(consumed.2023 * 0.1416013, 2) - 1165.56`**.  
-
-**UPDATE MAY 21 2024**
-
-We received our last bill of the fiscal year (April 2023 - March 2024), and as anticipated, did not pay for any electricity over that period.  We had 1702 kWh left in our bank on March 31st 2024, and for this we were credited 1702 x \$0.05374 = \$91.47.  And for the period April 1st to May 16th, 2024, we have already banked 1736 kWh!
 
 * * *
 
 # Estimating the break-even point
 
-TO BE COMPLETED
+TBD
+
+
+
 

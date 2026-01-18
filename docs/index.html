@@ -7,7 +7,7 @@
 
         <meta name="author" content="Jason" />
     
-        <meta name="date" content="2025-10-03" />
+        <meta name="date" content="2026-01-18" />
     
     <title>House solar energy data analysis</title>
 
@@ -140,17 +140,18 @@
           <li><a href="#electric-vehicle-in-2024" id="toc-electric-vehicle-in-2024"><span class="toc-section-number">3</span> Electric Vehicle in 2024</a></li>
           <li><a href="#usage" id="toc-usage"><span class="toc-section-number">4</span> 2023 Usage</a></li>
           <li><a href="#usage-1" id="toc-usage-1"><span class="toc-section-number">5</span> 2024 usage</a></li>
-          <li><a href="#check-bill-and-net-metering-numbers" id="toc-check-bill-and-net-metering-numbers"><span class="toc-section-number">6</span> Check bill and net metering numbers</a>
+          <li><a href="#usage-2" id="toc-usage-2"><span class="toc-section-number">6</span> 2025 usage</a></li>
+          <li><a href="#check-bill-and-net-metering-numbers" id="toc-check-bill-and-net-metering-numbers"><span class="toc-section-number">7</span> Check bill and net metering numbers</a>
           <ul>
-          <li><a href="#section" id="toc-section"><span class="toc-section-number">6.1</span> </a></li>
+          <li><a href="#section" id="toc-section"><span class="toc-section-number">7.1</span> </a></li>
           </ul></li>
-          <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">7</span> Estimating the break-even point</a></li>
+          <li><a href="#estimating-the-break-even-point" id="toc-estimating-the-break-even-point"><span class="toc-section-number">8</span> Estimating the break-even point</a></li>
           </ul>
         </nav>
         <ul class="authors">
           <li class="divider"></li>
                                 <li><span><i class="glyphicon glyphicon-user"></i> Jason</span></li>
-                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2025-10-03</span></li>
+                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2026-01-18</span></li>
                   </ul>     
       </div>
       <div class="book-body fixed">
@@ -238,7 +239,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 <h2><span class="header-section-number">2.1</span> Solar energy production data</h2>
 <p>I have another <a href="https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd">script</a> that imports the raw solar energy data files, downloaded from the <a href="https://www.apsystemsema.com">AP Systems website</a>, and wrangles them into an appropriate format.</p>
 <p>Here’s what the first few rows of the resulting data table looks like:</p>
-<pre><code>## # A tibble: 16,275 × 4
+<pre><code>## # A tibble: 17,416 × 4
 ##    date                day         hour    kWh
 ##    &lt;dttm&gt;              &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 2022-07-08 04:00:00 2022-07-08     4  0.002
@@ -251,7 +252,7 @@ pre, code {white-space:pre !important; overflow-x:auto}
 ##  8 2022-07-08 11:00:00 2022-07-08    11  9.59 
 ##  9 2022-07-08 12:00:00 2022-07-08    12 10.8  
 ## 10 2022-07-08 13:00:00 2022-07-08    13 10.7  
-## # ℹ 16,265 more rows</code></pre>
+## # ℹ 17,406 more rows</code></pre>
 <p>Let’s visualize the data to check for errors:</p>
 <div class="figure"><span style="display:block;" id="fig:firstplot"></span>
 <img src="index_files/figure-html/firstplot-1.png" alt="Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022." width="768" />
@@ -281,7 +282,7 @@ Figure 2.2: Figure 2: Daily energy output (kWh) for the 36-panel solar array, st
 <p>Annoyingly, these data downloaded from the Fortis portal do not necessarily line up with what Fortis actually uses for billing calculations; this is because they rely on our meter to communicate with them, which doesn’t always happen, in which case they estimate consumption for billing.</p>
 <p>I was able to get hourly data going back to January 1, 2019.</p>
 <p>Let’s first look at last summer’s data (2022), staring June 1st:</p>
-<pre><code>## # A tibble: 58,309 × 4
+<pre><code>## # A tibble: 60,878 × 4
 ##    day         hour kw_solar_to_grid kw_fortis_from_grid
 ##    &lt;date&gt;     &lt;dbl&gt;            &lt;dbl&gt;               &lt;dbl&gt;
 ##  1 2019-01-01     0               NA               0.915
@@ -294,7 +295,7 @@ Figure 2.2: Figure 2: Daily energy output (kWh) for the 36-panel solar array, st
 ##  8 2019-01-01     7               NA               0.65 
 ##  9 2019-01-01     8               NA               0.4  
 ## 10 2019-01-01     9               NA               0.441
-## # ℹ 58,299 more rows</code></pre>
+## # ℹ 60,868 more rows</code></pre>
 <p>Let’s visualize the data to check for errors, first limiting the date to June 1 2022 and after:</p>
 <div class="figure"><span style="display:block;" id="fig:thirdplot"></span>
 <img src="index_files/figure-html/thirdplot-1.png" alt="Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022." width="768" />
@@ -406,7 +407,15 @@ tot_kWh_used
 2025
 </td>
 <td style="text-align:right;">
-6813
+10178
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2026
+</td>
+<td style="text-align:right;">
+684
 </td>
 </tr>
 </tbody>
@@ -471,7 +480,7 @@ tot_kWh_used
 </div>
 <div id="summary-data" class="section level2" number="2.6">
 <h2><span class="header-section-number">2.6</span> Summary data</h2>
-<p>From July 8th 2022 to 2025-09-28 (last day of data), let’s calculate how much:</p>
+<p>From July 8th 2022 to 2026-01-11 (last day of data), let’s calculate how much:</p>
 <ul>
 <li>total energy consumed from grid (<code>total_kw_fortis_from_grid</code>)</li>
 <li>total solar energy returned to grid (<code>total_kw_solar_to_grid</code>)</li>
@@ -498,7 +507,7 @@ kWh
 total_kw_fortis_from_grid
 </td>
 <td style="text-align:right;">
-12219.23
+13768.14
 </td>
 </tr>
 <tr>
@@ -506,7 +515,7 @@ total_kw_fortis_from_grid
 total_kw_solar_to_grid
 </td>
 <td style="text-align:right;">
-32799.01
+33800.59
 </td>
 </tr>
 <tr>
@@ -514,7 +523,7 @@ total_kw_solar_to_grid
 total_kw_solar_gross_produced
 </td>
 <td style="text-align:right;">
-49568.60
+51318.25
 </td>
 </tr>
 <tr>
@@ -522,7 +531,7 @@ total_kw_solar_gross_produced
 total_kw_solar_used
 </td>
 <td style="text-align:right;">
-13921.10
+14669.17
 </td>
 </tr>
 <tr>
@@ -530,7 +539,7 @@ total_kw_solar_used
 total_kw_consumed
 </td>
 <td style="text-align:right;">
-26140.32
+28437.31
 </td>
 </tr>
 </tbody>
@@ -555,7 +564,7 @@ kWh
 total_kw_fortis_from_grid
 </td>
 <td style="text-align:right;">
-12169.14
+13718.05
 </td>
 </tr>
 <tr>
@@ -563,7 +572,7 @@ total_kw_fortis_from_grid
 total_kw_solar_to_grid
 </td>
 <td style="text-align:right;">
-32799.01
+33800.59
 </td>
 </tr>
 <tr>
@@ -571,7 +580,7 @@ total_kw_solar_to_grid
 total_kw_solar_gross_produced
 </td>
 <td style="text-align:right;">
-49024.83
+50774.48
 </td>
 </tr>
 <tr>
@@ -579,7 +588,7 @@ total_kw_solar_gross_produced
 total_kw_solar_used
 </td>
 <td style="text-align:right;">
-13921.10
+14669.17
 </td>
 </tr>
 <tr>
@@ -587,7 +596,7 @@ total_kw_solar_used
 total_kw_consumed
 </td>
 <td style="text-align:right;">
-26090.24
+28387.22
 </td>
 </tr>
 </tbody>
@@ -679,7 +688,7 @@ Figure 3.1: Figure 4: Daily energy consumption (kWh) for our house, starting Jun
 <p>Evaluate usage for December 16, 2023 through December 15 2024:</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-18">Table 5.1: </span>Summary of energy production and consumption from December 16 2022 through December 15, 2023.
+<span id="tab:unnamed-chunk-18">Table 5.1: </span>Summary of energy production and consumption from December 16 2023 through December 15, 2024.
 </caption>
 <thead>
 <tr>
@@ -736,12 +745,12 @@ total_kw_consumed
 <p>So over our last full calendar year, we produced 14714.6791 kWh of energy, and consumed 8333.5461 kWh. We thus produced an excess of 6381.133 kWh.</p>
 <hr />
 </div>
-<div id="check-bill-and-net-metering-numbers" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Check bill and net metering numbers</h1>
-<p>A reminder of the amounts for the total period, July 15, 2022 through 2025-09-28 (last day of data):</p>
+<div id="usage-2" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> 2025 usage</h1>
+<p>Evaluate usage for December 16, 2024 through December 15 2025:</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-20">Table 6.1: </span>Summary of energy production and consumption from 2022-07-15 to 2025-09-28
+<span id="tab:unnamed-chunk-19">Table 6.1: </span>Summary of energy production and consumption from December 16 2024 through December 15, 2025.
 </caption>
 <thead>
 <tr>
@@ -758,7 +767,7 @@ kWh
 total_kw_fortis_from_grid
 </td>
 <td style="text-align:right;">
-12169.14
+3933.75
 </td>
 </tr>
 <tr>
@@ -766,7 +775,7 @@ total_kw_fortis_from_grid
 total_kw_solar_to_grid
 </td>
 <td style="text-align:right;">
-32799.01
+10030.70
 </td>
 </tr>
 <tr>
@@ -774,7 +783,7 @@ total_kw_solar_to_grid
 total_kw_solar_gross_produced
 </td>
 <td style="text-align:right;">
-49024.83
+14843.04
 </td>
 </tr>
 <tr>
@@ -782,7 +791,7 @@ total_kw_solar_gross_produced
 total_kw_solar_used
 </td>
 <td style="text-align:right;">
-13921.10
+4053.63
 </td>
 </tr>
 <tr>
@@ -790,22 +799,82 @@ total_kw_solar_used
 total_kw_consumed
 </td>
 <td style="text-align:right;">
-26090.24
+7987.37
 </td>
 </tr>
 </tbody>
 </table>
-<p>Our spring 2025 bill (from Jan 16 2025 to March 16, 2025) shows our net metering “bank” has a balance of 209 kWh.</p>
-<p>At 2024 fiscal-year-end (March 31, 2025) we had 209kWh left in our bank, and we got a refund (at $0.05234/kWh) of $10.94.</p>
-<p>For comparison, at 2023 fiscal-year-end (March 31, 2024) we had 1702kWh left in our bank, and we got a refund (at $0.05374/kWh) of $91.47.</p>
-<div id="section" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> </h2>
-<p><strong>UPDATE October 2025</strong></p>
+<p>So over our last full calendar year, we produced 14843.0414 kWh of energy, and consumed 7987.3744 kWh. We thus produced an excess of 6855.667 kWh.</p>
+<hr />
+</div>
+<div id="check-bill-and-net-metering-numbers" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Check bill and net metering numbers</h1>
+<p>A reminder of the amounts for the total period, July 15, 2022 through 2026-01-11 (last day of data):</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-21">Table 7.1: </span>Summary of energy production and consumption from 2022-07-15 to 2026-01-11
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+kWh
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+total_kw_fortis_from_grid
+</td>
+<td style="text-align:right;">
+13718.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_to_grid
+</td>
+<td style="text-align:right;">
+33800.59
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_gross_produced
+</td>
+<td style="text-align:right;">
+50774.48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_solar_used
+</td>
+<td style="text-align:right;">
+14669.17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+total_kw_consumed
+</td>
+<td style="text-align:right;">
+28387.22
+</td>
+</tr>
+</tbody>
+</table>
+<p>Our fall 2025 bill (from Sept 16 2025 to Nov 16, 2025) shows our net metering “bank” has a balance of 4406 kWh.</p>
+<p>We may just make it this year (through March 2026) without having to pay again!</p>
+<div id="section" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> </h2>
 <hr />
 </div>
 </div>
-<div id="estimating-the-break-even-point" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Estimating the break-even point</h1>
+<div id="estimating-the-break-even-point" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Estimating the break-even point</h1>
 <p>TBD</p>
 </div>
 

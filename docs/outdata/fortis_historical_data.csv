@@ -1,4 +1,4 @@
-day,hour,kw_returned,kw_consumed
+day,hour,kwh_returned,kwh_consumed
 2019-01-01,0,NA,0.915
 2019-01-01,1,NA,0.934
 2019-01-01,2,NA,0.881

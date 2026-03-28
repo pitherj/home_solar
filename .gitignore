@@ -39,6 +39,10 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
+# knitr figure/support files at project root (duplicated in docs/ by render_site)
+/index_files/
+/index.html
+
 # R Environment Variables
 .Renviron
 

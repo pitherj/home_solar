@@ -130,7 +130,7 @@ We officially started producing solar power on July 8, 2022, and net metering st
 
 I have another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.R) that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into an appropriate format.
 
-```{r echo = FALSE}
+```{r echo = FALSE, cache.extra = file.mtime(here::here("outdata", "solar_data.csv"))}
 solar.data <- readr::read_csv("./outdata/solar_data.csv", show_col_types = FALSE)
 ```
 
@@ -173,7 +173,7 @@ solar.data %>%
   geom_point(shape = 1) +
     scale_x_date(date_breaks="4 month", date_labels="%b %y") +
   labs(x = "Date", y = "Daily solar energy production (kWh)") +
-  ylim(0, 90)  +
+  coord_cartesian(ylim = c(0, 90)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
   #theme_bw()
 ```
@@ -188,17 +188,17 @@ Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle
 
 Annoyingly, these data downloaded from the Fortis portal do not necessarily line up with what Fortis actually uses for billing calculations; this is because they rely on our meter to communicate with them, which doesn't always happen, in which case they estimate consumption for billing.
 
-```{r echo = FALSE}
+```{r echo = FALSE, cache.extra = file.mtime(here::here("outdata", "fortis_data.csv"))}
 consumption.data <- readr::read_csv("./outdata/fortis_data.csv", show_col_types = FALSE)
 ```
 
 I was able to get hourly data going back to January 1, 2019.
 
-```{r echo = FALSE}
+```{r echo = FALSE, cache.extra = file.mtime(here::here("outdata", "fortis_historical_data.csv"))}
 historical.data <- readr::read_csv(here::here("outdata", "fortis_historical_data.csv"), show_col_types = FALSE)
 # bind
 consumption.data <- dplyr::bind_rows(historical.data, consumption.data)
-consumption.data <- consumption.data %>% rename(kw_solar_to_grid = kw_returned, kw_fortis_from_grid = kw_consumed)
+consumption.data <- consumption.data %>% rename(kw_solar_to_grid = kwh_returned, kw_fortis_from_grid = kwh_consumed)
 ```
 
 Let's first look at last summer's data (2022), staring June 1st:
@@ -234,7 +234,6 @@ consumption.data %>%
   ggplot(aes(x = day, y = total_consumed)) +
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
-  lims(y = c(0,90)) +
   scale_x_date(date_breaks="4 month", date_labels="%b %y") +
   labs(x = "Date", y = "Daily energy consumption from grid (kWh)")  +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
@@ -250,10 +249,7 @@ And in June 2024 we purchased a 2019 Chevy Bolt, so started charging this EV at 
 Let's combine the data into one plot.
 
 ```{r, echo = FALSE}
-if(max(consumption.data$day) <= max(solar.data$day)) {
-all_data <- left_join(consumption.data, solar.data, by = c("day", "hour")) } else {
-  all_data <- left_join(solar.data, consumption.data,by = c("day", "hour"))
-}
+all_data <- full_join(consumption.data, solar.data, by = c("day", "hour"))
 ```
 
 ```{r fifthplot, echo = FALSE, fig.cap = "Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8."}
@@ -278,7 +274,6 @@ full_join(solar_daily, consumption_daily, by = "day") %>%
   geom_line(aes(x = day, y = total_produced), colour = "blue") +
   geom_point(aes(x = day, y = total_produced), colour = "blue", shape = 1) +
   scale_x_date(date_breaks = "4 month", date_labels = "%b %y") +
-  lims(y = c(0, 90)) +
   labs(x = "Date", y = "Energy (kWh)") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
@@ -299,7 +294,6 @@ consumption.data %>%
   ggplot(aes(x = day, y = total_consumed)) +
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
-  lims(y = c(0,90)) +
   scale_x_date(date_breaks="4 month", date_labels="%b %y") +
   labs(x = "Date", y = "Daily energy consumption from grid (kWh)") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
@@ -437,7 +431,7 @@ kbl(t(year.tot), caption = "Summary of energy production and consumption from De
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So over our previous full year, we produced `r year.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed` kWh.  
+So over our previous full year, we produced `r round(year.tot$total_kw_solar_gross_produced, 0)` kWh of energy, and consumed `r round(year.tot$total_kw_consumed, 0)` kWh.  We thus produced an excess of `r round(year.tot$total_kw_solar_gross_produced - year.tot$total_kw_consumed, 0)` kWh.  
 
 * * *
 
@@ -456,7 +450,6 @@ consumption.data %>%
   ggplot(aes(x = day, y = total_consumed)) +
   geom_line(colour = "darkgrey") +
   geom_point(shape = 1) +
-  lims(y = c(0,90)) +
   scale_x_date(date_breaks="4 month", date_labels="%b %y") +
   labs(x = "Date", y = "Daily energy consumption from grid (kWh)")  +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
@@ -475,13 +468,13 @@ consumed.2023 <- all_data %>%
   summarise(tot_kwh_consumed = sum(tot_kw_consumed, na.rm = TRUE))
 ```
 
-In 2023 we consumed a total of `r consumed.2023` kWh of energy.
+In 2023 we consumed a total of `r round(consumed.2023$tot_kwh_consumed, 0)` kWh of energy.
 
-At the rate of `$0.13266/kWh`, that would have cost us `r round(consumed.2023 * 0.13266, 2)` dollars.
+At the rate of `$0.13266/kWh`, that would have cost us `r round(consumed.2023$tot_kwh_consumed * 0.13266, 2)` dollars.
 
-What did we actually pay?  A total of $188.93 (including 5% GST).  That's a savings of `r round(consumed.2023 * 0.13266 - 188.93, 2)` dollars.  
+What did we actually pay?  A total of $188.93 (including 5% GST).  That's a savings of `r round(consumed.2023$tot_kwh_consumed * 0.13266 - 188.93, 2)` dollars.
 
-HOWEVER, it is likely that in 2024 we will not pay anything for electricity, because we have enough banked energy from 2023 to get us through to spring.  If that's true, and combined with the rate increase to `$0.1416013 / kWh` then we'll save `r round(consumed.2023 * 0.1416013, 2)` dollars in 2024, assuming the same amount of energy consumed as in 2023.  
+HOWEVER, it is likely that in 2024 we will not pay anything for electricity, because we have enough banked energy from 2023 to get us through to spring.  If that's true, and combined with the rate increase to `$0.1416013 / kWh` then we'll save `r round(consumed.2023$tot_kwh_consumed * 0.1416013, 2)` dollars in 2024, assuming the same amount of energy consumed as in 2023.  
 
 * * *
 
@@ -505,7 +498,7 @@ kbl(t(year2023_24.tot), caption = "Summary of energy production and consumption 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So over our last full calendar year, we produced `r year2023_24.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year2023_24.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year2023_24.tot$total_kw_solar_gross_produced - year2023_24.tot$total_kw_consumed` kWh.   
+So over the Dec 2023 – Dec 2024 Fortis year, we produced `r round(year2023_24.tot$total_kw_solar_gross_produced, 0)` kWh of energy, and consumed `r round(year2023_24.tot$total_kw_consumed, 0)` kWh.  We thus produced an excess of `r round(year2023_24.tot$total_kw_solar_gross_produced - year2023_24.tot$total_kw_consumed, 0)` kWh.   
 
 
 * * *
@@ -530,8 +523,33 @@ kbl(t(year2024_25.tot), caption = "Summary of energy production and consumption 
   kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
 ```
 
-So over our last full calendar year, we produced `r year2024_25.tot$total_kw_solar_gross_produced` kWh of energy, and consumed `r year2024_25.tot$total_kw_consumed` kWh.  We thus produced an excess of `r year2024_25.tot$total_kw_solar_gross_produced - year2024_25.tot$total_kw_consumed` kWh.   
+So over the Dec 2024 – Dec 2025 Fortis year, we produced `r round(year2024_25.tot$total_kw_solar_gross_produced, 0)` kWh of energy, and consumed `r round(year2024_25.tot$total_kw_consumed, 0)` kWh.  We thus produced an excess of `r round(year2024_25.tot$total_kw_solar_gross_produced - year2024_25.tot$total_kw_consumed, 0)` kWh.
 
+
+* * *
+
+# 2026 usage (partial year)
+
+Data are available from December 16, 2025 through `r max(all_data$day)`.  This is a partial Fortis billing year, so numbers are not directly comparable to the full-year summaries above.
+
+```{r tots5, echo = FALSE}
+year2025_26.tot <- all_data %>%
+  filter(day >= ymd("2025-12-16") & day <= max(all_data$day)) %>%
+  summarise(total_kw_fortis_from_grid      = sum(kw_fortis_from_grid, na.rm = TRUE),
+            total_kw_solar_to_grid         = sum(kw_solar_to_grid, na.rm = TRUE),
+            total_kw_solar_gross_produced  = sum(kw_solar_gross_produced, na.rm = TRUE),
+            total_kw_solar_used            = sum(kw_consumed_from_solar, na.rm = TRUE),
+            total_kw_consumed              = sum(kw_fortis_from_grid, na.rm = TRUE) + sum(kw_consumed_from_solar, na.rm = TRUE))
+```
+
+```{r}
+kbl(t(year2025_26.tot),
+    caption = paste("Summary of energy production and consumption from December 16 2025 through", max(all_data$day), "(partial year)."),
+    booktabs = TRUE, digits = c(2), col.names = "kWh") %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"), position = "center")
+```
+
+From December 16, 2025 through `r max(all_data$day)`, we produced `r round(year2025_26.tot$total_kw_solar_gross_produced, 0)` kWh of solar energy and drew `r round(year2025_26.tot$total_kw_fortis_from_grid, 0)` kWh from the grid.  Total household consumption (grid + direct solar) over this period was `r round(year2025_26.tot$total_kw_consumed, 0)` kWh.
 
 * * *
 
@@ -573,7 +591,154 @@ We may just make it this year (through March 2026) without having to pay again!
 
 # Estimating the break-even point
 
-TBD
+The break-even point is when the cumulative value of electricity savings equals the total cost of the investment (including any financing costs). We calculate this using our actual production history and project forward based on recent trends.
+
+* * *
+
+## Investment cost
+
+The net cost of the solar array after the federal Green Homes rebates (`$5,600`) was approximately **`$20,000`**. This was financed as part of a home equity loan at a **fixed rate of 3.24%**, amortised over 25 years (300 monthly payments).
+
+```{r breakeven_calcs, echo=FALSE}
+solar_cost <- 20000   # net cost after rebates
+
+# Financing cost attributable to the $20K solar portion at 3.24%, 300 months
+r_m  <- 0.0324 / 12
+n_m  <- 300
+monthly_pmt_solar    <- solar_cost * r_m * (1 + r_m)^n_m / ((1 + r_m)^n_m - 1)
+total_financed_cost  <- round(monthly_pmt_solar * n_m, 0)
+total_interest_solar <- total_financed_cost - solar_cost
+
+# Retail electricity rates (CAD/kWh) by calendar year
+# 2022 rate assumed same as 2023; 2026 rate not yet announced (using 2025 rate)
+year_rates <- tibble(
+  year = c(2022L, 2023L, 2024L, 2025L, 2026L),
+  rate = c(0.13266, 0.13266, 0.1416013, 0.1496, 0.1496)
+)
+
+# Annual solar production and estimated savings value
+# Savings = solar produced × retail rate
+# Assumes all net-metered energy is eventually drawn from the bank at full retail value,
+# which is a reasonable approximation given our usage patterns.
+annual_solar <- all_data %>%
+  filter(day >= ymd("2022-07-08")) %>%
+  mutate(year = lubridate::year(day)) %>%
+  group_by(year) %>%
+  summarise(
+    solar_kwh = sum(kw_solar_gross_produced, na.rm = TRUE),
+    n_days    = n_distinct(day),
+    .groups   = "drop"
+  ) %>%
+  left_join(year_rates, by = "year") %>%
+  mutate(
+    is_partial   = n_days < 340,
+    annual_value = round(solar_kwh * rate, 0),
+    solar_kwh    = round(solar_kwh, 0),
+    cumulative   = cumsum(annual_value)
+  )
+
+# Average annual savings from complete calendar years only
+avg_annual <- annual_solar %>% filter(!is_partial) %>% pull(annual_value) %>% mean()
+last_yr    <- max(annual_solar$year)
+last_cum   <- tail(annual_solar$cumulative, 1)
+
+# Break-even projection at average savings rate
+n_proj   <- 30
+proj_tbl <- tibble(
+  year         = seq_len(n_proj) + last_yr,
+  solar_kwh    = NA_real_,
+  n_days       = 365L,
+  rate         = 0.1496,
+  is_partial   = FALSE,
+  annual_value = round(avg_annual, 0)
+) %>%
+  mutate(cumulative = last_cum + cumsum(annual_value))
+
+plot_data <- bind_rows(
+  annual_solar %>% mutate(series = if_else(is_partial, "Actual (partial year)", "Actual")),
+  proj_tbl     %>% mutate(series = "Projected")
+) %>%
+  filter(cumulative <= total_financed_cost * 1.05)
+
+# First year cumulative savings meet or exceed each threshold
+be_simple   <- plot_data %>% filter(cumulative >= solar_cost)          %>% slice(1) %>% pull(year)
+be_financed <- plot_data %>% filter(cumulative >= total_financed_cost)  %>% slice(1) %>% pull(year)
+```
+
+The total amount paid for the solar portion over the full 25-year amortisation — principal plus interest at the current 3.24% rate — comes to approximately **`r scales::dollar(total_financed_cost)`**, of which **`r scales::dollar(total_interest_solar)`** is interest.
+
+> **Note:** The 3.24% rate is fixed only for the current 5-year mortgage term. The true total financing cost will depend on prevailing rates at each renewal.
+
+* * *
+
+## Annual savings
+
+We estimate annual savings as the total solar energy produced multiplied by the prevailing retail electricity rate. This values both energy consumed directly from our panels (which immediately avoids a grid purchase) and energy exported into the net metering bank (which offsets future grid bills at the same retail rate). The table below shows production and estimated savings for each calendar year since installation.
+
+```{r savings_table, echo=FALSE}
+annual_solar %>%
+  transmute(
+    Year                    = if_else(is_partial, paste0(year, "*"), as.character(year)),
+    `Solar production (kWh)` = format(solar_kwh, big.mark = ","),
+    `Rate ($/kWh)`           = sprintf("$%.5f", rate),
+    `Annual savings ($)`     = scales::dollar(annual_value),
+    `Cumulative savings ($)` = scales::dollar(cumulative)
+  ) %>%
+  kbl(
+    caption = "Annual solar energy production and estimated electricity savings (actual data). Asterisks denote partial calendar years (2022: Jul 8 – Dec 31; most recent year may be incomplete). The 2022 rate is assumed equal to 2023.",
+    align   = c("l", "r", "r", "r", "r")
+  ) %>%
+  kable_styling(position = "left")
+```
+
+Based on `r sum(!annual_solar$is_partial)` complete calendar years of data (`r min(annual_solar$year[!annual_solar$is_partial])`–`r max(annual_solar$year[!annual_solar$is_partial])`), our average annual electricity savings are approximately **`r scales::dollar(round(avg_annual, 0))`**.
+
+* * *
+
+## Projected break-even
+
+The figure below tracks cumulative savings through the end of our available data, then projects forward using our average annual savings rate at the current electricity rate of `$0.1496/kWh`. Since Fortis BC rates have been increasing roughly 5–7% per year, the actual break-even is likely to arrive somewhat earlier than shown.
+
+```{r breakeven_plot, echo=FALSE, fig.cap="Figure 7: Cumulative estimated electricity savings from the solar array. Filled circles show actual annual savings; triangles show projected savings based on average production from full calendar years at the 2025 electricity rate ($0.1496/kWh). Horizontal dashed lines mark the simple break-even (recovering the $20,000 net investment) and the financed break-even (recovering principal plus interest at 3.24% over 25 years)."}
+
+ggplot(plot_data, aes(x = year, y = cumulative, shape = series)) +
+  geom_line(colour = "darkgrey") +
+  geom_point(size = 3, colour = "darkgrey") +
+  geom_hline(yintercept = solar_cost,
+             linetype = "dashed", colour = "steelblue", linewidth = 0.8) +
+  geom_hline(yintercept = total_financed_cost,
+             linetype = "dashed", colour = "firebrick", linewidth = 0.8) +
+  annotate("text",
+           x = min(plot_data$year) + 0.1,
+           y = solar_cost + max(plot_data$cumulative) * 0.025,
+           label = paste0("Simple break-even (", scales::dollar(solar_cost), ")"),
+           hjust = 0, colour = "steelblue", size = 3.5) +
+  annotate("text",
+           x = min(plot_data$year) + 0.1,
+           y = total_financed_cost + max(plot_data$cumulative) * 0.025,
+           label = paste0("Financed break-even (", scales::dollar(total_financed_cost), ")"),
+           hjust = 0, colour = "firebrick", size = 3.5) +
+  scale_shape_manual(
+    values = c("Actual" = 16, "Actual (partial year)" = 1, "Projected" = 2),
+    name   = NULL
+  ) +
+  scale_x_continuous(breaks = seq(min(plot_data$year), max(plot_data$year), by = 2)) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  labs(x = "Year", y = "Cumulative savings (CAD)") +
+  theme_bw() +
+  theme(
+    legend.position  = "bottom",
+    axis.text.x      = element_text(angle = 45, hjust = 1)
+  )
+```
+
+At our current average savings rate:
+
+* **Simple break-even** (recovering the `$20,000` net investment): estimated **`r be_simple`**
+* **Financed break-even** (recovering principal + interest at 3.24% over 25 years): estimated **`r be_financed`**
+
+Keep in mind that these projections hold the electricity rate constant at the 2025 level. Every rate increase by Fortis BC accelerates our break-even — and as we have seen, rates have been rising steadily. Additionally, as our EV usage grows, more of our driving costs shift to solar-generated electricity rather than gasoline, which isn't captured in these electricity savings figures but meaningfully improves the overall economics of the system.
+
 
 
 

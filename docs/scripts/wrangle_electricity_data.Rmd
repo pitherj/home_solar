@@ -107,7 +107,7 @@ billing %>%
 
 Average kWh per day
 
-```{r secondplot, echo = FALSE, fig.cap = "Figure 1: Historical billing information"}
+```{r avg_daily_plot, echo = FALSE, fig.cap = "Figure 2: Average daily electricity usage"}
 
 billing %>%
   distinct() %>%

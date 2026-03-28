@@ -23,13 +23,17 @@ pre, code {white-space:pre !important; overflow-x:auto}
 ```{r libraries, message = FALSE, echo = FALSE}
 library(tidyverse)
 library(here)
-library(stringr)
-library(tools)
-library(hablar)
 library(lubridate)
 library(knitr)
-library(timetk)
 library(kableExtra)
+```
+
+```{r update_data, include=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+# Source data-preparation scripts. Each script checks file modification times
+# and only re-processes when the raw data is newer than the output CSV.
+source(here::here("scripts", "wrangle_solar_data.R"))
+source(here::here("scripts", "wrangle_electricity_data.R"))
+source(here::here("scripts", "wrangle_historical_electricity_data.R"))
 ```
 
 **Disclaimer** 
@@ -124,7 +128,7 @@ We officially started producing solar power on July 8, 2022, and net metering st
 
 ## Solar energy production data
 
-I have another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.Rmd) that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into an appropriate format.
+I have another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_solar_data.R) that imports the raw solar energy data files, downloaded from the [AP Systems website](https://www.apsystemsema.com), and wrangles them into an appropriate format.
 
 ```{r echo = FALSE}
 solar.data <- readr::read_csv("./outdata/solar_data.csv", show_col_types = FALSE)
@@ -180,7 +184,7 @@ And FYI, in 2022 Kelowna got an early start to winter... beginning of November s
 
 ## Grid energy consumption data
 
-Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_electricity_data.Rmd) imports the raw Fortis energy consumption data for our account, downloaded from the FortisBC [website](www.fortisbc.com), and wrangles them into an appropriate format.  
+Another [script](https://github.com/pitherj/home_solar/blob/main/scripts/wrangle_electricity_data.R) imports the raw Fortis energy consumption data for our account, downloaded from the FortisBC [website](www.fortisbc.com), and wrangles them into an appropriate format.  
 
 Annoyingly, these data downloaded from the Fortis portal do not necessarily line up with what Fortis actually uses for billing calculations; this is because they rely on our meter to communicate with them, which doesn't always happen, in which case they estimate consumption for billing.
 
@@ -254,22 +258,29 @@ all_data <- left_join(consumption.data, solar.data, by = c("day", "hour")) } els
 
 ```{r fifthplot, echo = FALSE, fig.cap = "Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8."}
 
-all_data %>%
-    filter(day > "2022-06-1") %>%
+# Compute daily totals from each source dataset independently, then combine.
+# This avoids NAs introduced by the hourly join in all_data, which would
+# deflate the consumption sum when solar rows are missing for some hours.
+solar_daily <- solar.data %>%
   group_by(day) %>%
-  summarise(total_consumed = sum(kw_fortis_from_grid, na.rm = TRUE),
-            total_produced = sum(kWh, na.rm = TRUE),
-            total_returned = kWh - kw_fortis_from_grid) %>%
+  summarise(total_produced = sum(kWh, na.rm = TRUE))
+
+consumption_daily <- consumption.data %>%
+  group_by(day) %>%
+  summarise(total_consumed = sum(kw_fortis_from_grid, na.rm = TRUE))
+
+full_join(solar_daily, consumption_daily, by = "day") %>%
+  filter(day > as.Date("2022-06-01")) %>%
+  replace_na(list(total_produced = 0, total_consumed = 0)) %>%
   ggplot() +
   geom_line(aes(x = day, y = total_consumed), colour = "firebrick") +
   geom_point(aes(x = day, y = total_consumed), shape = 1, colour = "firebrick") +
   geom_line(aes(x = day, y = total_produced), colour = "blue") +
   geom_point(aes(x = day, y = total_produced), colour = "blue", shape = 1) +
-  scale_x_date(date_breaks="4 month", date_labels="%b %y") +
-    lims(y = c(0,90)) +
+  scale_x_date(date_breaks = "4 month", date_labels = "%b %y") +
+  lims(y = c(0, 90)) +
   labs(x = "Date", y = "Energy (kWh)") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-  #theme_bw()
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 Lots more consumption with the addition of our EV... but boy are we saving money and emissions on gas!
 

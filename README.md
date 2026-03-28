@@ -1,50 +1,174 @@
-# home_solar
+# Home Solar Energy Analysis
 
-This site describes an extra-curricular project: analysing our home energy consumption and solar production data.
+Personal data analysis project tracking solar energy production, household electricity
+consumption, and billing for a residential 12.96 kW solar installation in Kelowna, BC.
 
-The repository includes the following folders:
+[![Live site](https://img.shields.io/badge/Live%20site-pitherj.github.io%2Fhome__solar-blue)](https://pitherj.github.io/home_solar/)
 
-/scripts  
-/rawdata  
-/outdata  
-/images. 
+**Author**: Jason Pither — University of British Columbia Okanagan
 
-The "scripts" folder includes the main R Markdown script that generates the project webpage.
+---
 
-The "rawdata" folder includes:  
-- the raw data files downloaded from the [AP Systems website](https://www.apsystemsema.com)
-  - these are in Excel format, are in "wide" format, include hourly energy production data
-  - they each include 7 days of hourly data, and filenames include date ranges
-- the raw data files downloaded from the [Fortis BC](https://www.fortisbc.com)
-  - these are in CSV format, are in "long" format
-  - they include 60 days of hourly data
-  - filenames are generic
-  
-The "outdata" folder includes any output from data wrangling/analysis.
- 
-The "images" folder includes some pictures of our solar array for reference.
+## Background
 
-## Data dictionary
+When we installed solar panels in summer 2022, I could not find any websites sharing
+*real* household data: hourly production curves, actual billing outcomes, or how grid
+consumption changes after installation. This project fills that gap by publishing our
+own data openly.
 
-### Solar data
+The 36-panel (12.96 kW) array was installed by [Okanagan Solar](https://www.oksolarhomes.com)
+and feeds into Fortis BC's net metering program. A one-bedroom addition and, later, an
+EV charger (June 2024) are also powered by the system, so the data capture multiple
+stages of household electricity demand.
 
-The raw Excel files downloaded from the AP Systems portal include the following:
+---
 
-"Hour" - the hour of the data (24h), integer value
+## Quick Start
 
-Then seven columns, each holding one day of data, with the column heading being the date (YYYY-MM-DD), with "(kWh)" appended at the end
+```r
+# 1. Open home_solar.Rproj in RStudio
+# 2. Restore package library
+renv::restore()   # if renv.lock is present, otherwise install packages manually
 
-The last row in each data file includes a "total" row.  This will be eliminated.
+# 3. Place updated raw data files (see Prerequisites below)
 
-### Energy consumption data
+# 4. Render the website — this also runs all wrangling scripts automatically
+rmarkdown::render_site()
+```
 
-The raw CSV files downloaded from the Fortis portal include the following:
+The rendered site is written to `docs/` and is deployed via GitHub Pages.
 
-"Date" in DD/MM/YYYY format. 
+---
 
-"Time" : hourly, in integer format with "a.m." or "p.m." appended (!!). 
+## Pipeline Workflow
 
-"kWh delivered": numeric variable describing energy delivered to house from grid. 
+```mermaid
+flowchart TD
+    A["rawdata/solar_data/*.xls\nAP Systems weekly exports"]
+    B["rawdata/fortis_data/*.csv\nFortis BC hourly usage (current)"]
+    C["rawdata/fortis_historical/\nFortis hourly usage (2019–2022)"]
+    D["rawdata/fortis_billing/\nBilling history CSVs"]
 
-"kWh received": numeric variable describing energy delivered to grid from solar. 
+    E["scripts/wrangle_solar_data.R\nReshapes wide Excel → long CSV"]
+    F["scripts/wrangle_electricity_data.R\nParses Fortis date/time format"]
+    G["scripts/wrangle_historical_electricity_data.R\nParses legacy date/time format"]
 
+    H["outdata/solar_data.csv\nHourly solar production"]
+    I["outdata/fortis_data.csv\nHourly grid consumption (current)"]
+    J["outdata/fortis_historical_data.csv\nHourly grid consumption (historical)"]
+
+    K["index.Rmd\nMain analysis — sources scripts,\nrenders website"]
+    L["docs/index.html\nPublished website"]
+
+    A --> E --> H
+    B --> F --> I
+    C --> G --> J
+    H --> K
+    I --> K
+    J --> K
+    D --> K
+    K --> L
+```
+
+Each wrangling script checks file modification times and skips processing when its
+output CSV is already up-to-date.
+
+---
+
+## Prerequisites
+
+### R packages
+
+| Package | Purpose |
+|---|---|
+| `tidyverse` | Data wrangling and plotting |
+| `here` | Portable file paths |
+| `lubridate` | Date/time parsing |
+| `readxl` | Reading AP Systems `.xls` files |
+| `knitr` / `kableExtra` | Table rendering in the report |
+| `rmdformats` | `robobook` HTML theme for `index.Rmd` |
+| `weathercan` | Downloading Environment Canada weather data |
+| `purrr` | Functional iteration in wrangling scripts |
+
+Install manually or restore via `renv` if a lockfile is present.
+
+### Raw data (manual placement required)
+
+| Data source | Destination | How to obtain |
+|---|---|---|
+| AP Systems weekly energy reports | `rawdata/solar_data/` | Download `.xls` files from [apsystemsema.com](https://www.apsystemsema.com) |
+| Fortis BC hourly usage | `rawdata/fortis_data/` | Download CSV from [fortisbc.com](https://www.fortisbc.com) customer portal |
+| Fortis BC billing history | `rawdata/fortis_billing/` | Manually maintain `billing_history.csv` |
+| Historical Fortis data (2019–2022) | `rawdata/fortis_historical/` | One-time export; already in repo |
+
+Weather data (`outdata/weather_data.csv`) can be refreshed by running
+`scripts/weather.R` with `force_update <- TRUE`.
+
+---
+
+## Project Structure
+
+```
+home_solar/
+├── index.Rmd                  # Main analysis document; entry point for site build
+├── _site.yml                  # RMarkdown website configuration (output → docs/)
+├── home_solar.Rproj           # RStudio project file
+│
+├── scripts/
+│   ├── wrangle_solar_data.R               # AP Systems Excel → solar_data.csv
+│   ├── wrangle_electricity_data.R         # Fortis CSV → fortis_data.csv
+│   ├── wrangle_historical_electricity_data.R  # Legacy Fortis → fortis_historical_data.csv
+│   └── weather.R                          # Download Kelowna weather via weathercan
+│
+├── rawdata/
+│   ├── solar_data/            # Weekly .xls files from AP Systems portal
+│   ├── fortis_data/           # Hourly usage CSV(s) from Fortis BC portal
+│   ├── fortis_billing/        # Billing history and meter/payment records
+│   ├── fortis_historical/     # Historical hourly usage, Jan 2019 – May 2022
+│   └── DATA-DICTIONARY.md     # Raw data field descriptions
+│
+├── outdata/
+│   ├── solar_data.csv             # Processed hourly solar production
+│   ├── fortis_data.csv            # Processed hourly grid consumption (current)
+│   ├── fortis_historical_data.csv # Processed hourly grid consumption (historical)
+│   └── weather_data.csv           # Hourly weather from UBCO/Okanagan station
+│
+├── docs/                      # Rendered website (auto-generated; deployed via GitHub Pages)
+└── images/
+    ├── overhead_panels.png    # Aerial view of solar array
+    └── angle_panels.png       # Angled view of solar array
+```
+
+---
+
+## Key Outputs
+
+| File | Description |
+|---|---|
+| `docs/index.html` | Published analysis website |
+| `outdata/solar_data.csv` | Hourly kWh production from all 36 panels, July 2022 – present |
+| `outdata/fortis_data.csv` | Hourly kWh delivered/received, June 2022 – present |
+| `outdata/fortis_historical_data.csv` | Hourly kWh delivered, Jan 2019 – May 2022 |
+| `outdata/weather_data.csv` | Hourly weather from UBCO Okanagan station |
+
+---
+
+## Documentation
+
+| File | Contents |
+|---|---|
+| `rawdata/DATA-DICTIONARY.md` | Field descriptions for all raw input files |
+
+---
+
+## License
+
+[TODO: add license — e.g., CC BY 4.0 for data, MIT for code]
+
+---
+
+## Acknowledgments
+
+Solar array supplied and installed by [Okanagan Solar](https://www.oksolarhomes.com),
+Kelowna, BC. Electricity provided by [Fortis BC](https://www.fortisbc.com).
+Solar monitoring by [AP Systems](https://www.apsystemsema.com).

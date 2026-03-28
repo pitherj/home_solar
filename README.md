@@ -5,7 +5,7 @@ consumption, and billing for a residential 12.96 kW solar installation in Kelown
 
 [![Live site](https://img.shields.io/badge/Live%20site-pitherj.github.io%2Fhome__solar-blue)](https://pitherj.github.io/home_solar/)
 
-**Author**: Jason Pither — University of British Columbia Okanagan
+**Author**: Jason Pither
 
 ---
 
@@ -20,23 +20,6 @@ The 36-panel (12.96 kW) array was installed by [Okanagan Solar](https://www.okso
 and feeds into Fortis BC's net metering program. A one-bedroom addition and, later, an
 EV charger (June 2024) are also powered by the system, so the data capture multiple
 stages of household electricity demand.
-
----
-
-## Quick Start
-
-```r
-# 1. Open home_solar.Rproj in RStudio
-# 2. Restore package library
-renv::restore()   # if renv.lock is present, otherwise install packages manually
-
-# 3. Place updated raw data files (see Prerequisites below)
-
-# 4. Render the website — this also runs all wrangling scripts automatically
-rmarkdown::render_site()
-```
-
-The rendered site is written to `docs/` and is deployed via GitHub Pages.
 
 ---
 
@@ -75,7 +58,7 @@ output CSV is already up-to-date.
 
 ---
 
-## Prerequisites
+## Required resources
 
 ### R packages
 
@@ -90,8 +73,6 @@ output CSV is already up-to-date.
 | `weathercan` | Downloading Environment Canada weather data |
 | `purrr` | Functional iteration in wrangling scripts |
 
-Install manually or restore via `renv` if a lockfile is present.
-
 ### Raw data (manual placement required)
 
 | Data source | Destination | How to obtain |
@@ -100,9 +81,6 @@ Install manually or restore via `renv` if a lockfile is present.
 | Fortis BC hourly usage | `rawdata/fortis_data/` | Download CSV from [fortisbc.com](https://www.fortisbc.com) customer portal |
 | Fortis BC billing history | `rawdata/fortis_billing/` | Manually maintain `billing_history.csv` |
 | Historical Fortis data (2019–2022) | `rawdata/fortis_historical/` | One-time export; already in repo |
-
-Weather data (`outdata/weather_data.csv`) can be refreshed by running
-`scripts/weather.R` with `force_update <- TRUE`.
 
 ---
 

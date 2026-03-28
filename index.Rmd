@@ -142,7 +142,7 @@ solar.data
 
 Let's visualize the data to check for errors:
 
-```{r firstplot, echo = FALSE, fig.cap = "Figure 1: Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
+```{r firstplot, echo = FALSE, fig.cap = "Hourly energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
 
 solar.data %>%
   ggplot(aes(x = date, y = kWh)) +
@@ -163,7 +163,7 @@ So for that day (August 30, 2022), we won't be able to use the hourly data for a
 
 But we can sum up the total kWh by day, and plot:
 
-```{r secondplot, echo = FALSE, fig.cap = "Figure 2: Daily energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
+```{r secondplot, echo = FALSE, fig.cap = "Daily energy output (kWh) for the 36-panel solar array, starting July 8, 2022."}
 
 solar.data %>%
   group_by(day) %>%
@@ -209,7 +209,7 @@ consumption.data
 
 Let's visualize the data to check for errors, first limiting the date to June 1 2022 and after:
 
-```{r thirdplot, echo = FALSE, fig.cap = "Figure 3: Hourly energy consumption (kWh) for our house, starting June 1, 2022."}
+```{r thirdplot, echo = FALSE, fig.cap = "Hourly energy consumption (kWh) for our house, starting June 1, 2022."}
 
 consumption.data %>%
   filter(!is.na(kw_fortis_from_grid), day > "2022-06-1") %>%
@@ -225,7 +225,7 @@ hmm, that's messy...
 
 Let's sum up the total kWh consumed by day, and visualize:
 
-```{r fourthplot, warning = FALSE, echo = FALSE, fig.cap = "Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022."}
+```{r fourthplot, warning = FALSE, echo = FALSE, fig.cap = "Daily energy consumption (kWh) for our house, starting June 1, 2022."}
 
 consumption.data %>%
   filter(day > "2022-06-1") %>%
@@ -252,7 +252,7 @@ Let's combine the data into one plot.
 all_data <- full_join(consumption.data, solar.data, by = c("day", "hour"))
 ```
 
-```{r fifthplot, echo = FALSE, fig.cap = "Figure 5: Daily energy consumption (red) and solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8."}
+```{r fifthplot, echo = FALSE, fig.cap = "Daily energy consumption from grid (red) and gross solar production (blue) for our house (kWh), starting June 1, 2022. The solar system came online July 8."}
 
 # Compute daily totals from each source dataset independently, then combine.
 # This avoids NAs introduced by the hourly join in all_data, which would
@@ -285,7 +285,7 @@ Lots more consumption with the addition of our EV... but boy are we saving money
 
 Let's have a look at historical data for comparison
 
-```{r histplot, warning = FALSE, echo = FALSE, fig.cap = "Figure 6: Daily energy consumption (kWh) for our house, starting January 1, 2019. July 2022 is when solar production started."}
+```{r histplot, warning = FALSE, echo = FALSE, fig.cap = "Daily energy consumption (kWh) for our house, starting January 1, 2019. July 2022 is when solar production started."}
 
 consumption.data %>%
   #filter(day > "2022-06-1") %>%
@@ -441,7 +441,7 @@ In June 2024 we got a 2019 Chevy Bolt (battery replaced in 2021), and we install
 
 In this figure we saw earlier, we can see this new electricity usage:
 
-```{r fourthplot-2, warning = FALSE, echo = FALSE, fig.cap = "Figure 4: Daily energy consumption (kWh) for our house, starting June 1, 2022."}
+```{r fourthplot-2, warning = FALSE, echo = FALSE, fig.cap = "Daily energy consumption (kWh) for our house, starting June 1, 2022."}
 
 consumption.data %>%
   filter(day > "2022-06-1") %>%
@@ -699,7 +699,7 @@ Based on `r sum(!annual_solar$is_partial)` complete calendar years of data (`r m
 
 The figure below tracks cumulative savings through the end of our available data, then projects forward using our average annual savings rate at the current electricity rate of `$0.1496/kWh`. Since Fortis BC rates have been increasing roughly 5–7% per year, the actual break-even is likely to arrive somewhat earlier than shown.
 
-```{r breakeven_plot, echo=FALSE, fig.cap="Figure 7: Cumulative estimated electricity savings from the solar array. Filled circles show actual annual savings; triangles show projected savings based on average production from full calendar years at the 2025 electricity rate ($0.1496/kWh). Horizontal dashed lines mark the simple break-even (recovering the $20,000 net investment) and the financed break-even (recovering principal plus interest at 3.24% over 25 years)."}
+```{r breakeven_plot, echo=FALSE, fig.cap="Cumulative estimated electricity savings from the solar array. Filled circles show actual annual savings; triangles show projected savings based on average production from full calendar years at the 2025 electricity rate ($0.1496/kWh). Horizontal dashed lines mark the simple break-even (recovering the $20,000 net investment) and the financed break-even (recovering principal plus interest at 3.24% over 25 years)."}
 
 ggplot(plot_data, aes(x = year, y = cumulative, shape = series)) +
   geom_line(colour = "darkgrey") +

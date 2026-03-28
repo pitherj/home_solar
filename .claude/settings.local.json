@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(Rscript -e \"library\\(tidyverse\\); scales::dollar\\(29220\\)\")",
-      "Bash(python3 -c \":*)"
+      "Bash(python3 -c \":*)",
+      "Bash(grep -v \"\\\\.xls$\")"
     ]
   }
 }
